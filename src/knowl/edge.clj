@@ -8,3 +8,16 @@
   (:require
     [compojure.route :as route]
     [compojure-rest.resource :as rest]))
+
+(defroutes route
+  (ANY "*" [:as request]
+       "Hello World!"))
+
+(def app
+  (-> #'route
+    (wrap-reload '(knowl.edge))
+    (wrap-params)
+    (wrap-stacktrace)))
+
+(defn boot []
+  (run-jetty #'app {:port 8080}))
