@@ -6,10 +6,12 @@
     ring.middleware.params
     ring.middleware.reload)
   (:require
-    [compojure.route :as route]))
+    [compojure.route :as route]
+    [net.cgrand.enlive-html :as html]))
 
 (defn transform [this resource]
-  (str "Jochen says: " this))
+  (html/emit* {:tag :div
+               :content (str "Jochen says: " this)}))
 
 (defroutes route
   (ANY "*" [:as request]

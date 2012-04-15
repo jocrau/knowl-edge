@@ -27,5 +27,7 @@
 	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/tools.macro-0.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/tools.namespace-0.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/enlive-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/tagsoup-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
