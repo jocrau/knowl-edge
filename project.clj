@@ -1,3 +1,5 @@
-(defproject knowl "1.0.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :dependencies [[org.clojure/clojure "1.3.0"]])
+(defproject knowl "0.0.1-SNAPSHOT"
+  :description "Knowl is a Semantic Content Management System"
+  :dependencies [[org.clojure/clojure "1.3.0"]
+                 [ring "1.1.0-SNAPSHOT"]
+                 [compojure "1.0.1"]])
