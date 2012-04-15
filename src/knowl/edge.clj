@@ -8,9 +8,13 @@
   (:require
     [compojure.route :as route]))
 
+(defn transform [this resource]
+  (str "Jochen says: " this))
+
 (defroutes route
   (ANY "*" [:as request]
-       "Hello World!"))
+       (let [resource "Hello World!"]
+         (transform resource request))))
 
 (def app
   (-> #'route
