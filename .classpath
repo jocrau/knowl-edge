@@ -5,6 +5,7 @@
 	<classpathentry kind="lib" path="lib/clj-stacktrace-0.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/clojure-1.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/clout-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/compojure-1.0.1.jar"/>
@@ -26,8 +27,5 @@
 	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/tools.macro-0.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/tools.namespace-0.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/compojure-rest-0.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/tools.trace-0.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

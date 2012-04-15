@@ -6,8 +6,7 @@
     ring.middleware.params
     ring.middleware.reload)
   (:require
-    [compojure.route :as route]
-    [compojure-rest.resource :as rest]))
+    [compojure.route :as route]))
 
 (defroutes route
   (ANY "*" [:as request]
