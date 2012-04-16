@@ -4,4 +4,5 @@
                  [ring "1.1.0-SNAPSHOT"]
                  [compojure "1.0.1"]
                  [enlive "1.0.0"]
-                 [re-rand "0.1.0"]])
+                 [re-rand "0.1.0"]
+                 [midje "1.3.1"]])
