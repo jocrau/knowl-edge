@@ -1,26 +1,23 @@
 (ns knowl.edge
   (:use
+    knowl.edge.view
+    knowl.edge.base
     compojure.core
     ring.adapter.jetty
     ring.middleware.stacktrace
     ring.middleware.params
     ring.middleware.reload)
   (:require
-    [compojure.route :as route]
-    [net.cgrand.enlive-html :as html]))
-
-(defn transform [this resource]
-  (html/emit* {:tag :div
-               :content (str "Jochen says: " this)}))
+    [compojure.route :as route]))
 
 (defroutes route
-  (ANY "*" [:as request]
+  (GET "*" [:as request]
        (let [resource "Hello World!"]
-         (transform resource request))))
+         (render resource))))
 
 (def app
   (-> #'route
-    (wrap-reload '(knowl.edge))
+    (wrap-reload '(knowl.edge knowl.edge.base knowl.edge.view))
     (wrap-params)
     (wrap-stacktrace)))
 
