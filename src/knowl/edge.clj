@@ -10,13 +10,15 @@
   (:require
     [compojure.route :as route]))
 
+(defn resource-from [request]
+    (u (str (name (:scheme request)) "://" (:server-name request) ":" (:server-port request) (:uri request))))
+
 (defroutes route
   (GET "*" [:as request]
-       (let [resource "Hello World!"]
-         (render resource))))
+       (render (resource-from request))))
 
 (def app
-  (-> #'route
+  (-> route
     (wrap-reload '(knowl.edge knowl.edge.base knowl.edge.view))
     (wrap-params)
     (wrap-stacktrace)))
