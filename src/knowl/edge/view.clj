@@ -3,7 +3,7 @@
   (:require
     [net.cgrand.enlive-html :as html]))
 
-(defprotocol Transformer
+(defprotocol View
   "Provides functions to generate a view of the subject."
   (render [this] "Renders the output recursively."))
 
@@ -17,7 +17,7 @@
 (defn transform-uri [this]
   (:value this))
 
-(extend-protocol Transformer
+(extend-protocol View
   knowl.edge.base.Statement
   (render [this] (transform this))
   knowl.edge.base.BlankNode
