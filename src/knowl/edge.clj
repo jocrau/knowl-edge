@@ -11,7 +11,11 @@
     [compojure.route :as route]))
 
 (defn resource-from [request]
-    (u (str (name (:scheme request)) "://" (:server-name request) ":" (:server-port request) (:uri request))))
+  (create-uri (str (name (:scheme request))
+                   "://" (get-in request '(:headers "host"))
+                   (:uri request)
+                   (if-let [query-string (:query-string request)]
+                     (str "?" query-string)))))
 
 (defroutes route
   (GET "*" [:as request]
