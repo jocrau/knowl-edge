@@ -15,6 +15,7 @@
 
 (fact "An RDF URI can be created."
       (u "http://example.com/foo") => (knowl.edge.base.URI. "http://example.com/foo")
+      (u "http://example.com/foo%20bar%20baz") => (knowl.edge.base.URI. "http://example.com/foo%20bar%20baz")
       (u :prefix1 "foo") => (knowl.edge.base.URI. "http://example1.com/foo")	
       (provided
         (resolve-namespace :prefix1) => "http://example1.com/")
