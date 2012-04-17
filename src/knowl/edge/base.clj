@@ -1,43 +1,74 @@
 (ns knowl.edge.base
-    (:use re-rand))
+  (:use re-rand))
 
 (defrecord Statement [subject predicate object context])
 (defrecord Literal [value language datatype])
 (defrecord URI [value])
 (defrecord BlankNode [value])
 
-(def namespaces {"xml" "http://www.w3.org/XML/1998/namespace"
-                 "xmlns" "http://www.w3.org/2000/xmlns/"
-                 "xsd" "http://www.w3.org/2001/XMLSchema#"
-                 "xhv" "http://www.w3.org/1999/xhtml/vocab#"
-                 "rdfa" "http://www.w3.org/ns/rdfa#"
-                 "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                 "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
-                 "owl" "http://www.w3.org/2002/07/owl#"
-                 "rif" "http://www.w3.org/2007/rif#"
-                 "skos" "http://www.w3.org/2004/02/skos/core#"
-                 "skosxl" "http://www.w3.org/2008/05/skos-xl#"
-                 "grddl" "http://www.w3.org/2003/g/data-view#"
-                 "sd" "http://www.w3.org/ns/sparql-service-description#"
-                 "wdr" "http://www.w3.org/2007/05/powder#"
-                 "wdrs" "http://www.w3.org/2007/05/powder-s#"
-                 "sioc" "http://rdfs.org/sioc/ns#"
-                 "cc" "http://creativecommons.org/ns#"
-                 "vcard" "http://www.w3.org/2006/vcard/ns#"
-                 "void" "http://rdfs.org/ns/void#"
-                 "dc" "http://purl.org/dc/elements/1.1/"
-                 "dcterms" "http://purl.org/dc/terms/"
-                 "dbr" "http://dbpedia.org/resource/"
-                 "dbp" "http://dbpedia.org/property/"
-                 "dbo" "http://dbpedia.org/ontology/"
-                 "foaf" "http://xmlns.com/foaf/0.1/"
-                 "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
-                 "gr" "http://purl.org/goodrelations/v1#"
-                 "cal" "http://www.w3.org/2002/12/cal/ical#"
-                 "og" "http://ogp.me/ns#"
-                 "v" "http://rdf.data-vocabulary.org/#"
-                 "bibo" "http://purl.org/ontology/bibo/"
-                 "cnt" "http://www.w3.org/2011/content#"})
+(defprotocol Store
+  "Provide functions to store and manage RDF statements."
+  (add
+    "Add a statement to the store." 
+    [statement]
+    [subject predicate object]
+    [subject predicate object context])
+  (remove
+    "Remove the given statement from the repository." 
+    [statement]
+    [subject predicate object]
+    [subject predicate object context])
+  (load-document
+    "Load a document containing a serialization of a graph into the store."
+    [source]
+    [source format]
+    [source format baseUri]
+    [source format baseUri contexts])
+  (find-matching
+    "Find statements that matches the given pattern of subject, predicate, object, and contexts."
+    [subject]
+    [subject predicate]
+    [subject predicate object]
+    [subject predicate object contexts]))
+
+(defprotocol BabelFish
+  "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
+  (translate [value]))
+
+(def namespaces
+  "The default RDF namespaces (curie => prefix)."
+  {"xml" "http://www.w3.org/XML/1998/namespace"
+   "xmlns" "http://www.w3.org/2000/xmlns/"
+   "xsd" "http://www.w3.org/2001/XMLSchema#"
+   "xhv" "http://www.w3.org/1999/xhtml/vocab#"
+   "rdfa" "http://www.w3.org/ns/rdfa#"
+   "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
+   "owl" "http://www.w3.org/2002/07/owl#"
+   "rif" "http://www.w3.org/2007/rif#"
+   "skos" "http://www.w3.org/2004/02/skos/core#"
+   "skosxl" "http://www.w3.org/2008/05/skos-xl#"
+   "grddl" "http://www.w3.org/2003/g/data-view#"
+   "sd" "http://www.w3.org/ns/sparql-service-description#"
+   "wdr" "http://www.w3.org/2007/05/powder#"
+   "wdrs" "http://www.w3.org/2007/05/powder-s#"
+   "sioc" "http://rdfs.org/sioc/ns#"
+   "cc" "http://creativecommons.org/ns#"
+   "vcard" "http://www.w3.org/2006/vcard/ns#"
+   "void" "http://rdfs.org/ns/void#"
+   "dc" "http://purl.org/dc/elements/1.1/"
+   "dcterms" "http://purl.org/dc/terms/"
+   "dbr" "http://dbpedia.org/resource/"
+   "dbp" "http://dbpedia.org/property/"
+   "dbo" "http://dbpedia.org/ontology/"
+   "foaf" "http://xmlns.com/foaf/0.1/"
+   "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
+   "gr" "http://purl.org/goodrelations/v1#"
+   "cal" "http://www.w3.org/2002/12/cal/ical#"
+   "og" "http://ogp.me/ns#"
+   "v" "http://rdf.data-vocabulary.org/#"
+   "bibo" "http://purl.org/ontology/bibo/"
+   "cnt" "http://www.w3.org/2011/content#"})
   
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.

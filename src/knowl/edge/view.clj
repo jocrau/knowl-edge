@@ -1,6 +1,6 @@
 (ns knowl.edge.view
-  (:use knowl.edge.base)
   (:require
+    [knowl.edge.base :as base]
     [net.cgrand.enlive-html :as html]))
 
 (defprotocol View

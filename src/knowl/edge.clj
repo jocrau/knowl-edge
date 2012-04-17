@@ -1,31 +1,31 @@
 (ns knowl.edge
-  (:use
-    knowl.edge.view
-    knowl.edge.base
+  (:use    
     compojure.core
     ring.adapter.jetty
     ring.middleware.stacktrace
     ring.middleware.params
     ring.middleware.reload)
   (:require
-    [compojure.route :as route]))
+    [compojure.route :as route]
+    [knowl.edge.view :as view]
+    [knowl.edge.base :as base]))
 
 (defn resource-from [thing]
   (cond
     (map? thing)
-    (create-uri (str (name (:scheme thing))
-                     "://" (get-in thing '(:headers "host"))
-                     (:uri thing)
-                     (if-let [query-string (:query-string thing)]
-                       (str "?" query-string))))
+    (base/create-uri (str (name (:scheme thing))
+                          "://" (get-in thing '(:headers "host"))
+                          (:uri thing)
+                          (if-let [query-string (:query-string thing)]
+                            (str "?" query-string))))
     (string? thing)
-    (create-uri thing)))
+    (base/create-uri thing)))
 
 (defroutes route
   (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (render (resource-from uri-string)))
+       (view/render (resource-from uri-string)))
   (GET "*" [:as request]
-       (render (resource-from request))))
+       (view/render (resource-from request))))
 
 (def app
   (-> route
