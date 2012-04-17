@@ -10,14 +10,20 @@
   (:require
     [compojure.route :as route]))
 
-(defn resource-from [request]
-  (create-uri (str (name (:scheme request))
-                   "://" (get-in request '(:headers "host"))
-                   (:uri request)
-                   (if-let [query-string (:query-string request)]
-                     (str "?" query-string)))))
+(defn resource-from [thing]
+  (cond
+    (map? thing)
+    (create-uri (str (name (:scheme thing))
+                     "://" (get-in thing '(:headers "host"))
+                     (:uri thing)
+                     (if-let [query-string (:query-string thing)]
+                       (str "?" query-string))))
+    (string? thing)
+    (create-uri thing)))
 
 (defroutes route
+  (GET "/resources*" {{uri-string "uri"} :params :as request}
+       (render (resource-from uri-string)))
   (GET "*" [:as request]
        (render (resource-from request))))
 
