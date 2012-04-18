@@ -90,7 +90,7 @@
   (find-matching nil nil nil))
 
 (defn find-by-subject
-  ([uri] (find-matching uri nil nil))
+  ([uri] (find-matching uri))
   ([uri context] (find-matching uri nil nil context))
   ([uri context infered] (find-matching uri nil nil context infered)))
 
