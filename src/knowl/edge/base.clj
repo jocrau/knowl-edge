@@ -41,12 +41,6 @@
 (defrecord URI [value])
 (defrecord BlankNode [value])
 
-(defn init []
-  "Initialize the RDF Store with the configured implementation)."
-  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
-
-(init)
-
 (defprotocol StorageSolution
   "Provide functions to store and manage RDF statements."
   (add
@@ -125,3 +119,10 @@
 (defn b
   ([] (create-bnode))
   ([^String identifier] (create-bnode identifier)))
+
+(defn init []
+  "Initialize the RDF Store with the configured implementation)."
+  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
+
+(init)
+
