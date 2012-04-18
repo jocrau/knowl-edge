@@ -1,1 +1,1 @@
-(use 'knowl.edge.store.sesame)
+(require '[knowl.edge.store.sesame :as store])
