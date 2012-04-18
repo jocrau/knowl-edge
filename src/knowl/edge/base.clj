@@ -84,12 +84,3 @@
   (translate [value] (l (name value)))
   nil
   (translate [value] nil))
-
-(defn load-demo-data []
-  "This is a little helper function to populate the in-memory store"
-  (store/load-document "resources/private/data/abox.n3" :n3)
-  #_(store/load-document "http://sebastian.kurfuerst.eu/index.tt" :ttl)
-  #_(store/load-document "http://www.heppnetz.de/ontologies/goodrelations/v1.owl" :xml)
-  #_(store/load-document "http://www.w3.org/People/Berners-Lee/card#i" :xml)
-  #_(store/load-document "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf" :xml))
-
