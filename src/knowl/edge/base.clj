@@ -41,31 +41,6 @@
 (defrecord URI [value])
 (defrecord BlankNode [value])
 
-#_(defprotocol Store
-  "Provide functions to store and manage RDF statements."
-  (add
-    "Add a statement to the store." 
-    [statement]
-    [subject predicate object]
-    [subject predicate object context])
-  (remove
-    "Remove the given statement from the repository." 
-    [statement]
-    [subject predicate object]
-    [subject predicate object context])
-  (load-document
-    "Load a document containing a serialization of a graph into the store."
-    [source]
-    [source format]
-    [source format baseUri]
-    [source format baseUri contexts])
-  (find-matching
-    "Find statements that matches the given pattern of subject, predicate, object, and contexts."
-    [subject]
-    [subject predicate]
-    [subject predicate object]
-    [subject predicate object contexts]))
-
 (defprotocol BabelFish
   "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
   (translate [value]))
