@@ -82,16 +82,16 @@
     (re-find uri-regex (name thing))
     false))
 
-(defn resolve-namespace [prefix]
-  (if-let [uri ((name prefix) default-namespaces)]
-    uri
+(defn resolve-prefix [curie]
+  (if-let [prefix ((name curie) default-namespaces)]
+    prefix
     "http://knowl-edge.net/ontology/"))
 
 (defn create-uri
   ([^String value]
       {:pre [(uri-string? value)]}
       (URI. value))
-  ([curie localname] (let [prefix (resolve-namespace curie)]
+  ([curie localname] (let [prefix (resolve-prefix curie)]
                         (URI. (str prefix (name localname))))))
 
 (defn u [& params] (apply create-uri params))
