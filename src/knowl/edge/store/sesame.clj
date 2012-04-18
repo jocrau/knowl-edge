@@ -10,10 +10,11 @@
     (org.openrdf.query TupleQuery TupleQueryResult BindingSet QueryLanguage GraphQueryResult)))
 
 (defn- build-store [& options]
-  (let [memory-store (MemoryStore.)
-        inferencer (ForwardChainingRDFSInferencer. memory-store)
-        store (.initialize (SailRepository. inferencer))]
-    store))
+  (let [backend (MemoryStore.)
+        inferencer (ForwardChainingRDFSInferencer. backend)
+        store (SailRepository. inferencer)]
+    (do (.initialize store)
+      store)))
 
 (def ^:dynamic *store* (build-store))
 
