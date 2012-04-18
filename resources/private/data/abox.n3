@@ -1,0 +1,40 @@
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix cnt:     <http://www.w3.org/2011/content#> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix ex:      <http://example.com/> .
+@prefix sp:      <http://spinrdf.org/sp#> .
+@prefix spin:    <http://spinrdf.org/sp#> .
+@prefix dam:     <http://typo3.org/ontology/dam#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix prt:     <http://www.w3.org/2009/pointers#> .
+@prefix pto:     <http://www.productontology.org/id/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sioc:    <http://rdfs.org/sioc/types#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix fresnel: <http://www.w3.org/2004/09/fresnel#> .
+@prefix knowl: <http://knowl-edge.org/ontology/core#> .
+@prefix :        <http://example.com/> .
+
+<http://localhost:8080/foo/bar>
+      rdf:type bibo:Webpage ;
+      dc:title "Our Blog"@en ;
+      knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> .
+
+<urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
+      rdf:type sioc:BlogPost ;
+      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dc:title "My First Blog Post" ;
+      knowl:content <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>.
+
+<urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
+      rdf:type cnt:ContentAsText ;
+      cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+            
+<http://typoplanet.de/resources/Jochen_Rau>
+      rdf:type foaf:Person ;
+      foaf:firstName "Jochen" ;
+      foaf:lastName "Rau" .
