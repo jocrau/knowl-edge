@@ -22,7 +22,7 @@
 
 (defroutes route
   (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (render (resource-from uri-string)))
+       (view/render (resource-from uri-string)))
   (GET "*" [:as request]
        (view/render (resource-from request))))
 
