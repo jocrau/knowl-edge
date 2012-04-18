@@ -85,6 +85,11 @@
 (defn find-all []
   (find-matching nil nil nil))
 
+(defn find-by-subject
+  ([uri] (find-matching uri nil nil))
+  ([uri context] (find-matching uri nil nil context))
+  ([uri context infered] (find-matching uri nil nil context infered)))
+
 (extend-protocol knowl.edge.base/BabelFish
   org.openrdf.model.URI
   (translate [value]
