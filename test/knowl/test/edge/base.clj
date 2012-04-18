@@ -10,8 +10,11 @@
       (l "lorem ipsum" "http://example.com/datatype") => (knowl.edge.base.Literal. "lorem ipsum" nil (knowl.edge.base.URI. "http://example.com/datatype")))
 
 (fact "An RDF BlankNode can be created."
-      (b "loremipsum") => (knowl.edge.base.BlankNode. "loremipsum")
-      (:value (b)) => (just #"[a-zA-Z0-9]{12,}"))
+      (b "loremipsumdolor") => (knowl.edge.base.BlankNode. "loremipsumdolor")
+      (b "abc123 cde456") => (throws AssertionError)
+      (b "lorem") => (throws AssertionError)
+      (b "loremipsumdolorsitametcunscurloremipsumdolorsitametcunscur") => (throws AssertionError)
+      (:value (b)) => (just #"^[a-zA-Z0-9]{12,}$"))
 
 (fact "An RDF URI can be created."
       (u "http://example.com/foo") => (knowl.edge.base.URI. "http://example.com/foo")
@@ -28,6 +31,6 @@
 
 (fact "Applying str to a URI, BlankNode, or literal returns a plain string value."
       (:value (u "http://example.com/foo")) => "http://example.com/foo"
-      (:value (b "loremipsum")) => "loremipsum"
+      (:value (b "loremipsumdolor")) => "loremipsumdolor"
       (:value (l "Lorem Ipsum" :en)) => "Lorem Ipsum")
 
