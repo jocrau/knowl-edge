@@ -58,7 +58,7 @@
     false))
 
 (defn resolve-prefix [curie]
-  (if-let [prefix ((name curie) default-namespaces)]
+  (if-let [prefix (get default-namespaces (name curie))]
     prefix
     "http://knowl-edge.net/ontology/"))
 
