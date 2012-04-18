@@ -26,28 +26,40 @@
     [knowl.edge.base :as base]
     [net.cgrand.enlive-html :as html]))
 
-(defprotocol View
-  "Provides functions to generate a view of the subject."
-  (render [this] "Renders the output recursively."))
+(defn init []
+  "Initialize the RDF Store with the configured implementation)."
+  (-> "config.clj" slurp read-string eval))
 
-(defn transform [this]
-  (html/emit* {:tag :div
-               :content (str "Jochen says: " this)}))
+(init)
+
+(defprotocol Transformer
+  "Provides functions to generate a view of the subject."
+  (transform [this] "Renders the output recursively."))
 
 (defn transform-literal [this]
   (:value this))
 
-(defn transform-uri [this]
-  (:value this))
+(defn transform-resource [resource]
+  (if-let [statements (store/find-by-subject resource)]
+    (map transform statements)
+    (:value resource)))
 
-(extend-protocol View
+(defn transform-statement [statement]
+  {:tag :div :content [(:value (:predicate statement)) " " (transform (:object statement))]})
+
+(extend-protocol Transformer
   knowl.edge.base.Statement
-  (render [this] (transform this))
+  (transform [this] (transform-statement this))
   knowl.edge.base.BlankNode
-  (render [this] (transform this))
+  (transform [this] (transform-resource this))
   knowl.edge.base.URI
-  (render [this] (transform-uri this))
+  (transform [this] (transform-resource this))
   knowl.edge.base.Literal
-  (render [this] (transform-literal this))
+  (transform [this] (transform-literal this))
   java.lang.String
-  (render [this] (transform this)))
+  (transform [this] this))
+
+;; Entry Point
+(defn render [this]
+  (if-let [result (transform this)]
+    (html/emit* result)))

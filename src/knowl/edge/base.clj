@@ -38,7 +38,7 @@
 
 (defn init []
   "Initialize the RDF Store with the configured implementation)."
-  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
+  (-> "config.clj" slurp read-string eval))
 
 (init)
 

@@ -26,8 +26,7 @@
     compojure.core
     ring.adapter.jetty
     ring.middleware.stacktrace
-    ring.middleware.params
-    ring.middleware.reload)
+    ring.middleware.params)
   (:require
     [compojure.route :as route]
     [knowl.edge.view :as view]
