@@ -1,0 +1,1 @@
+(use 'knowl.edge.store.sesame)

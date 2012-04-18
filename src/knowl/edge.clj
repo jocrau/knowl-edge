@@ -12,18 +12,17 @@
 
 (defn resource-from [thing]
   (cond
-    (map? thing)
-    (base/create-uri (str (name (:scheme thing))
-                          "://" (get-in thing '(:headers "host"))
-                          (:uri thing)
-                          (if-let [query-string (:query-string thing)]
-                            (str "?" query-string))))
-    (string? thing)
-    (base/create-uri thing)))
+    (map? thing) (base/create-uri
+                   (str (name (:scheme thing))
+                        "://" (get-in thing '(:headers "host"))
+                        (:uri thing)
+                        (if-let [query-string (:query-string thing)]
+                          (str "?" query-string))))
+    (string? thing) (base/create-uri thing)))
 
 (defroutes route
   (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (view/render (resource-from uri-string)))
+       (render (resource-from uri-string)))
   (GET "*" [:as request]
        (view/render (resource-from request))))
 

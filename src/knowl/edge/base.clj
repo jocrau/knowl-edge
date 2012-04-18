@@ -1,41 +1,7 @@
 (ns knowl.edge.base
   (:use re-rand))
 
-(defrecord Statement [subject predicate object context])
-(defrecord Literal [value language datatype])
-(defrecord URI [value])
-(defrecord BlankNode [value])
-
-(defprotocol Store
-  "Provide functions to store and manage RDF statements."
-  (add
-    "Add a statement to the store." 
-    [statement]
-    [subject predicate object]
-    [subject predicate object context])
-  (remove
-    "Remove the given statement from the repository." 
-    [statement]
-    [subject predicate object]
-    [subject predicate object context])
-  (load-document
-    "Load a document containing a serialization of a graph into the store."
-    [source]
-    [source format]
-    [source format baseUri]
-    [source format baseUri contexts])
-  (find-matching
-    "Find statements that matches the given pattern of subject, predicate, object, and contexts."
-    [subject]
-    [subject predicate]
-    [subject predicate object]
-    [subject predicate object contexts]))
-
-(defprotocol BabelFish
-  "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
-  (translate [value]))
-
-(def namespaces
+(def default-namespaces
   "The default RDF namespaces (curie => prefix)."
   {"xml" "http://www.w3.org/XML/1998/namespace"
    "xmlns" "http://www.w3.org/2000/xmlns/"
@@ -69,7 +35,47 @@
    "v" "http://rdf.data-vocabulary.org/#"
    "bibo" "http://purl.org/ontology/bibo/"
    "cnt" "http://www.w3.org/2011/content#"})
-  
+
+(defrecord Statement [subject predicate object context])
+(defrecord Literal [value language datatype])
+(defrecord URI [value])
+(defrecord BlankNode [value])
+
+(defn init []
+  "Initialize the RDF Store with the configured implementation)."
+  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
+
+(init)
+
+(defprotocol StorageSolution
+  "Provide functions to store and manage RDF statements."
+  (add
+    "Add a statement to the store." 
+    [statement]
+    [subject predicate object]
+    [subject predicate object context])
+  (remove
+    "Remove the given statement from the repository." 
+    [statement]
+    [subject predicate object]
+    [subject predicate object context])
+  (load-document
+    "Load a document containing a serialization of a graph into the store."
+    [source]
+    [source format]
+    [source format baseUri]
+    [source format baseUri contexts])
+  (find-matching
+    "Find statements that matches the given pattern of subject, predicate, object, and contexts."
+    [subject]
+    [subject predicate]
+    [subject predicate object]
+    [subject predicate object contexts]))
+
+(defprotocol BabelFish
+  "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
+  (translate [value]))
+
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
 (def uri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
@@ -83,7 +89,7 @@
     false))
 
 (defn resolve-namespace [prefix]
-  (if-let [uri ((name prefix) namespaces)]
+  (if-let [uri ((name prefix) default-namespaces)]
     uri
     "http://knowl-edge.net/ontology/"))
 
