@@ -33,6 +33,21 @@
 
 (def ^:dynamic *repository* (build-repository))
 
+(defn- iteration-seq
+  "Creates and returns a lazy sequence of objects implementing info.aduna.iteration.Iteration"
+  [^info.aduna.iteration.Iteration resultSet]
+  (let [statements (fn thisfn []
+                     (when (. resultSet (hasNext))
+                       (let [statement (. resultSet (next))]
+                         (cons
+                           (let [subject (knowl.edge.base/translate (.getSubject statement))
+                                 predicate (knowl.edge.base/translate (.getPredicate statement))
+                                 object (knowl.edge.base/translate (.getObject statement))
+                                 context (knowl.edge.base/translate (.getContext statement))]
+                             (knowl.edge.base.Statement. subject predicate object context))
+                           (lazy-seq (thisfn))))))]
+    (statements)))
+
 (defn load-document
   ([source]
     (load-document source :xml "" no-contexts))
@@ -52,3 +67,55 @@
         (.commit connection)
         (catch RepositoryException e (.rollback connection))
         (finally (.close connection))))))
+
+(defn find-matching
+  ([subject] (find-matching subject nil nil nil false))
+  ([subject predicate] (find-matching subject predicate nil nil false))
+  ([subject predicate object] (find-matching subject predicate object nil false))
+  ([subject predicate object contexts] (find-matching subject predicate object contexts false))
+  ([subject predicate object contexts infered]
+    (let [subject (knowl.edge.base/translate subject)
+          predicate (knowl.edge.base/translate predicate)
+          object (knowl.edge.base/translate object)
+          infered (if (nil? infered) false infered)
+          contexts no-contexts ;; TODO Implement support of contexts
+          connection (.getConnection *repository*)]
+      (iteration-seq (.getStatements connection subject predicate object infered contexts)))))
+
+(defn find-all []
+  (find-matching nil nil nil))
+
+(extend-protocol knowl.edge.base/BabelFish
+  org.openrdf.model.URI
+  (translate [value]
+                   (let [namespace (.getNamespace value)
+                         local-name (.getLocalName value)]
+                     (knowl.edge.base.URI. (str namespace local-name))))
+  org.openrdf.model.BNode
+  (translate [value]
+                   (let [identifier (.getID value)]
+                     (knowl.edge.base.BlankNode. identifier)))
+  org.openrdf.model.Literal
+  (translate [value]
+                   (let [label (.getLabel value)
+                         language (.getLanguage value)
+                         datatype (if-let [datatype (.getDatatype value)]
+                                    (knowl.edge.base/u (str datatype)))]
+                     (knowl.edge.base.Literal. label language datatype)))
+  knowl.edge.base.URI
+  (translate [value]
+                   (let [connection (.getConnection *repository*)
+                         vf (.getValueFactory connection)]
+                     (.createURI vf (:value value))))
+  knowl.edge.base.BlankNode
+  (translate [value]
+                   (let [connection (.getConnection *repository*)
+                         vf (.getValueFactory connection)]
+                     (.createBNode vf (:value value))))
+  knowl.edge.base.Literal
+  (translate [value]
+                   (let [connection (.getConnection *repository*)
+                         vf (.getValueFactory connection)]
+                     (if-let [lang-or-type (or (:language value) (knowl.edge.base/translate (:datatype value)))]
+                       (.createLiteral vf (:value value) lang-or-type)
+                       (.createLiteral vf (:value value))))))

@@ -45,6 +45,15 @@
   "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
   (translate [value]))
 
+(declare l)
+(declare u)
+
+(defn init []
+  "Initialize the RDF Store with the configured implementation)."
+  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
+
+(init)
+
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
 (def uri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
@@ -116,9 +125,11 @@
   nil
   (translate [value] nil))
 
-(defn init []
-  "Initialize the RDF Store with the configured implementation)."
-  (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
-
-(init)
+(defn load-demo-data []
+  "This is a little helper function to populate the in-memory store"
+  (store/load-document "/Users/jocrau/Documents/typoplanet/htdocs/clojure/typo3/resources/private/data/abox.n3" :n3)
+  #_(store/load-document "http://sebastian.kurfuerst.eu/index.tt" :ttl)
+  #_(store/load-document "http://www.heppnetz.de/ontologies/goodrelations/v1.owl" :xml)
+  #_(store/load-document "http://www.w3.org/People/Berners-Lee/card#i" :xml)
+  #_(store/load-document "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf" :xml))
 
