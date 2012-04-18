@@ -90,6 +90,16 @@
   ([uri context] (find-matching uri nil nil context))
   ([uri context infered] (find-matching uri nil nil context infered)))
 
+(defn find-by-query ;; only CONSTRUCT allowed by now
+  ([query-string] (find-by-query query-string false))
+  ([query-string infered]
+    (let [connection (.getConnection *repository*)
+          query (.prepareGraphQuery connection QueryLanguage/SPARQL query-string)]
+      (do
+        (.setIncludeInferred query infered)
+        (.setMaxQueryTime query 10) ;; TODO make this configurable
+        (iteration-seq (.evaluate query))))))
+
 (extend-protocol knowl.edge.base/BabelFish
   org.openrdf.model.URI
   (translate [value]
