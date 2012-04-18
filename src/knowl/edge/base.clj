@@ -95,6 +95,27 @@
   ([] (create-bnode))
   ([^String identifier] (create-bnode identifier)))
 
+(defn create-statement
+  ([subject predicate object] (create-statement subject predicate object nil))
+  ([subject predicate object context]
+    (let [subject (translate subject)
+          predicate (translate predicate)
+          object (translate object)
+          context (translate context)]
+      (Statement. subject predicate object context))))
+
+(defn s [& params] (apply create-statement params))
+
+(extend-protocol BabelFish
+  java.lang.String
+  (translate [value] (if (uri-string? value) (u value) (l value)))
+  clojure.lang.PersistentVector
+  (translate [value] (let [[curie localname] value] (u curie localname)))
+  clojure.lang.Keyword
+  (translate [value] (l (name value)))
+  nil
+  (translate [value] nil))
+
 (defn init []
   "Initialize the RDF Store with the configured implementation)."
   (-> "src/knowl/edge/store/config.clj" slurp read-string eval))
