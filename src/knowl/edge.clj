@@ -28,7 +28,6 @@
 
 (def app
   (-> route
-    (wrap-reload '(knowl.edge knowl.edge.base knowl.edge.view))
     (wrap-params)
     (wrap-stacktrace)))
 
