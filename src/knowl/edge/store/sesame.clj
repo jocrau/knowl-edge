@@ -48,6 +48,10 @@
                            (lazy-seq (thisfn))))))]
     (statements)))
 
+(defn resolve-prefix [curie]
+  (let [connection (.getConnection *repository*)]
+    (.getNamespace connection (name curie))))
+
 (defn load-document
   ([source]
     (load-document source :xml "" no-contexts))

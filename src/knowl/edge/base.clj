@@ -1,41 +1,6 @@
 (ns knowl.edge.base
   (:use re-rand))
 
-(def default-namespaces
-  "The default RDF namespaces (curie => prefix)."
-  {"xml" "http://www.w3.org/XML/1998/namespace"
-   "xmlns" "http://www.w3.org/2000/xmlns/"
-   "xsd" "http://www.w3.org/2001/XMLSchema#"
-   "xhv" "http://www.w3.org/1999/xhtml/vocab#"
-   "rdfa" "http://www.w3.org/ns/rdfa#"
-   "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
-   "owl" "http://www.w3.org/2002/07/owl#"
-   "rif" "http://www.w3.org/2007/rif#"
-   "skos" "http://www.w3.org/2004/02/skos/core#"
-   "skosxl" "http://www.w3.org/2008/05/skos-xl#"
-   "grddl" "http://www.w3.org/2003/g/data-view#"
-   "sd" "http://www.w3.org/ns/sparql-service-description#"
-   "wdr" "http://www.w3.org/2007/05/powder#"
-   "wdrs" "http://www.w3.org/2007/05/powder-s#"
-   "sioc" "http://rdfs.org/sioc/ns#"
-   "cc" "http://creativecommons.org/ns#"
-   "vcard" "http://www.w3.org/2006/vcard/ns#"
-   "void" "http://rdfs.org/ns/void#"
-   "dc" "http://purl.org/dc/elements/1.1/"
-   "dcterms" "http://purl.org/dc/terms/"
-   "dbr" "http://dbpedia.org/resource/"
-   "dbp" "http://dbpedia.org/property/"
-   "dbo" "http://dbpedia.org/ontology/"
-   "foaf" "http://xmlns.com/foaf/0.1/"
-   "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
-   "gr" "http://purl.org/goodrelations/v1#"
-   "cal" "http://www.w3.org/2002/12/cal/ical#"
-   "og" "http://ogp.me/ns#"
-   "v" "http://rdf.data-vocabulary.org/#"
-   "bibo" "http://purl.org/ontology/bibo/"
-   "cnt" "http://www.w3.org/2011/content#"})
-
 (defrecord Statement [subject predicate object context])
 (defrecord Literal [value language datatype])
 (defrecord URI [value])
@@ -66,16 +31,11 @@
     (re-find uri-regex (name thing))
     false))
 
-(defn resolve-prefix [curie]
-  (if-let [prefix (get default-namespaces (name curie))]
-    prefix
-    "http://knowl-edge.net/ontology/"))
-
 (defn create-uri
   ([^String value]
       {:pre [(uri-string? value)]}
       (URI. value))
-  ([curie localname] (let [prefix (resolve-prefix curie)]
+  ([curie localname] (let [prefix (store/resolve-prefix curie)]
                         (URI. (str prefix (name localname))))))
 
 (defn u [& params] (apply create-uri params))
