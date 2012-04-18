@@ -32,6 +32,8 @@
 
 (init)
 
+(def ^:dynamic *template* (html/html-resource (java.io.File. "resources/private/templates/page.html")))
+
 (defprotocol Transformer
   "Provides functions to generate a view of the subject."
   (transform [this] "Renders the output recursively."))
@@ -41,11 +43,10 @@
 
 (defn transform-resource [resource]
   (if-let [statements (store/find-by-subject resource)]
-    (map transform statements)
-    (:value resource)))
+    (map transform statements)))
 
 (defn transform-statement [statement]
-  {:tag :div :content [(:value (:predicate statement)) " " (transform (:object statement))]})
+  {:tag :div :content (seq (transform (:object statement)))})
 
 (extend-protocol Transformer
   knowl.edge.base.Statement
