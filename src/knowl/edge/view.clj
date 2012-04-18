@@ -26,6 +26,8 @@
     [knowl.edge.base :as base]
     [net.cgrand.enlive-html :as html]))
 
+;; Initialization
+
 (defn init []
   "Initialize the RDF Store with the configured implementation)."
   (-> "config.clj" slurp read-string eval))
@@ -33,6 +35,19 @@
 (init)
 
 (def ^:dynamic *template* (html/html-resource (java.io.File. "resources/private/templates/page.html")))
+
+;; Predicates
+
+(defn- type= [resource]
+  (html/attr= :typeof (:value resource)))
+
+(defn- property= [resource]
+  (html/attr= :property (:value resource)))
+
+(defn- set-resource [resource]
+  (html/set-attr :resource (:value resource)))
+
+;; Transformations
 
 (defprotocol Transformer
   "Provides functions to generate a view of the subject."
@@ -61,6 +76,7 @@
   (transform [this] this))
 
 ;; Entry Point
+
 (defn render [this]
   (if-let [result (transform this)]
     (html/emit* result)))
