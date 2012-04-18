@@ -41,7 +41,7 @@
 (defrecord URI [value])
 (defrecord BlankNode [value])
 
-(defprotocol StorageSolution
+#_(defprotocol Store
   "Provide functions to store and manage RDF statements."
   (add
     "Add a statement to the store." 
