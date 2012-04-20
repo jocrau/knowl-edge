@@ -48,6 +48,9 @@
 (defn- set-resource [resource]
   (html/set-attr :resource (:value resource)))
 
+(defn- set-content [content]
+  (html/set-attr :content content))
+
 ;; Context
 
 (defprotocol ContextHandling
@@ -80,7 +83,12 @@
         (if-not (seq statements)
           nodes
           (let [statement (first statements)]
-            (recur (html/transform nodes [[html/root] (property= (:predicate statement))] (html/content (transform (:object statement) context)))
+            (recur (html/transform nodes [[html/root] (property= (:predicate statement))]
+                                   (html/do->
+                                     (html/content (transform (:object statement) context))
+                                     (if (:datatype (:object statement))
+                                       (set-content (:value (:object statement)))
+                                       identity)))
                    (rest statements))))))))
 
 (extend-protocol Transformer
