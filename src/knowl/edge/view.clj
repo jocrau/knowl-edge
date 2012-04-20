@@ -23,6 +23,7 @@
     :author "Jochen Rau"}  
   knowl.edge.view
   (:require
+    [clj-time.format :as time]
     [knowl.edge.base :as base]
     [net.cgrand.enlive-html :as html]))
 
@@ -65,8 +66,10 @@
   "Provides functions to transform the given subject into a different representation."
   (transform [this context] "Transforms the subject."))
 
-(defn transform-literal [this context]
-  (:value this))
+(defmulti transform-literal (fn [literal context] (:value (:datatype literal))))
+(defmethod transform-literal :default [literal context] (:value literal))
+(defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
+  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (:value literal))))
 
 (defn transform-resource [resource context]
   (if-let [statements (store/find-by-subject resource)]

@@ -5,6 +5,7 @@
                  [compojure "1.0.1"]
                  [enlive "1.0.0"]
                  [re-rand "0.1.0"]
+                 [clj-time "0.4.1"]
                  [org.openrdf.sesame/sesame-runtime "2.6.3"]
                  [midje "1.3.1"]]
   :repositories {"aduna (sesame)"

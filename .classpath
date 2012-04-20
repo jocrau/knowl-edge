@@ -80,5 +80,6 @@
 	<classpathentry kind="lib" path="lib/sesame-sail-rdbms-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/sesame-util-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/clj-time-0.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
