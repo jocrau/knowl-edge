@@ -47,6 +47,18 @@
 (defn- set-resource [resource]
   (html/set-attr :resource (:value resource)))
 
+;; Context
+
+(defprotocol ContextHandling
+  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
+  (conj-selector [this selector] "Appends a selector to the selector-chain"))
+
+(defrecord Context [depth selector-chain]
+  ContextHandling
+  (conj-selector
+    [this selector]
+    (update-in this [:selector-chain] #(conj % selector))))
+
 ;; Transformations
 
 (defprotocol Transformer
@@ -57,20 +69,16 @@
   (:value this))
 
 (defn transform-statement [statement context]
-  (let [meta (meta statement)]
-    (transform (:object statement) context)))
+     (let [context (conj-selector context [(property= (:predicate statement))]) 
+          selector-chain (:selector-chain context)
+          snippet (html/select *template* selector-chain)]
+      (html/transform snippet [:*] (html/content (transform-statement statement context)))))
 
 (defn transform-resource [resource context]
   (if-let [statements (store/find-by-subject resource)]
-    (let [context (.conj-selector context [(type= (first (store/find-types-of resource)))]) 
-          selector-chain (:selector-chain context)
-          snippet (html/select *template* selector-chain)]
-      (html/transform
-        snippet
-        [:*]
-        (html/do-> (set-resource resource)
-                   (html/content
-                     (map #(transform-statement %  context) statements)))))))
+    (let [context (conj-selector context [(type= (first (store/find-types-of resource)))]) 
+          selector-chain (:selector-chain context)]
+      (html/transform *template* selector-chain (set-resource resource)))))
 
 (extend-protocol Transformer
   knowl.edge.base.Statement
@@ -83,18 +91,6 @@
   (transform [this context] (transform-literal this context))
   java.lang.String
   (transform [this context] this))
-
-;; Context
-
-(defprotocol ContextHandling
-  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
-  (conj-selector [this selector] "Appends a selector to the selector-chain"))
-
-(defrecord Context [depth selector-chain]
-  ContextHandling
-  (conj-selector
-    [this selector]
-    (update-in this [:selector-chain] #(conj % selector))))
 
 ;; Entry Point
 
