@@ -57,7 +57,7 @@
   ContextHandling
   (conj-selector
     [this selector]
-    (update-in this [:selector-chain] #(conj % selector))))
+    (update-in this [:selector-chain] #(into % selector))))
 
 ;; Transformations
 
@@ -68,21 +68,19 @@
 (defn transform-literal [this context]
   (:value this))
 
-(defn transform-statement [statement context]
-     (let [context (conj-selector context [(property= (:predicate statement))]) 
-          selector-chain (:selector-chain context)
-          snippet (html/select *template* selector-chain)]
-      (html/transform snippet [:*] (html/content (transform-statement statement context)))))
-
 (defn transform-resource [resource context]
   (if-let [statements (store/find-by-subject resource)]
-    (let [context (conj-selector context [(type= (first (store/find-types-of resource)))]) 
-          selector-chain (:selector-chain context)]
-      (html/transform *template* selector-chain (set-resource resource)))))
+    (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
+          snippet (html/select *template* (:selector-chain context))]
+      (loop [nodes (html/transform snippet [html/root] (set-resource resource))
+             statements statements]
+        (if-not (seq statements)
+          nodes
+          (let [statement (first statements)]
+            (recur (html/transform nodes [[html/root] (property= (:predicate statement))] (html/content (transform (:object statement) context)))
+                   (rest statements))))))))
 
 (extend-protocol Transformer
-  knowl.edge.base.Statement
-  (transform [this context] (transform-statement this context))
   knowl.edge.base.BlankNode
   (transform [this context] (transform-resource this context))
   knowl.edge.base.URI
@@ -90,7 +88,9 @@
   knowl.edge.base.Literal
   (transform [this context] (transform-literal this context))
   java.lang.String
-  (transform [this context] this))
+  (transform [this context] this)
+  nil
+  (transform [this context] nil))
 
 ;; Entry Point
 
