@@ -1,6 +1,7 @@
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix cnt:     <http://www.w3.org/2011/content#> .
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ex:      <http://example.com/> .
 @prefix sp:      <http://spinrdf.org/sp#> .
 @prefix spin:    <http://spinrdf.org/sp#> .
@@ -16,7 +17,7 @@
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix fresnel: <http://www.w3.org/2004/09/fresnel#> .
-@prefix knowl: <http://knowl-edge.org/ontology/core#> .
+@prefix knowl:   <http://knowl-edge.org/ontology/core#> .
 @prefix :        <http://example.com/> .
 
 <http://localhost:8080/foo/bar>
@@ -27,8 +28,9 @@
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post" ;
-      knowl:content <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>.
+      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>.
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
