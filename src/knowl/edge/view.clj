@@ -50,33 +50,54 @@
 ;; Transformations
 
 (defprotocol Transformer
-  "Provides functions to generate a view of the subject."
-  (transform [this] "Renders the output recursively."))
+  "Provides functions to transform the given subject into a different representation."
+  (transform [this context] "Transforms the subject."))
 
-(defn transform-literal [this]
+(defn transform-literal [this context]
   (:value this))
 
-(defn transform-resource [resource]
-  (if-let [statements (store/find-by-subject resource)]
-    (map transform statements)))
+(defn transform-statement [statement context]
+  (let [meta (meta statement)]
+    (transform (:object statement) context)))
 
-(defn transform-statement [statement]
-  {:tag :div :content (seq (transform (:object statement)))})
+(defn transform-resource [resource context]
+  (if-let [statements (store/find-by-subject resource)]
+    (let [context (.conj-selector context [(type= (first (store/find-types-of resource)))]) 
+          selector-chain (:selector-chain context)
+          snippet (html/select *template* selector-chain)]
+      (html/transform
+        snippet
+        [:*]
+        (html/do-> (set-resource resource)
+                   (html/content
+                     (map #(transform-statement %  context) statements)))))))
 
 (extend-protocol Transformer
   knowl.edge.base.Statement
-  (transform [this] (transform-statement this))
+  (transform [this context] (transform-statement this context))
   knowl.edge.base.BlankNode
-  (transform [this] (transform-resource this))
+  (transform [this context] (transform-resource this context))
   knowl.edge.base.URI
-  (transform [this] (transform-resource this))
+  (transform [this context] (transform-resource this context))
   knowl.edge.base.Literal
-  (transform [this] (transform-literal this))
+  (transform [this context] (transform-literal this context))
   java.lang.String
-  (transform [this] this))
+  (transform [this context] this))
+
+;; Context
+
+(defprotocol ContextHandling
+  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
+  (conj-selector [this selector] "Appends a selector to the selector-chain"))
+
+(defrecord Context [depth selector-chain]
+  ContextHandling
+  (conj-selector
+    [this selector]
+    (update-in this [:selector-chain] #(conj % selector))))
 
 ;; Entry Point
 
 (defn render [this]
-  (if-let [result (transform this)]
+  (if-let [result (transform this (Context. 0 []))]
     (html/emit* result)))
