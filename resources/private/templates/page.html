@@ -1,17 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" resource="http://example.com/foo/bar" typeof="http://purl.org/ontology/bibo/Webpage">
+<!doctype html>
+<html class="no-js" lang="en" resource="http://example.com/foo/bar" typeof="http://purl.org/ontology/bibo/Webpage">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
 	<title property="http://purl.org/dc/elements/1.1/title">knowl:edge</title>
-	<link rel="stylesheet" type="text/css" href="/styles/stylesheet.css" />
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="knowl/resources/public/css/styles.css">
+
+	<script src="knowl/resources/public/js/libs/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
-	<div id="outerWrap">
-		<div id="contentWrap">
-			<div id="main" rel="http://knowl-edge.org/ontology/core#contains">
-					<div resource="urn:uuid:32bfee27-5437-4d49-9052-4c060301279b" typeof="http://rdfs.org/sioc/types#BlogPost">
+<header>
+
+</header>
+<div role="main">
+			<div id="main" property="http://knowl-edge.org/ontology/core#contains">
+					<div resource="urn:uuid:lorem1234" typeof="http://rdfs.org/sioc/types#BlogPost">
 						<h1 property="http://purl.org/dc/elements/1.1/title">Lorem Ipsum</h1>
-						<div>Author: <span rel="http://purl.org/dc/elements/1.1/creator"><span resource="urn:uuid:3465fa567-5437-4d49-9052-5c060301279c" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span></span></div>
+						<div>Author: <span rel="http://purl.org/dc/elements/1.1/creator"><span resource="urn:uuid:lorem1234" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span></span></div>
 						<div rel="http://knowl-edge.org/ontology/content">
 							<div typeof="http://www.w3.org/2011/content#ContentAsText">
 								<p property="http://www.w3.org/2011/content#chars">Fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -20,7 +31,10 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+</div>
+<footer>
+
+</footer>
+
 </body>
 </html>
