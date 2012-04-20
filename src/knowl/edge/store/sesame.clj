@@ -127,6 +127,13 @@
         (.setMaxQueryTime query 10) ;; TODO make this configurable
         (iteration-seq (.evaluate query))))))
 
+(defn find-types-of
+  ([uri] (find-types-of uri nil nil))
+  ([uri context] (find-types-of uri context nil))
+  ([uri context infered] (if-let [statements (into (find-matching uri (knowl.edge.base/u "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") nil context false)
+                                                   (find-matching uri (knowl.edge.base/u "http://www.w3.org/2000/01/rdf-schema#subClassOf") nil context true))]
+                           (distinct (map :object statements)))))
+
 (extend-protocol knowl.edge.base/BabelFish
   org.openrdf.model.URI
   (translate [value]
