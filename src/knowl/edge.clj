@@ -22,6 +22,7 @@
   ^{:doc "This namespace defines an entry point and the routes for the know:ledge cms."
     :author "Jochen Rau"}
   knowl.edge
+  (:gen-class)
   (:use    
     compojure.core
     ring.adapter.jetty
@@ -57,3 +58,6 @@
 
 (defn boot []
   (run-jetty #'app {:port 8080}))
+
+(defn -main [& args]
+  (boot))
