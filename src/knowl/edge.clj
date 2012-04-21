@@ -42,11 +42,13 @@
                           (str "?" query-string))))
     (string? thing) (base/create-uri thing)))
 
-(defroutes route
+(defroutes route 
   (GET "/resources*" {{uri-string "uri"} :params :as request}
        (view/render (resource-from uri-string)))
   (GET "*" [:as request]
-       (view/render (resource-from request))))
+       (view/render (resource-from request)))
+  (route/files "/" {:root "resources/public/"})
+  (route/not-found "<h1>Unknown Resource :-(</h1>"))
 
 (def app
   (-> route
