@@ -23,7 +23,7 @@
 <http://localhost:8080/foo/bar>
       rdf:type bibo:Webpage ;
       dc:title "Our Blog"@en ;
-      knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> .
+      knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
@@ -35,7 +35,18 @@
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
       cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
-            
+
+<urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
+      rdf:type sioc:BlogPost ;
+      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
+      dc:title "My Second Blog Post" ;
+      knowl:contains <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>.
+
+<urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>
+      rdf:type cnt:ContentAsText ;
+      cnt:chars "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+
 <http://typoplanet.de/resources/Jochen_Rau>
       rdf:type foaf:Person ;
       foaf:firstName "Jochen" ;

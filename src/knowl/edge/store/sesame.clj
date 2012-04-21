@@ -29,7 +29,6 @@
     (org.openrdf.sail.inferencer.fc ForwardChainingRDFSInferencer)
     (org.openrdf.repository RepositoryConnection)
     (org.openrdf.rio Rio RDFFormat)
-    (org.openrdf.rio.turtle TurtleWriter)
     (org.openrdf.query TupleQuery TupleQueryResult BindingSet QueryLanguage GraphQueryResult)))
 
 (def no-contexts (make-array org.openrdf.model.URI 0))
