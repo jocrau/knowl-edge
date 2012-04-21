@@ -28,6 +28,7 @@
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post" ;
       knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>.
@@ -50,4 +51,9 @@
 <http://typoplanet.de/resources/Jochen_Rau>
       rdf:type foaf:Person ;
       foaf:firstName "Jochen" ;
+      foaf:lastName "Rau" .
+      
+<http://typoplanet.de/resources/Jennifer_Rau>
+      rdf:type foaf:Person ;
+      foaf:firstName "Jennifer" ;
       foaf:lastName "Rau" .
