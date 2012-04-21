@@ -31,7 +31,8 @@
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post" ;
-      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>.
+      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274> ;
+      knowl:pageMenue <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
@@ -57,3 +58,21 @@
       rdf:type foaf:Person ;
       foaf:firstName "Jennifer" ;
       foaf:lastName "Rau" .
+      
+<urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
+    rdf:type sp:Construct ;
+	knowl:query "
+		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		PREFIX knowl: <http://knowl-edge.org/ontology/core#>
+		PREFIX dc: <http://purl.org/dc/elements/1.1/>
+		CONSTRUCT {
+			[] rdf:type knowl:Link .
+			[] knowl:uri ?s .
+			[] rdfs:label ?title .
+		}
+		WHERE {
+			?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/Webpage> .
+			?s dc:title ?title .
+		}" .
+      

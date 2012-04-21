@@ -4,13 +4,16 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title property="http://purl.org/dc/elements/1.1/title">knowl:edge</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
 	<meta name="viewport" content="width=device-width">
-	<link rel="stylesheet" href="/css/styles.css">
-	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
+	<header>
+			<div typeof="http://spinrdf.org/sp#Construct" rel="http://knowl-edge.org/ontology/core#query">
+				<ul>
+					<li><a href="http://localhost:8080/foo/boom" typeof="http://knowl-edge.org/ontology/core#Link" property="http://purl.org/dc/elements/1.1/title">Homepage</a></li>
+				</ul>
+			</div>
+	</header>
 	<div role="main">
 		<div  property="http://knowl-edge.org/ontology/core#contains">
 			<div resource="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
@@ -28,5 +31,8 @@
 			</div>
 		</div>
 	</div>
+	<footer>
+		<p>&copy; 2012 Jochen Rau<br />Transformed by knowl:edge</p>
+	</footer>
 </body>
 </html>
