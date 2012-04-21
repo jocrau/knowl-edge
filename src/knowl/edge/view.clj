@@ -77,19 +77,20 @@
 (defn transform-resource [resource context]
   (if-let [statements (store/find-by-subject resource)]
     (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
-          snippet (html/select *template* (:selector-chain context))]
+          snippet (html/select *template* (:selector-chain context))
+          grouped-statements (group-by #(:predicate %) statements)]
       (loop [nodes (html/transform snippet [html/root] (set-resource resource))
-             statements statements]
-        (if-not (seq statements)
+             grouped-statements grouped-statements]
+        (if-not (seq grouped-statements)
           nodes
-          (let [statement (first statements)]
-            (recur (html/transform nodes [[html/root] (property= (:predicate statement))]
-                                   (html/do->
-                                     (html/content (transform (:object statement) context))
-                                     (if (:datatype (:object statement))
-                                       (set-content (:value (:object statement)))
-                                       identity)))
-                   (rest statements))))))))
+          (recur (html/transform nodes [[html/root] (property= (first (first grouped-statements)))]
+                          (html/clone-for [statement (second (first grouped-statements))]
+                                          (html/do->
+                                            (html/content (transform (:object statement) context))
+                                            (if (:datatype (:object statement))
+                                              (set-content (:value (:object statement)))
+                                              identity))))
+                 (rest grouped-statements)))))))
 
 (extend-protocol Transformer
   knowl.edge.base.BlankNode
