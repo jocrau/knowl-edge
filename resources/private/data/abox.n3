@@ -18,12 +18,18 @@
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix fresnel: <http://www.w3.org/2004/09/fresnel#> .
 @prefix knowl:   <http://knowl-edge.org/ontology/core#> .
-@prefix :        <http://example.com/> .
+@prefix ex:      <http://example.com/ontology#> .
 
 <http://localhost:8080/foo/bar>
       rdf:type bibo:Webpage ;
       dc:title "Our Blog"@en ;
       knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
+
+<http://localhost:8080/foo/baz>
+      rdf:type bibo:Webpage ;
+      dc:title "Semantic Web"@en ;
+      ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;
+      knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>, <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
@@ -31,8 +37,7 @@
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post" ;
-      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274> ;
-      knowl:pageMenue <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
+      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274> .
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
@@ -62,17 +67,13 @@
 <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
     rdf:type sp:Construct ;
 	knowl:query "
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		PREFIX knowl: <http://knowl-edge.org/ontology/core#>
-		PREFIX dc: <http://purl.org/dc/elements/1.1/>
+		PREFIX bibo: <http://purl.org/ontology/bibo/>
+		PREFIX ex: <http://example.com/ontology#>
 		CONSTRUCT {
-			[] rdf:type knowl:Link .
-			[] knowl:uri ?s .
-			[] rdfs:label ?title .
+			[] a ex:PageTree ;
+			   ex:page ?s .
 		}
 		WHERE {
-			?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/Webpage> .
-			?s dc:title ?title .
-		}" .
+			?s a bibo:Webpage .
+s		}" .
       

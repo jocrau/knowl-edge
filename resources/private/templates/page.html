@@ -7,12 +7,10 @@
 	<meta name="viewport" content="width=device-width">
 </head>
 <body>
-	<header>
-			<div typeof="http://spinrdf.org/sp#Construct" rel="http://knowl-edge.org/ontology/core#query">
-				<ul>
-					<li><a href="http://localhost:8080/foo/boom" typeof="http://knowl-edge.org/ontology/core#Link" property="http://purl.org/dc/elements/1.1/title">Homepage</a></li>
-				</ul>
-			</div>
+	<header property="http://example.com/ontology#menu">
+		<ul typeof="http://example.com/ontology#PageTree">
+			<li property="http://example.com/ontology#page"><a href="http://localhost:8080/foo/boom" typeof="http://purl.org/ontology/bibo/Webpage" property="http://purl.org/dc/elements/1.1/title">Page Title</a></li>
+		</ul>
 	</header>
 	<div role="main">
 		<div  property="http://knowl-edge.org/ontology/core#contains">
