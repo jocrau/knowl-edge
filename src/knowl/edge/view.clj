@@ -79,11 +79,11 @@
     (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
           snippet (html/select *template* (:selector-chain context))
           grouped-statements (group-by #(:predicate %) statements)]
-      (loop [nodes (html/transform snippet [html/root] (set-resource resource))
+      (loop [snippet (html/transform snippet [html/root] (set-resource resource))
              grouped-statements grouped-statements]
         (if-not (seq grouped-statements)
-          nodes
-          (recur (html/transform nodes [[html/root] (property= (first (first grouped-statements)))]
+          snippet
+          (recur (html/transform snippet [[html/root] (property= (first (first grouped-statements)))]
                           (html/clone-for [statement (second (first grouped-statements))]
                                           (html/do->
                                             (html/content (transform (:object statement) context))
