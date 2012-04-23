@@ -80,7 +80,7 @@
   ([] (let [identifer (re-rand #"[a-zA-Z0-9]{16}")]
         (BlankNode. identifer)))
   ([^String identifier]
-    {:pre [(re-find #"^[a-zA-Z0-9]{12,32}$" identifier)]}
+    {:pre [(re-find #"^[a-zA-Z0-9]{1,32}$" identifier)]}
     (BlankNode. identifier)))
 
 (defn b
