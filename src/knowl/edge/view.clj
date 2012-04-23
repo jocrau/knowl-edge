@@ -78,7 +78,7 @@
         (if-not (seq grouped-statements)
           snippet
           (recur
-            (enlive/transform snippet [[enlive/root] (property= (first (first grouped-statements)))]
+            (enlive/transform snippet [(property= (first (first grouped-statements)))]
                             (enlive/clone-for [statement (second (first grouped-statements))]
                                             (enlive/do->
                                               (enlive/content (transform (:object statement) context))
