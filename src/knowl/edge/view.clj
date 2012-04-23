@@ -25,7 +25,7 @@
   (:require
     [clj-time.format :as time]
     [knowl.edge.base :as base]
-    [net.cgrand.enlive-html :as html]))
+    [net.cgrand.enlive-html :as enlive]))
 
 ;; Initialization
 
@@ -35,21 +35,15 @@
 
 (init)
 
-(def ^:dynamic *template* (html/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
 
 ;; Predicates
 
 (defn- type= [resource]
-  (html/attr= :typeof (:value resource)))
+  (enlive/attr= :typeof (:value resource)))
 
 (defn- property= [resource]
-  (html/attr= :property (:value resource)))
-
-(defn- set-resource [resource]
-  (html/set-attr :resource (:value resource)))
-
-(defn- set-content [content]
-  (html/set-attr :content content))
+  (enlive/attr= :property (:value resource)))
 
 ;; Context
 
@@ -77,20 +71,23 @@
 (defn transform-resource [resource context]
   (if-let [statements (store/find-by-subject resource)]
     (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
-          snippet (html/select *template* (:selector-chain context))
+          snippet (enlive/select *template* (:selector-chain context))
           grouped-statements (group-by #(:predicate %) statements)]
-      (loop [snippet (html/transform snippet [html/root] (set-resource resource))
+      (loop [snippet (enlive/transform snippet [enlive/root] (enlive/set-attr :resource (:value resource)))
              grouped-statements grouped-statements]
         (if-not (seq grouped-statements)
           snippet
-          (recur (html/transform snippet [[html/root] (property= (first (first grouped-statements)))]
-                          (html/clone-for [statement (second (first grouped-statements))]
-                                          (html/do->
-                                            (html/content (transform (:object statement) context))
-                                            (if (:datatype (:object statement))
-                                              (set-content (:value (:object statement)))
-                                              identity))))
-                 (rest grouped-statements)))))))
+          (recur
+            (enlive/transform snippet [[enlive/root] (property= (first (first grouped-statements)))]
+                            (enlive/clone-for [statement (second (first grouped-statements))]
+                                            (enlive/do->
+                                              (enlive/content (transform (:object statement) context))
+                                              (if-let [datatype (-> statement :object :datatype :value)]
+                                                (enlive/do->
+                                                  (enlive/set-attr :datatype datatype)
+                                                  (enlive/set-attr :content (-> statement :object :value)))
+                                                identity))))
+            (rest grouped-statements)))))))
 
 (extend-protocol Transformer
   knowl.edge.base.BlankNode
@@ -108,4 +105,4 @@
 
 (defn render [this]
   (if-let [result (transform this (Context. 0 []))]
-    (html/emit* result)))
+    (enlive/emit* result)))
