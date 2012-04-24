@@ -90,12 +90,6 @@
             (rest grouped-statements)))))))
 
 (extend-protocol Transformer
-  knowl.edge.base.BlankNode
-  (transform [this context] (transform-resource this context))
-  knowl.edge.base.URI
-  (transform [this context] (transform-resource this context))
-  knowl.edge.base.Literal
-  (transform [this context] (transform-literal this context))
   java.lang.String
   (transform [this context] this)
   nil

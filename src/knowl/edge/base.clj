@@ -22,25 +22,11 @@
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the know:ledge cms."
     :author "Jochen Rau"}
   knowl.edge.base
-  (:use re-rand))
+  (:require [knowl.edge.store.endpoint :as store]))
 
-(defrecord Statement [subject predicate object context])
-(defrecord Literal [value language datatype])
-(defrecord URI [value])
-(defrecord BlankNode [value])
-
-(defprotocol BabelFish
-  "Provide functions to translate a given value into a type the Store backend can understand and vice versa."
-  (translate [value]))
 
 (declare l)
 (declare u)
-
-(defn init []
-  "Initialize the RDF Store with the configured implementation)."
-  (-> "config.clj" slurp read-string eval))
-
-(init)
 
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
