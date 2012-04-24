@@ -75,5 +75,5 @@
 		}
 		WHERE {
 			?s a bibo:Webpage .
-s		}" .
+		}" .
       
