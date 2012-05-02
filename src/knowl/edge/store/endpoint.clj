@@ -32,7 +32,7 @@
   ([query-string] (find-by-query query-string default-service))
   ([query-string service]
     (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
-      (iterator-seq (.listStatements (.execConstruct query-execution))))))
+      (.execConstruct query-execution))))
 
 (defn find-by-subject [uri]
     (find-by-query (str "CONSTRUCT { <" uri "> ?p ?o . } WHERE { <" uri "> ?p ?o . }")))

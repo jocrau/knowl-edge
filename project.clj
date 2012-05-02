@@ -7,12 +7,8 @@
                  [clj-time "0.4.1"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :profiles {:dev {:dependencies [[midje "1.3.1"]]}}
-  :repositories {"aduna (sesame)"
-                 "http://repo.aduna-software.org/maven2/releases/",
-                 "Jena"
-                 "https://repository.apache.org/content/repositories/releases/"}
   :resource-paths ["resources/public"]
   :aot [knowl.edge]
   :main knowl.edge
   :min-lein-version "2.0.0"
-  :description "Knowl is a Semantic Content Management System")
+  :description "This is a knowl:edge Management System")
