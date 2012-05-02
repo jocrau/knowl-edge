@@ -19,23 +19,29 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides . It is part of the know:ledge cms."
+  ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the know:ledge Management System."
     :author "Jochen Rau"}
   knowl.edge.store.endpoint
   (:import
     (com.hp.hpl.jena.rdf.model Model StmtIterator)
+    (com.hp.hpl.jena.rdf.model.impl ModelCom)
     (com.hp.hpl.jena.query QueryExecutionFactory)))
 
 (def default-service "http://dbpedia.org/sparql")
+
+(deftype QueryResult [result]
+  clojure.lang.Seqable
+  (seq [this] (if-let [query-result (.result this)]
+                (iterator-seq (.listStatements query-result)))))
 
 (defn find-by-query
   ([query-string] (find-by-query query-string default-service))
   ([query-string service]
     (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
-      (.execConstruct query-execution))))
+      (QueryResult. (.execConstruct query-execution)))))
 
 (defn find-by-subject [uri]
     (find-by-query (str "CONSTRUCT { <" uri "> ?p ?o . } WHERE { <" uri "> ?p ?o . }")))
 
 (defn find-types-of [uri]
-  (map #(.getObject %) (find-by-query (str "CONSTRUCT { <" uri "> a ?type . } WHERE { <" uri "> a ?type . }"))))
+  (map #(knowl.edge.base/object %) (find-by-query (str "CONSTRUCT { <" uri "> a ?type . } WHERE { <" uri "> a ?type . }"))))
