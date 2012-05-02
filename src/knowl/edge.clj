@@ -65,4 +65,4 @@
   (boot))
 
 ;; Load implementations (should be configurable)
-(use 'knowl.edge.store.sesame)
+(use 'knowl.edge.base.jena)
