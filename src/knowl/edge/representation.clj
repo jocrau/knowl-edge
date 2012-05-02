@@ -19,21 +19,14 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides functionailty to render a given data structure recursively. It is part of the know:ledge cms."
+  ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the know:ledge management system."
     :author "Jochen Rau"}  
-  knowl.edge.view
+  knowl.edge.representation
   (:require
     [clj-time.format :as time]
     [knowl.edge.base :as base]
+    [knowl.edge.store.endpoint :as store]
     [net.cgrand.enlive-html :as enlive]))
-
-;; Initialization
-
-(defn init []
-  "Initialize the RDF Store with the configured implementation)."
-  (-> "config.clj" slurp read-string eval))
-
-(init)
 
 (def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
 
@@ -69,7 +62,7 @@
   (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (:value literal))))
 
 (defn transform-resource [resource context]
-  (if-let [statements (store/find-by-subject resource)]
+  (if-let [statements (find-in storage (dereference resource))]
     (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
           snippet (enlive/select *template* (:selector-chain context))
           grouped-statements (group-by #(:predicate %) statements)]
@@ -97,6 +90,6 @@
 
 ;; Entry Point
 
-(defn render [this]
-  (if-let [result (transform this (Context. 0 []))]
+(defn process [resource]
+  (if-let [result (transform resource (Context. 0 []))]
     (enlive/emit* result)))

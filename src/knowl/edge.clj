@@ -19,7 +19,7 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace defines an entry point and the routes for the know:ledge cms."
+  ^{:doc "This namespace defines an entry point for the know:ledge management system."
     :author "Jochen Rau"}
   knowl.edge
   (:gen-class)
@@ -30,24 +30,26 @@
     ring.middleware.params)
   (:require
     [compojure.route :as route]
-    [knowl.edge.view :as view]
+    [knowl.edge.representation :as representation]
     [knowl.edge.base :as base]))
 
-(defn resource-from [thing]
+(def ^:dynamic *base-iri* "http://knowl-edge.net/ontology/")
+
+(defn resource [thing]
   (cond
-    (map? thing) (base/create-uri
+    (map? thing) (base/create-resource
                    (str (name (:scheme thing))
                         "://" (get-in thing '(:headers "host"))
                         (:uri thing)
                         (if-let [query-string (:query-string thing)]
                           (str "?" query-string))))
-    (string? thing) (base/create-uri thing)))
+    (string? thing) (base/create-resource thing)))
 
 (defroutes route 
   (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (view/render (resource-from uri-string)))
+       (knowl.edge.representation/process (resource uri-string)))
   (GET "*" [:as request]
-       (view/render (resource-from request)))
+       (knowl.edge.representation/process (resource request)))
   (route/files "/" {:root "resources/public/"})
   (route/not-found "<h1>Unknown Resource :-(</h1>"))
 
@@ -61,3 +63,6 @@
 
 (defn -main [& args]
   (boot))
+
+;; Load implementations (should be configurable)
+(use 'knowl.edge.store.sesame)
