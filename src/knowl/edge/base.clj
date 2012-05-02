@@ -21,7 +21,8 @@
 (ns
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the know:ledge cms."
     :author "Jochen Rau"}
-  knowl.edge.base)
+  knowl.edge.base
+  (:refer-clojure :exclude [namespace]))
 
 (def curies {"xml" "http://www.w3.org/XML/1998/namespace"
                  "xmlns" "http://www.w3.org/2000/xmlns/"
@@ -58,12 +59,34 @@
 
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
-(def uri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
+(def iri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
 
-(defn uri-string? [thing]
+(defn iri-string? [thing]
   (if (string? thing)
-    (re-find uri-regex (name thing))
+    (if (re-find iri-regex (name thing))
+      true
+      false)
     false))
 
+(defprotocol RDFFactory
+  (create-resource [value])
+  (create-bnode [& value])
+  (create-literal [value] [value language-or-datatype]))
+
+(defprotocol Literal
+  (value [this])
+  (datatype [this])
+  (language [this]))
+
+(defprotocol BNode
+  (identifier [& value]))
+
 (defprotocol Resource
-  (create-resource [value]))
+  (iri [& value])
+  (namespace [& value])
+  (local-name [& value]))
+
+(defprotocol Statement
+  (subject [statement])
+  (predicate [statement])
+  (object [statement]))
