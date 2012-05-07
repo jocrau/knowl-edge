@@ -21,35 +21,34 @@
 (ns
   ^{:doc "This namespace defines an entry point for the know:ledge management system."
     :author "Jochen Rau"}
-  knowl.edge
+  knowl.edge.system
   (:gen-class)
-  (:use    
+  (:refer-clojure :exclude [namespace])
+  (:use
     compojure.core
     ring.adapter.jetty
     ring.middleware.stacktrace
-    ring.middleware.params)
+    ring.middleware.params
+    knowl.edge.model
+    knowl.edge.transformation)
   (:require
-    [compojure.route :as route]
-    [knowl.edge.representation :as representation]
-    [knowl.edge.base :as base]))
-
-(def ^:dynamic *base-iri* "http://knowl-edge.net/ontology/")
+    [compojure.route :as route]))
 
 (defn resource [thing]
   (cond
-    (map? thing) (base/create-resource
+    (map? thing) (create-resource
                    (str (name (:scheme thing))
                         "://" (get-in thing '(:headers "host"))
                         (:uri thing)
                         (if-let [query-string (:query-string thing)]
                           (str "?" query-string))))
-    (string? thing) (base/create-resource thing)))
+    (string? thing) (create-resource thing)))
 
 (defroutes route 
   (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (knowl.edge.representation/process (resource uri-string)))
+       (dereference (resource uri-string)))
   (GET "*" [:as request]
-       (knowl.edge.representation/process (resource request)))
+       (dereference (resource request)))
   (route/files "/" {:root "resources/public/"})
   (route/not-found "<h1>Unknown Resource :-(</h1>"))
 
@@ -64,5 +63,5 @@
 (defn -main [& args]
   (boot))
 
-;; Load implementations (should be configurable)
-(use 'knowl.edge.base.jena)
+;; Load implementation (should be configurable)
+(use 'knowl.edge.implementation.jena)

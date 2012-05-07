@@ -21,14 +21,16 @@
 (ns
   ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the know:ledge management system."
     :author "Jochen Rau"}  
-  knowl.edge.representation
+  knowl.edge.transformation
+  (:use knowl.edge.store)
   (:require
     [clj-time.format :as time]
-    [knowl.edge.base :as base]
-    [knowl.edge.store.endpoint :as store]
+    [knowl.edge.model :as model]
+    [knowl.edge.store :as store]
     [net.cgrand.enlive-html :as enlive]))
 
 (def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def store (knowl.edge.store.Endpoint. "http://dbpedia.org/sparql" {}))
 
 ;; Predicates
 
@@ -56,30 +58,30 @@
   "Provides functions to transform the given subject into a different representation."
   (transform [this context] "Transforms the subject."))
 
-(defmulti transform-literal (fn [literal context] (:value (:datatype literal))))
-(defmethod transform-literal :default [literal context] (:value literal))
+(defmulti transform-literal (fn [literal context] (-> literal model/datatype model/value)))
+(defmethod transform-literal :default [literal context] (model/value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (:value literal))))
+  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (model/value literal))))
 
 (defn transform-resource [resource context]
-  (if-let [statements (find-in storage (dereference resource))]
-    (let [context (conj-selector context [(type= (first (store/find-types-of resource)))])
+  (if-let [statements (seq (find-by-subject store resource))]
+    (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
           snippet (enlive/select *template* (:selector-chain context))
-          grouped-statements (group-by #(:predicate %) statements)]
-      (loop [snippet (enlive/transform snippet [enlive/root] (enlive/set-attr :resource (:value resource)))
+          grouped-statements (group-by #(model/predicate %) statements)]
+      (loop [snippet (enlive/transform snippet [enlive/root] (enlive/set-attr :resource (model/identifier resource)))
              grouped-statements grouped-statements]
         (if-not (seq grouped-statements)
           snippet
           (recur
             (enlive/transform snippet [(property= (first (first grouped-statements)))]
-                            (enlive/clone-for [statement (second (first grouped-statements))]
-                                            (enlive/do->
-                                              (enlive/content (transform (:object statement) context))
-                                              (if-let [datatype (-> statement :object :datatype :value)]
+                              (enlive/clone-for [statement (second (first grouped-statements))]
                                                 (enlive/do->
-                                                  (enlive/set-attr :datatype datatype)
-                                                  (enlive/set-attr :content (-> statement :object :value)))
-                                                identity))))
+                                                  (enlive/content (transform (model/object statement) context))
+                                                  (if-let [datatype (-> statement model/object model/datatype model/identifier)]
+                                                    (enlive/do->
+                                                      (enlive/set-attr :datatype datatype)
+                                                      (enlive/set-attr :content (-> statement model/object model/value)))
+                                                    identity))))
             (rest grouped-statements)))))))
 
 (extend-protocol Transformer
@@ -90,6 +92,6 @@
 
 ;; Entry Point
 
-(defn process [resource]
+(defn dereference [resource]
   (if-let [result (transform resource (Context. 0 []))]
     (enlive/emit* result)))

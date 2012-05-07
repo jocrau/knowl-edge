@@ -21,51 +21,56 @@
 (ns
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the know:ledge cms."
     :author "Jochen Rau"}
-  knowl.edge.base
+  knowl.edge.model
   (:refer-clojure :exclude [namespace]))
 
+(def ^:dynamic *base* "http://knowl-edge.net/ontology/")
+
 (def curies {"xml" "http://www.w3.org/XML/1998/namespace"
-                 "xmlns" "http://www.w3.org/2000/xmlns/"
-                 "xsd" "http://www.w3.org/2001/XMLSchema#"
-                 "xhv" "http://www.w3.org/1999/xhtml/vocab#"
-                 "rdfa" "http://www.w3.org/ns/rdfa#"
-                 "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                 "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
-                 "owl" "http://www.w3.org/2002/07/owl#"
-                 "rif" "http://www.w3.org/2007/rif#"
-                 "skos" "http://www.w3.org/2004/02/skos/core#"
-                 "skosxl" "http://www.w3.org/2008/05/skos-xl#"
-                 "grddl" "http://www.w3.org/2003/g/data-view#"
-                 "sd" "http://www.w3.org/ns/sparql-service-description#"
-                 "wdr" "http://www.w3.org/2007/05/powder#"
-                 "wdrs" "http://www.w3.org/2007/05/powder-s#"
-                 "sioc" "http://rdfs.org/sioc/ns#"
-                 "cc" "http://creativecommons.org/ns#"
-                 "vcard" "http://www.w3.org/2006/vcard/ns#"
-                 "void" "http://rdfs.org/ns/void#"
-                 "dc" "http://purl.org/dc/elements/1.1/"
-                 "dcterms" "http://purl.org/dc/terms/"
-                 "dbr" "http://dbpedia.org/resource/"
-                 "dbp" "http://dbpedia.org/property/"
-                 "dbo" "http://dbpedia.org/ontology/"
-                 "foaf" "http://xmlns.com/foaf/0.1/"
-                 "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
-                 "gr" "http://purl.org/goodrelations/v1#"
-                 "cal" "http://www.w3.org/2002/12/cal/ical#"
-                 "og" "http://ogp.me/ns#"
-                 "v" "http://rdf.data-vocabulary.org/#"
-                 "bibo" "http://purl.org/ontology/bibo/"
-                 "cnt" "http://www.w3.org/2011/content#"})
+             "xmlns" "http://www.w3.org/2000/xmlns/"
+             "xsd" "http://www.w3.org/2001/XMLSchema#"
+             "xhv" "http://www.w3.org/1999/xhtml/vocab#"
+             "rdfa" "http://www.w3.org/ns/rdfa#"
+             "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
+             "owl" "http://www.w3.org/2002/07/owl#"
+             "rif" "http://www.w3.org/2007/rif#"
+             "skos" "http://www.w3.org/2004/02/skos/core#"
+             "skosxl" "http://www.w3.org/2008/05/skos-xl#"
+             "grddl" "http://www.w3.org/2003/g/data-view#"
+             "sd" "http://www.w3.org/ns/sparql-service-description#"
+             "wdr" "http://www.w3.org/2007/05/powder#"
+             "wdrs" "http://www.w3.org/2007/05/powder-s#"
+             "sioc" "http://rdfs.org/sioc/ns#"
+             "cc" "http://creativecommons.org/ns#"
+             "vcard" "http://www.w3.org/2006/vcard/ns#"
+             "void" "http://rdfs.org/ns/void#"
+             "dc" "http://purl.org/dc/elements/1.1/"
+             "dcterms" "http://purl.org/dc/terms/"
+             "dbr" "http://dbpedia.org/resource/"
+             "dbp" "http://dbpedia.org/property/"
+             "dbo" "http://dbpedia.org/ontology/"
+             "foaf" "http://xmlns.com/foaf/0.1/"
+             "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
+             "gr" "http://purl.org/goodrelations/v1#"
+             "cal" "http://www.w3.org/2002/12/cal/ical#"
+             "og" "http://ogp.me/ns#"
+             "v" "http://rdf.data-vocabulary.org/#"
+             "bibo" "http://purl.org/ontology/bibo/"
+             "cnt" "http://www.w3.org/2011/content#"})
+
+(defn resolve-prefix [prefix]
+  (if-let [uri (get curies (name prefix))]
+    uri
+    *base*))
 
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
 (def iri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
 
 (defn iri-string? [thing]
-  (if (string? thing)
-    (if (re-find iri-regex (name thing))
-      true
-      false)
+  (if (and (string? thing) (re-find iri-regex (name thing)))
+    true
     false))
 
 (defprotocol RDFFactory
@@ -73,18 +78,17 @@
   (create-bnode [& value])
   (create-literal [value] [value language-or-datatype]))
 
+(defprotocol Value
+  (value [this]))
+
 (defprotocol Literal
-  (value [this])
   (datatype [this])
   (language [this]))
 
-(defprotocol BNode
-  (identifier [& value]))
-
 (defprotocol Resource
-  (iri [& value])
-  (namespace [& value])
-  (local-name [& value]))
+  (identifier [this])
+  (namespace [this])
+  (local-name [this]))
 
 (defprotocol Statement
   (subject [statement])
