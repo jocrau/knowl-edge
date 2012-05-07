@@ -73,7 +73,9 @@
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
-          (iterator-seq (.listStatements (.execConstruct query-execution)))))))
+          (try        
+            (iterator-seq (.listStatements (.execConstruct query-execution)))
+            (catch Exception e nil))))))
   (find-by-subject
     [this resource]
     (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . }")))
