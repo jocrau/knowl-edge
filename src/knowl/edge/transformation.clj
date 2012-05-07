@@ -84,7 +84,7 @@
                 [statement (second (first grouped-statements))]
                 (template/do->
                   (template/content (transform (object statement) context))
-                  (if (isa? (-> statement object) knowl.edge.model/Literal)
+                  #_(if (isa? (-> statement object) knowl.edge.model/Literal)
                     (if-let [datatype (-> statement object datatype)]
                       (template/do->
                         (template/set-attr :datatype (value datatype))
