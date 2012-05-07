@@ -16,29 +16,37 @@
   (namespace [this] (.getNamespace this))
   (local-name [this] (.getLocalName this))
   knowl.edge.transformation/Transformer
-  (transform [this context] (knowl.edge.transformation/transform-resource this context)))
+  (transform
+    [this context]
+    (knowl.edge.transformation/transform-resource this context)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
   knowl.edge.model/Value
   (value [this] (.toString this))
   knowl.edge.transformation/Transformer
-  (transform [this context] (knowl.edge.transformation/transform-literal this context)))
+  (transform
+    [this context]
+    (knowl.edge.transformation/transform-literal this context)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
   knowl.edge.model/Value
   (value [this] (.toString this))
   knowl.edge.transformation/Transformer
-  (transform [this context] (knowl.edge.transformation/transform-literal this context)))
+  (transform
+    [this context]
+    (knowl.edge.transformation/transform-literal this context)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   knowl.edge.model/Value
   (value [this] (.getValue this))
   knowl.edge.model/Literal
   (datatype [this] (.getDatatype this))
-  (language [this] (let [language (.getLanguage this)]
-                     (if (clojure.string/blank? language)
-                       nil
-                       language)))
+  (language
+    [this]
+    (let [language (.getLanguage this)]
+      (if (clojure.string/blank? language)
+        nil
+        language)))
   knowl.edge.transformation/Transformer
   (transform [this context] (knowl.edge.transformation/transform-literal this context)))
 
@@ -53,16 +61,21 @@
   (create-resource [this] (.createResource model this))
   (create-literal
     ([this] (.createLiteral model this))
-    ([this language-or-datatype] (if (knowl.edge.model/iri-string? (name language-or-datatype))
-                                   (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
-                                   (.createLiteral model this (name language-or-datatype)))))
+    ([this language-or-datatype]
+      (if (knowl.edge.model/iri-string? (name language-or-datatype))
+        (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
+        (.createLiteral model this (name language-or-datatype)))))
   clojure.lang.IPersistentVector
-  (create-resource [this] (let [[prefix local-name] this
-                                iri (str (knowl.edge.model/resolve-prefix prefix) (name local-name))]
-                            (.createResource model iri)))
+  (create-resource
+    [this]
+    (let [[prefix local-name] this
+          iri (str (knowl.edge.model/resolve-prefix prefix) (name local-name))]
+      (.createResource model iri)))
   clojure.lang.Keyword
-  (create-resource [this] (let [iri (str knowl.edge.model/*base* (name this))]
-                            (.createResource model iri))))
+  (create-resource
+    [this]
+    (let [iri (str knowl.edge.model/*base* (name this))]
+      (.createResource model iri))))
 
 (extend-type knowl.edge.store.Endpoint
   knowl.edge.store/Store
@@ -81,4 +94,6 @@
     (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . }")))
   (find-types-of
     [this resource]
-    (map #(knowl.edge.model/object %) (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }")))))
+    (map
+      #(knowl.edge.model/object %)
+      (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }")))))
