@@ -29,5 +29,3 @@
   (find-types-of [this resource]))
 
 (deftype Endpoint [service options])
-
-(deftype MemoryStore [options])
