@@ -50,7 +50,7 @@
   (GET "*" [:as request]
        (dereference (resource request)))
   (route/files "/" {:root "resources/public/"})
-  (route/not-found "<h1>Unknown Resource :-(</h1>"))
+  (route/not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 
 (def app
   (-> route

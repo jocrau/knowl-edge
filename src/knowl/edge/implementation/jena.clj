@@ -6,24 +6,11 @@
            (com.hp.hpl.jena.query QueryExecutionFactory)
            (knowl.edge.store Endpoint)))
 
-#_(def format-map
-  {:xml RDFFormat/RDFXML
-   :ntriples RDFFormat/NTRIPLES
-   :n3 RDFFormat/N3
-   :turtle RDFFormat/TURTLE
-   :ttl RDFFormat/TURTLE
-   :trig RDFFormat/TRIG
-   :trix RDFFormat/TRIX})
-
 (def model (ModelFactory/createDefaultModel))
 
-(extend-protocol knowl.edge.model/Resource
-  nil
-  (iri [this] nil)
-  (namespace [this] nil)
-  (local-name [this] nil))
-
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
+  knowl.edge.model/Value
+  (value [this] (.getURI this))
   knowl.edge.model/Resource
   (identifier [this] (.getURI this))
   (namespace [this] (.getNamespace this))
@@ -32,10 +19,16 @@
   (transform [this context] (knowl.edge.transformation/transform-resource this context)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
-  knowl.edge.model/Resource
-  (identifier [this] (.getURI this))
-  (namespace [this] (.getNamespace this))
-  (local-name [this] (.getLocalName this)))
+  knowl.edge.model/Value
+  (value [this] (.toString this))
+  knowl.edge.transformation/Transformer
+  (transform [this context] (knowl.edge.transformation/transform-literal this context)))
+
+(extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
+  knowl.edge.model/Value
+  (value [this] (.toString this))
+  knowl.edge.transformation/Transformer
+  (transform [this context] (knowl.edge.transformation/transform-literal this context)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   knowl.edge.model/Value
@@ -77,30 +70,13 @@
     ([this query-string] (knowl.edge.store/find-by-query this query-string (.service this)))
     ([this query-string service]
       (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
-        (iterator-seq (.listStatements (.execConstruct query-execution))))))
+        (let [options (.options this)]
+          (if (and (:username options) (:password options))
+            (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
+          (iterator-seq (.listStatements (.execConstruct query-execution)))))))
   (find-by-subject
     [this resource]
     (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . }")))
   (find-types-of
     [this resource]
     (map #(knowl.edge.model/object %) (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }")))))
-
-#_(defn load-document
-  ([source]
-    (load-document source :xml "" no-contexts))
-  ([source format]
-    (load-document source format "" no-contexts))
-  ([source format baseUri]
-    (load-document source format baseUri no-contexts))
-  ([source format baseUri contexts]
-    (let [connection (.getConnection *repository*)
-          format (or (translate-format format)
-                     (translate-format :xml))]
-      (try
-        (.setAutoCommit connection false)
-        (.add connection
-              (java.io.StringBufferInputStream. (slurp source :encoding "ISO-8859-1")) ;; TODO auto-detect encoding
-              baseUri format contexts)
-        (.commit connection)
-        (catch RepositoryException e (.rollback connection))
-        (finally (.close connection))))))

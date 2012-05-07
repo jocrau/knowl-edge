@@ -94,3 +94,14 @@
   (subject [statement])
   (predicate [statement])
   (object [statement]))
+
+(extend-type nil
+  Value
+  (value [this] nil)
+  Resource
+  (iri [this] nil)
+  (namespace [this] nil)
+  (local-name [this] nil)
+  Literal
+  (datatype [this] nil)
+  (language [this] nil))

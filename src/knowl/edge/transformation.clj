@@ -22,23 +22,23 @@
   ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the know:ledge management system."
     :author "Jochen Rau"}  
   knowl.edge.transformation
-  (:use knowl.edge.store)
+  (:refer-clojure :exclude [namespace])
+  (:use knowl.edge.store
+        knowl.edge.model)
   (:require
     [clj-time.format :as time]
-    [knowl.edge.model :as model]
-    [knowl.edge.store :as store]
-    [net.cgrand.enlive-html :as enlive]))
+    [net.cgrand.enlive-html :as template]))
 
-(def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
-(def store (knowl.edge.store.Endpoint. "http://dbpedia.org/sparql" {}))
+(def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def store (knowl.edge.store.Endpoint. "http://localhost:3030/ds/query" {}))
 
 ;; Predicates
 
 (defn- type= [resource]
-  (enlive/attr= :typeof (:value resource)))
+  (template/attr= :typeof (identifier resource)))
 
 (defn- property= [resource]
-  (enlive/attr= :property (:value resource)))
+  (template/attr= :property (identifier resource)))
 
 ;; Context
 
@@ -57,41 +57,44 @@
 (defprotocol Transformer
   "Provides functions to transform the given subject into a different representation."
   (transform [this context] "Transforms the subject."))
-
-(defmulti transform-literal (fn [literal context] (-> literal model/datatype model/value)))
-(defmethod transform-literal :default [literal context] (model/value literal))
-(defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (model/value literal))))
-
-(defn transform-resource [resource context]
-  (if-let [statements (seq (find-by-subject store resource))]
-    (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
-          snippet (enlive/select *template* (:selector-chain context))
-          grouped-statements (group-by #(model/predicate %) statements)]
-      (loop [snippet (enlive/transform snippet [enlive/root] (enlive/set-attr :resource (model/identifier resource)))
-             grouped-statements grouped-statements]
-        (if-not (seq grouped-statements)
-          snippet
-          (recur
-            (enlive/transform snippet [(property= (first (first grouped-statements)))]
-                              (enlive/clone-for [statement (second (first grouped-statements))]
-                                                (enlive/do->
-                                                  (enlive/content (transform (model/object statement) context))
-                                                  (if-let [datatype (-> statement model/object model/datatype model/identifier)]
-                                                    (enlive/do->
-                                                      (enlive/set-attr :datatype datatype)
-                                                      (enlive/set-attr :content (-> statement model/object model/value)))
-                                                    identity))))
-            (rest grouped-statements)))))))
-
 (extend-protocol Transformer
   java.lang.String
   (transform [this context] this)
   nil
   (transform [this context] nil))
 
+(defmulti transform-literal (fn [literal context] (-> literal datatype value)))
+(defmethod transform-literal :default [literal context] (value literal))
+(defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
+  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (value literal))))
+
+(defn transform-resource [resource context]
+  (if-let [statements (seq (find-by-subject store resource))]
+    (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
+          snippet (template/select *template* (:selector-chain context))
+          grouped-statements (group-by #(predicate %) statements)]
+      (loop [snippet (template/transform snippet [template/root] (template/set-attr :resource (identifier resource)))
+             grouped-statements grouped-statements]
+        (if-not (seq grouped-statements)
+          snippet
+          (recur
+            (template/transform
+              snippet [(property= (ffirst grouped-statements))]
+              (template/clone-for
+                [statement (second (first grouped-statements))]
+                (template/do->
+                  (template/content (transform (object statement) context))
+                  (if (isa? (-> statement object) knowl.edge.model/Literal)
+                    (if-let [datatype (-> statement object datatype)]
+                      (template/do->
+                        (template/set-attr :datatype (value datatype))
+                        (template/set-attr :content (-> statement object value)))
+                      identity)
+                    identity))))
+            (rest grouped-statements)))))))
+
 ;; Entry Point
 
 (defn dereference [resource]
   (if-let [result (transform resource (Context. 0 []))]
-    (enlive/emit* result)))
+    (template/emit* result)))
