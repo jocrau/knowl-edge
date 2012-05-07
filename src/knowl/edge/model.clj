@@ -99,7 +99,7 @@
   Value
   (value [this] nil)
   Resource
-  (iri [this] nil)
+  (identifier [this] nil)
   (namespace [this] nil)
   (local-name [this] nil)
   Literal
