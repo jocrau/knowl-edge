@@ -75,7 +75,6 @@
 
 (defprotocol RDFFactory
   (create-resource [value])
-  (create-bnode [& value])
   (create-literal [value] [value language-or-datatype]))
 
 (defprotocol Value

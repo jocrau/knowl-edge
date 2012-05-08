@@ -50,7 +50,9 @@
 
 (extend-protocol knowl.edge.model/RDFFactory
   String
-  (create-resource [this] (.createResource model this))
+  (create-resource [this] (if (clojure.string/blank? this)
+                            (.createResource model)
+                            (.createResource model this)))
   (create-literal
     ([this] (.createLiteral model this))
     ([this language-or-datatype]
@@ -67,7 +69,9 @@
   (create-resource
     [this]
     (let [iri (str knowl.edge.model/*base* (name this))]
-      (.createResource model iri))))
+      (.createResource model iri)))
+  nil
+  (create-resource [this] (.createResource model)))
 
 (extend-type knowl.edge.store.Endpoint
   knowl.edge.store/Store
