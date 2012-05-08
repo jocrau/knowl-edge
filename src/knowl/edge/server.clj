@@ -58,10 +58,8 @@
     (wrap-stacktrace)))
 
 (defn boot []
+  (use 'knowl.edge.implementation.jena)
   (run-jetty #'app {:port 8080}))
 
 (defn -main [& args]
   (boot))
-
-;; Load implementation (should be configurable)
-(use 'knowl.edge.implementation.jena)
