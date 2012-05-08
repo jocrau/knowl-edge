@@ -38,7 +38,7 @@
   (cond
     (map? thing) (create-resource
                    (str (name (:scheme thing))
-                        "://" (get-in thing '(:headers "host"))
+                        "://" (:server-name thing)
                         (:uri thing)
                         (if-let [query-string (:query-string thing)]
                           (str "?" query-string))))
