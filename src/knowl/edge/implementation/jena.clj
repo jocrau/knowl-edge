@@ -22,19 +22,11 @@
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
   knowl.edge.model/Value
-  (value [this] (.toString this))
-  knowl.edge.transformation/Transformer
-  (transform
-    [this context]
-    (knowl.edge.transformation/transform-literal this context)))
+  (value [this] (.toString this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
   knowl.edge.model/Value
-  (value [this] (.toString this))
-  knowl.edge.transformation/Transformer
-  (transform
-    [this context]
-    (knowl.edge.transformation/transform-literal this context)))
+  (value [this] (.toString this)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   knowl.edge.model/Value
