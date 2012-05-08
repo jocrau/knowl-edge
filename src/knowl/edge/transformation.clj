@@ -55,11 +55,11 @@
   "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
   (conj-selector [this selector] "Appends a selector to the selector-chain"))
 
-(defrecord Context [depth selector-chain]
+(defrecord Context [depth rootline]
   ContextHandling
   (conj-selector
     [this selector]
-    (update-in this [:selector-chain] #(into % selector))))
+    (update-in this [:rootline] #(into % selector))))
 
 ;; Transformations
 
@@ -81,7 +81,7 @@
 (defn transform-resource [resource context]
   (if-let [statements (seq (find-by-subject store resource))]
     (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
-          snippet (template/select *template* (:selector-chain context))
+          snippet (template/select *template* (:rootline context))
           grouped-statements (group-by #(predicate %) statements)]
       (loop [snippet (template/transform snippet [template/root] (set-resource resource))
              grouped-statements grouped-statements]
