@@ -6,8 +6,6 @@
            (com.hp.hpl.jena.query QueryExecutionFactory)
            (knowl.edge.store Endpoint)))
 
-(def model (ModelFactory/createDefaultModel))
-
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
   knowl.edge.model/Value
   (value [this] (.getURI this))
@@ -50,28 +48,34 @@
 
 (extend-protocol knowl.edge.model/RDFFactory
   String
-  (create-resource [this] (if (clojure.string/blank? this)
-                            (.createResource model)
-                            (.createResource model this)))
+  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+                            (if (clojure.string/blank? this)
+                              (.createResource model)
+                              (.createResource model this))))
   (create-literal
-    ([this] (.createLiteral model this))
+    ([this] (with-open [model (ModelFactory/createDefaultModel)]
+              (.createLiteral model this)))
     ([this language-or-datatype]
-      (if (knowl.edge.model/iri-string? (name language-or-datatype))
-        (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
-        (.createLiteral model this (name language-or-datatype)))))
+      (with-open [model (ModelFactory/createDefaultModel)]
+        (if (knowl.edge.model/iri-string? (name language-or-datatype))
+          (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
+          (.createLiteral model this (name language-or-datatype))))))
   clojure.lang.IPersistentVector
   (create-resource
     [this]
     (let [[prefix local-name] this
           iri (str (knowl.edge.model/resolve-prefix prefix) (name local-name))]
-      (.createResource model iri)))
+      (with-open [model (ModelFactory/createDefaultModel)]
+        (.createResource model iri))))
   clojure.lang.Keyword
   (create-resource
     [this]
     (let [iri (str knowl.edge.model/*base* (name this))]
-      (.createResource model iri)))
+      (with-open [model (ModelFactory/createDefaultModel)]
+        (.createResource model iri))))
   nil
-  (create-resource [this] (.createResource model)))
+  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+                            (.createResource model))))
 
 (extend-type knowl.edge.store.Endpoint
   knowl.edge.store/Store
