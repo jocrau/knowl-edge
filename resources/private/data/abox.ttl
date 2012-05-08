@@ -1,5 +1,6 @@
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix cnt:     <http://www.w3.org/2011/content#> .
+@prefix ore:     <http://www.openarchives.org/ore/terms/>
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ex:      <http://example.com/> .
@@ -20,12 +21,12 @@
 @prefix knowl:   <http://knowl-edge.org/ontology/core#> .
 @prefix ex:      <http://example.com/ontology#> .
 
-<http://localhost:8080/foo/bar>
+<http://localhost/foo/bar>
       rdf:type bibo:Webpage ;
       dc:title "Our Blog"@en ;
       knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
-<http://localhost:8080/foo/baz>
+<http://localhost/foo/baz>
       rdf:type bibo:Webpage ;
       dc:title "Semantic Web"@en ;
       ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;
