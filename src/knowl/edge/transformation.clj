@@ -76,7 +76,7 @@
 (defmulti transform-literal (fn [literal context] (-> literal datatype value)))
 (defmethod transform-literal :default [literal context] (println (-> literal datatype value)) (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (value literal))))
+  (time/unparse (time/formatter "EEEE dd MMMM, yyyy HH:mm:ssa") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
 (defn transform-resource [resource context]
   (if-let [statements (seq (find-by-subject store resource))]
