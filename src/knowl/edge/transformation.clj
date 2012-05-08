@@ -30,7 +30,7 @@
     [net.cgrand.enlive-html :as template]))
 
 (def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
-(def store (knowl.edge.store.Endpoint. "http://localhost:3030/ds/query" {}))
+(def store (knowl.edge.store.Endpoint. "http://localhost:3030/data/query" {}))
 
 ;; Predicates
 
@@ -74,7 +74,7 @@
   (transform [this context] nil))
 
 (defmulti transform-literal (fn [literal context] (-> literal datatype value)))
-(defmethod transform-literal :default [literal context] (println (-> literal datatype value)) (value literal))
+(defmethod transform-literal :default [literal context] (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
   (time/unparse (time/formatter "EEEE dd MMMM, yyyy HH:mm:ssa") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
