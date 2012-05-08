@@ -30,7 +30,8 @@
     ring.middleware.stacktrace
     ring.middleware.params
     knowl.edge.model
-    knowl.edge.transformation)
+    knowl.edge.transformation
+    knowl.edge.implementation.jena)
   (:require
     [compojure.route :as route]))
 
@@ -45,7 +46,7 @@
     (string? thing) (create-resource thing)))
 
 (defroutes route 
-  (GET "/resource*" {{iri "iri"} :params :as request}
+  (GET "/resource" {{iri "iri"} :params :as request}
        (dereference (resource iri)))
   (GET "*" [:as request]
        (dereference (resource request)))
@@ -58,7 +59,6 @@
     (wrap-stacktrace)))
 
 (defn boot []
-  (use 'knowl.edge.implementation.jena)
   (run-jetty #'app {:port 8080}))
 
 (defn -main [& args]
