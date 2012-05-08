@@ -3,31 +3,46 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title property="http://purl.org/dc/elements/1.1/title">knowl:edge</title>
+	<title property="http://www.w3.org/2000/01/rdf-schema#label">knowl:edge</title>
 	<meta name="viewport" content="width=device-width">
 </head>
 <body>
-	<header property="http://example.com/ontology#menu">
-		<ul typeof="http://example.com/ontology#PageTree">
-			<li property="http://example.com/ontology#page"><a href="http://localhost:8080/foo/boom" typeof="http://purl.org/ontology/bibo/Webpage" property="http://purl.org/dc/elements/1.1/title">Page Title</a></li>
-		</ul>
-	</header>
-	<div role="main">
-		<div property="http://knowl-edge.org/ontology/core#contains">
-			<div resource="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
-				<h1 property="http://purl.org/dc/elements/1.1/title">Lorem Ipsum</h1>
-				<ul>
-					Author(s):
-					<li property="http://purl.org/dc/elements/1.1/creator"><span resource="http://dbpedia.org/resource/John_Doe" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span></li>
-				</ul>
-				<div>Published: <span property="http://purl.org/dc/terms/created" content="1970-01-01T00:00:00+00:00">Jan 1 1970</span></div>
-				<div property="http://knowl-edge.org/ontology/core#contains">
-					<div resource="urn:uuid:aebb3866-7cf0-4d4a-ad58-56c3d90c5bb5" typeof="http://www.w3.org/2011/content#ContentAsText">
-						<p property="http://www.w3.org/2011/content#chars">Fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					</div>
+	<div role="main" property="http://knowl-edge.org/ontology/core#contains">
+		
+		<div resource="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
+			<h1 property="http://purl.org/dc/elements/1.1/title">Lorem Ipsum</h1>
+			<ul>
+				Author(s):
+				<li property="http://purl.org/dc/elements/1.1/creator"><span resource="http://dbpedia.org/resource/John_Doe" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span></li>
+			</ul>
+			<div>Published: <span property="http://purl.org/dc/terms/created" content="1970-01-01T00:00:00+00:00">Jan 1 1970</span></div>
+			<div property="http://knowl-edge.org/ontology/core#contains">
+				<div resource="urn:uuid:aebb3866-7cf0-4d4a-ad58-56c3d90c5bb5" typeof="http://www.w3.org/2011/content#ContentAsText">
+					<p property="http://www.w3.org/2011/content#chars">Fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 				</div>
 			</div>
 		</div>
+		
+		
+		<div about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
+			<h1 property="http://purl.org/goodrelations/v1#legalName">Company Ltd.</h1>
+			<h3>Our Offers</h3>
+			<ul rel="http://purl.org/goodrelations/v1#offers">
+				<li about="http://example.com/resources/offering65523" typeof="http://purl.org/goodrelations/v1#Offering">
+					<div rel="http://purl.org/goodrelations/v1#includes">
+						<div typeof="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance">
+							<div>
+								<strong><span property="http://purl.org/goodrelations/v1#name">Product A</span></strong>
+							</div>
+							<div property="http://purl.org/goodrelations/v1#description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+							<div>Creator:&nbsp;<span rel="http://purl.org/dc/elements/1.1/creator"><span about="http://example.com/person2" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span> (<a rel="http://xmlns.com/foaf/0.1/workInfoHomepage" href="http://example.com/home">Homepage</a>, <span property="http://xmlns.com/foaf/0.1/age">60</span> years old)</span></span></div>
+						</div>
+					</div>
+					<div>(Valid from&nbsp;<span property="http://purl.org/goodrelations/v1#validFrom">1.1.2010</span>&nbsp;through&nbsp;<span property="http://purl.org/goodrelations/v1#validThrough">10.10.2010</span>)</div>
+				</li>
+			</ul>
+		</div>
+		
 	</div>
 	<footer>
 		<p>&copy; 2012 Jochen Rau<br />Transformed by knowl:edge</p>

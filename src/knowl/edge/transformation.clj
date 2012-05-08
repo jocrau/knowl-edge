@@ -35,10 +35,13 @@
 ;; Predicates
 
 (defn- type= [resource]
-  (template/attr= :typeof (identifier resource)))
+  #{(template/attr= :typeof (identifier resource)) (template/attr= :about (identifier resource))})
 
 (defn- property= [resource]
-  (template/attr= :property (identifier resource)))
+  (let [selector-step [#{(template/attr= :property (identifier resource)) (template/attr= :rel (identifier resource))}]]
+    #_(println (clojure.zip/path selector-step))
+    selector-step
+    #_(some (template/attr? :typeof) (filter net.cgrand.xml/tag? (clojure.zip/path selector-step)))))
 
 (defn- set-datatype [datatype]
   (template/set-attr :datatype (value datatype)))
@@ -76,11 +79,12 @@
 (defmulti transform-literal (fn [literal context] (-> literal datatype value)))
 (defmethod transform-literal :default [literal context] (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatter "EEEE dd MMMM, yyyy HH:mm:ssa") (time/parse (time/formatters :date-time-no-ms) (value literal))))
+  (time/unparse (time/formatter "EEEE dd MMMM, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
 (defn transform-resource [resource context]
   (if-let [statements (seq (find-by-subject store resource))]
-    (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
+    (let [types (find-types-of store resource)
+          context (conj-selector context [(type= (first types))])
           snippet (template/select *template* (:rootline context))
           grouped-statements (group-by #(predicate %) statements)]
       (loop [snippet (template/transform snippet [template/root] (set-resource resource))

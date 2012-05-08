@@ -21,16 +21,16 @@
 @prefix knowl:   <http://knowl-edge.org/ontology/core#> .
 @prefix ex:      <http://example.com/ontology#> .
 
-<http://localhost/foo/bar>
+<http://localhost/blog>
       rdf:type bibo:Webpage ;
-      dc:title "Our Blog"@en ;
+      rdfs:label "Blog"@en ;
       knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
-<http://localhost/foo/baz>
+<http://localhost/products>
       rdf:type bibo:Webpage ;
-      dc:title "Semantic Web"@en ;
+      rdfs:label "Product Catalog"@en ;
       ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;
-      knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>, <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
+      knowl:contains <http://example.com/ACMECorp> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
@@ -58,13 +58,70 @@
 <http://typoplanet.de/resources/Jochen_Rau>
       rdf:type foaf:Person ;
       foaf:firstName "Jochen" ;
-      foaf:lastName "Rau" .
+      foaf:lastName "Rau" ;
+      foaf:age 41 .
 
 <http://typoplanet.de/resources/Jennifer_Rau>
       rdf:type foaf:Person ;
       foaf:firstName "Jennifer" ;
-      foaf:lastName "Rau" .
+      foaf:lastName "Rau" ;
+      foaf:age 32 .
+
+<http://example.com/ACMECorp>
+      rdf:type gr:BusinessEntity ;
+      gr:offers <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8> ;
+      gr:legalName "ACME Corp" .
+
+<urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>
+      rdf:type gr:Offering ;
+      gr:hasBusinessFunction gr:Sell ;
+      gr:hasPriceSpecification
+             [ rdf:type gr:UnitPriceSpecification ;
+                gr:hasCurrency "USD" ;
+                gr:hasCurrencyValue "19.99"^^xsd:float ;
+                gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime
+              ] ;
+      gr:includes 
+      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0> ,
+      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1>  ;
+      foaf:page <http://typo3.org/Tipis/foo.html> ;
+      gr:validFrom "2011-03-12T00:00:00+01:00"^^xsd:dateTime ;
+      gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime .
+
+<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0>
+      rdf:type gr:ActualProductOrServiceInstance ;
+      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
+      gr:name "A Tipi"@en .
+
+<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1>
+      rdf:type gr:ActualProductOrServiceInstance ;
+	  dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
+      gr:description "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
+      gr:name "Another Tipi"@en .
+
+<urn:uuid:814d0702-fca5-4539-b262-57919b9322e8>
+      rdf:type gr:Offering ;
+      gr:hasBusinessFunction gr:Sell ;
+      gr:hasPriceSpecification
+             [ rdf:type gr:UnitPriceSpecification ;
+                gr:hasCurrency "USD" ;
+                gr:hasCurrencyValue "19.99"^^xsd:float ;
+                gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime
+              ] ;
+      gr:includes 
+      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>  ;
+      foaf:page <http://localhost:8080/foo/bar> ;
+      gr:validFrom "2011-04-01T00:00:00+01:00"^^xsd:dateTime ;
+      gr:validThrough "2011-8-12T00:00:00+01:00"^^xsd:dateTime .
+
+<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>
+      rdf:type gr:ActualProductOrServiceInstance ;
+	  dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      gr:description "Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds."@en ;
+      gr:name "Apple MacBook Pro MC700LL/A 13.3-Inch Laptop"@en .
+
 
 <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
     rdf:type sp:Construct ;
-	knowl:query "PREFIX bibo: <http://purl.org/ontology/bibo/> PREFIX ex: <http://example.com/ontology#> CONSTRUCT { [] a ex:PageTree ; ex:page ?s . } WHERE { ?s a bibo:Webpage .}" .
+	knowl:query "PREFIX bibo: <http://purl.org/ontology/bibo/> PREFIX ex: <http://example.com/ontology#> PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT { ?page a ex:PageTree ; ex:page ?title . } WHERE { ?page a bibo:Webpage ; dc:title ?title .}" .
