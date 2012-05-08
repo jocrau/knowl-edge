@@ -41,7 +41,7 @@
   (template/attr= :property (identifier resource)))
 
 (defn- set-datatype [datatype]
-  (template/set-attr :datatype "foo"#_(value datatype)))
+  (template/set-attr :datatype (value datatype)))
 
 (defn- set-content [resource]
   (template/set-attr :content (value resource)))
