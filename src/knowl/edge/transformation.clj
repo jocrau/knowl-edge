@@ -63,7 +63,9 @@
   nil
   (transform [this context] nil))
 
-(defmulti transform-literal (fn [literal context] (-> literal datatype value)))
+(defmulti transform-literal
+  (fn [literal context] (when-let [datatype (datatype literal)]
+                          (value datatype))))
 (defmethod transform-literal :default [literal context] (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
   (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (value literal))))
