@@ -45,8 +45,8 @@
     (string? thing) (create-resource thing)))
 
 (defroutes route 
-  (GET "/resources*" {{uri-string "uri"} :params :as request}
-       (dereference (resource uri-string)))
+  (GET "/resource*" {{iri "iri"} :params :as request}
+       (dereference (resource iri)))
   (GET "*" [:as request]
        (dereference (resource request)))
   (route/files "/" {:root "resources/public/"})
