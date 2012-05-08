@@ -40,11 +40,14 @@
 (defn- property= [resource]
   (template/attr= :property (identifier resource)))
 
-(defn- datatype= [datatype]
-  (template/set-attr :datatype (value datatype)))
+(defn- set-datatype [datatype]
+  (template/set-attr :datatype "foo"#_(value datatype)))
 
-(defn- content= [resource]
+(defn- set-content [resource]
   (template/set-attr :content (value resource)))
+
+(defn- set-resource [resource]
+  (template/set-attr :resource (identifier resource)))
 
 ;; Context
 
@@ -63,16 +66,15 @@
 (defprotocol Transformer
   "Provides functions to transform the given subject into a different representation."
   (transform [this context] "Transforms the subject."))
+
 (extend-protocol Transformer
   java.lang.String
   (transform [this context] this)
   nil
   (transform [this context] nil))
 
-(defmulti transform-literal
-  (fn [literal context] (when-let [datatype (datatype literal)]
-                          (value datatype))))
-(defmethod transform-literal :default [literal context] (value literal))
+(defmulti transform-literal (fn [literal context] (-> literal datatype value)))
+(defmethod transform-literal :default [literal context] (println (-> literal datatype value)) (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
   (time/unparse (time/formatters :rfc822) (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
@@ -81,7 +83,7 @@
     (let [context (conj-selector context [(type= (first (find-types-of store resource)))])
           snippet (template/select *template* (:selector-chain context))
           grouped-statements (group-by #(predicate %) statements)]
-      (loop [snippet (template/transform snippet [template/root] (template/set-attr :resource (identifier resource)))
+      (loop [snippet (template/transform snippet [template/root] (set-resource resource))
              grouped-statements grouped-statements]
         (if-not (seq grouped-statements)
           snippet
@@ -95,8 +97,8 @@
                   (if (satisfies? knowl.edge.model/Literal (object statement))
                     (if-let [datatype (-> statement object datatype)]
                       (template/do->
-                        (datatype= datatype)
-                        (content= (object statement)))
+                        (set-datatype datatype)
+                        (set-content (object statement)))
                       identity)
                     identity))))
             (rest grouped-statements)))))))
