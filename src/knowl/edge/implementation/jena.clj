@@ -22,15 +22,15 @@
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
   knowl.edge.model/Value
-  (value [this] (.toString this)))
+  (value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
   knowl.edge.model/Value
-  (value [this] (.toString this)))
+  (value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   knowl.edge.model/Value
-  (value [this] (.getValue this))
+  (value [this] (.getLexicalForm this))
   knowl.edge.model/Literal
   (datatype [this] (.getDatatype this))
   (language
