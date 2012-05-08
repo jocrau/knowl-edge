@@ -40,6 +40,12 @@
 (defn- property= [resource]
   (template/attr= :property (identifier resource)))
 
+(defn- datatype= [datatype]
+  (template/set-attr :datatype (value datatype)))
+
+(defn- content= [resource]
+  (template/set-attr :content (value resource)))
+
 ;; Context
 
 (defprotocol ContextHandling
@@ -86,11 +92,11 @@
                 [statement (second (first grouped-statements))]
                 (template/do->
                   (template/content (transform (object statement) context))
-                  #_(if (isa? (-> statement object) knowl.edge.model/Literal)
+                  (if (satisfies? knowl.edge.model/Literal (object statement))
                     (if-let [datatype (-> statement object datatype)]
                       (template/do->
-                        (template/set-attr :datatype (value datatype))
-                        (template/set-attr :content (-> statement object value)))
+                        (datatype= datatype)
+                        (content= (object statement)))
                       identity)
                     identity))))
             (rest grouped-statements)))))))
