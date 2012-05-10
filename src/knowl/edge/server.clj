@@ -58,8 +58,9 @@
     (wrap-params)
     (wrap-stacktrace)))
 
-(defn boot []
-  (run-jetty #'app {:port 8080}))
+(defn boot [port]
+  (run-jetty #'app {:port (or port 8080) :join? false}))
 
-(defn -main [& args]
-  (boot))
+(defn -main []
+  (let [port (Integer. (System/getenv "PORT"))]
+    (boot port)))
