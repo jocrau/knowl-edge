@@ -1,52 +1,67 @@
-(ns knowl.edge.implementation.jena
-  (:import (com.hp.hpl.jena.rdf.model ModelFactory)
-           (com.hp.hpl.jena.datatypes TypeMapper)
-           (com.hp.hpl.jena.rdf.model Model StmtIterator)
-           (com.hp.hpl.jena.rdf.model.impl ModelCom)
-           (com.hp.hpl.jena.query QueryExecutionFactory)
-           (knowl.edge.store Endpoint)))
+; Copyright (c) 2012 Jochen Rau
+; 
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+; 
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+; 
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+
+(ns
+  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the know:ledge Management System."
+    :author "Jochen Rau"}
+   knowl.edge.implementation.jena)
+
+(in-ns 'knowl.edge.model)
+(import '(com.hp.hpl.jena.rdf.model ModelFactory)
+        '(com.hp.hpl.jena.datatypes TypeMapper))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  knowl.edge.model/Value
+  Value
   (value [this] (.getURI this))
-  knowl.edge.model/Resource
+  Resource
   (identifier [this] (.getURI this))
   (namespace [this] (.getNamespace this))
-  (local-name [this] (.getLocalName this))
-  knowl.edge.transformation/Transformer
-  (transform
-    [this context]
-    (knowl.edge.transformation/transform-resource this context)))
+  (local-name [this] (.getLocalName this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
-  knowl.edge.model/Value
+  Value
   (value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
-  knowl.edge.model/Value
+  Value
   (value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  knowl.edge.model/Value
+  Value
   (value [this] (.getLexicalForm this))
-  knowl.edge.model/Literal
+  Literal
   (datatype [this] (.getDatatype this))
   (language
     [this]
     (let [language (.getLanguage this)]
       (if (clojure.string/blank? language)
         nil
-        language)))
-  knowl.edge.transformation/Transformer
-  (transform [this context] (knowl.edge.transformation/transform-literal this context)))
+        language))))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
-  knowl.edge.model/Statement
+  Statement
   (subject [statement] (.getSubject statement))
   (predicate [statement] (.getPredicate statement))
   (object [statement] (.getObject statement)))
 
-(extend-protocol knowl.edge.model/RDFFactory
+(extend-protocol RDFFactory
   String
   (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (if (clojure.string/blank? this)
@@ -57,28 +72,43 @@
               (.createLiteral model this)))
     ([this language-or-datatype]
       (with-open [model (ModelFactory/createDefaultModel)]
-        (if (knowl.edge.model/iri-string? (name language-or-datatype))
+        (if (iri-string? (name language-or-datatype))
           (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
           (.createLiteral model this (name language-or-datatype))))))
   clojure.lang.IPersistentVector
   (create-resource
     [this]
     (let [[prefix local-name] this
-          iri (str (knowl.edge.model/resolve-prefix prefix) (name local-name))]
+          iri (str (resolve-prefix prefix) (name local-name))]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createResource model iri))))
   clojure.lang.Keyword
   (create-resource
     [this]
-    (let [iri (str knowl.edge.model/*base* (name this))]
+    (let [iri (str *base* (name this))]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createResource model iri))))
   nil
   (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (.createResource model))))
 
+(in-ns 'knowl.edge.transformation)
+
+(extend-protocol Transformer
+  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
+  (transform [this context] (transform-literal this context))
+  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
+  (transform
+    [this context]
+    (transform-resource this context)))
+
+
+(in-ns 'knowl.edge.store)
+(import '(com.hp.hpl.jena.query QueryExecutionFactory)
+        '(knowl.edge.store Endpoint))
+
 (extend-type knowl.edge.store.Endpoint
-  knowl.edge.store/Store
+  Store
   (find-by-query
     ([this query-string] (knowl.edge.store/find-by-query this query-string (.service this)))
     ([this query-string service]
