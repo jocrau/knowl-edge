@@ -32,7 +32,7 @@
 	</category>
 	
 	<root>
-	   <priority value ="debug" />
+	   <priority value ="warn" />
    	   <appender-ref ref="STDOUT" />
 	</root>
 	
