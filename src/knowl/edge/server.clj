@@ -62,5 +62,6 @@
   (run-jetty #'app {:port (or port 8080) :join? false}))
 
 (defn -main []
-  (let [port (Integer. (System/getenv "PORT"))]
-    (boot port)))
+  (if-let [port (System/getenv "PORT")]
+    (boot (Integer. port))
+    (boot nil)))
