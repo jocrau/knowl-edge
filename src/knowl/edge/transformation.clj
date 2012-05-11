@@ -60,6 +60,17 @@
 (defn- set-resource [resource]
   (template/set-attr :about (identifier resource)))
 
+(defn- set-types [types]
+  (template/set-attr :typeof (string/join " " (map str types))))
+
+;; Helper functions
+
+(defn- extract-predicates [snippet]
+  (filter #(string/contains? % ":")
+          (map #(or (-> % :attrs :property)
+                    (-> % :attrs :rel))
+               (template/select snippet [(property?)]))))
+
 ;; Context
 
 (defprotocol ContextHandling
@@ -95,13 +106,13 @@
       (let [types (find-types-of store resource)
             context (conj-selector context [(into #{} (map #(type= %) types))])
             snippet (template/select *template* (:rootline context))
-            snippet-predicates (filter #(string/contains? % ":")
-                                       (map #(or (-> % :attrs :property)
-                                                 (-> % :attrs :rel))
-                                            (template/select snippet [(property?)])))
+            snippet-predicates (extract-predicates snippet)
             grouped-statements (group-by #(predicate %) statements)
             query-predicates (keys grouped-statements)]
-        (loop [snippet (template/transform snippet [template/root] (set-resource resource))
+        (loop [snippet (template/transform snippet [template/root]
+                                           (template/do->
+                                             (set-types types)
+                                             (set-resource resource)))
                grouped-statements grouped-statements]
           (if-not (seq grouped-statements)
             snippet
