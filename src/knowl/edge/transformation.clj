@@ -26,6 +26,7 @@
   (:use knowl.edge.store
         knowl.edge.model)
   (:require
+    [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [net.cgrand.enlive-html :as template]))
 
@@ -43,6 +44,10 @@
     selector-step
     #_(some (template/attr? :typeof) (filter net.cgrand.xml/tag? (clojure.zip/path selector-step)))))
 
+(defn- property? []
+  #{(template/attr? :property)
+    (template/attr-has :rel)})
+
 (defn- set-datatype [datatype]
   (template/set-attr :datatype (value datatype)))
 
@@ -53,7 +58,7 @@
   (template/set-attr :content (value resource)))
 
 (defn- set-resource [resource]
-  (template/set-attr :resource (identifier resource)))
+  (template/set-attr :about (identifier resource)))
 
 ;; Context
 
@@ -90,7 +95,12 @@
       (let [types (find-types-of store resource)
             context (conj-selector context [(into #{} (map #(type= %) types))])
             snippet (template/select *template* (:rootline context))
-            grouped-statements (group-by #(predicate %) statements)]
+            snippet-predicates (filter #(string/contains? % ":")
+                                       (map #(or (-> % :attrs :property)
+                                                 (-> % :attrs :rel))
+                                            (template/select snippet [(property?)])))
+            grouped-statements (group-by #(predicate %) statements)
+            query-predicates (keys grouped-statements)]
         (loop [snippet (template/transform snippet [template/root] (set-resource resource))
                grouped-statements grouped-statements]
           (if-not (seq grouped-statements)
