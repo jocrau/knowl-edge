@@ -121,7 +121,7 @@
             (catch Exception e nil))))))
   (find-by-subject
     [this resource]
-    (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . }")))
+    (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . FILTER ( lang(?o) = \"en\" )}")))
   (find-types-of
     [this resource]
     (map
