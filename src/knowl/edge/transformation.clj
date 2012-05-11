@@ -46,6 +46,9 @@
 (defn- set-datatype [datatype]
   (template/set-attr :datatype (value datatype)))
 
+(defn- set-language [language]
+  (comp (template/set-attr :lang (value language)) (template/set-attr :xml:lang (value language))))
+
 (defn- set-content [resource]
   (template/set-attr :content (value resource)))
 
@@ -100,11 +103,15 @@
                   (template/do->
                     (template/content (transform (object statement) context))
                     (if (satisfies? knowl.edge.model/Literal (object statement))
-                      (if-let [datatype (-> statement object datatype)]
-                        (template/do->
-                          (set-datatype datatype)
-                          (set-content (object statement)))
-                        identity)
+                      (template/do->
+                        (if-let [datatype (-> statement object datatype)]
+                          (template/do->
+                            (set-datatype datatype)
+                            (set-content (object statement)))
+                          identity)
+                        (if-let [language (-> statement object language)]
+                          (set-language language)
+                          identity))
                       identity))))
               (rest grouped-statements)))))
       {:tag :a :attrs {:href (identifier resource)} :content (identifier resource)})
