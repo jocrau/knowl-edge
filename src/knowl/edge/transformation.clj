@@ -35,10 +35,10 @@
 ;; Predicates
 
 (defn- type= [resource]
-  #{(template/attr= :typeof (identifier resource)) (template/attr= :about (identifier resource))})
+  #{(template/attr-contains :typeof (identifier resource)) (template/attr-contains :about (identifier resource))})
 
 (defn- property= [resource]
-  (let [selector-step [#{(template/attr= :property (identifier resource)) (template/attr= :rel (identifier resource))}]]
+  (let [selector-step [#{(template/attr-contains :property (identifier resource)) (template/attr-contains :rel (identifier resource))}]]
     #_(println (clojure.zip/path selector-step))
     selector-step
     #_(some (template/attr? :typeof) (filter net.cgrand.xml/tag? (clojure.zip/path selector-step)))))
