@@ -107,7 +107,7 @@
                         identity)
                       identity))))
               (rest grouped-statements)))))
-      {:tag :a :href resource :content resource})
+      {:tag :a :attrs {:href (identifier resource)} :content (identifier resource)})
     {:tag :span :content "Max. Depth"}))
 
 ;; Entry Point
