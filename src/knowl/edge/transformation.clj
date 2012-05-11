@@ -29,8 +29,8 @@
     [clj-time.format :as time]
     [net.cgrand.enlive-html :as template]))
 
-(def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
-(def store (knowl.edge.store.Endpoint. "http://localhost:3030/data/query" {}))
+(def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/dbpedia.html")))
+(def store (knowl.edge.store.Endpoint. "http://dbpedia.org/sparql" {}))
 
 ;; Predicates
 
