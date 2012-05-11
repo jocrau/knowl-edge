@@ -85,7 +85,7 @@
   (if (< (count (:rootline context)) 6)
     (if-let [statements (seq (find-by-subject store resource))]
       (let [types (find-types-of store resource)
-            context (conj-selector context [(type= (first types))])
+            context (conj-selector context [(into #{} (map #(type= %) types))])
             snippet (template/select *template* (:rootline context))
             grouped-statements (group-by #(predicate %) statements)]
         (loop [snippet (template/transform snippet [template/root] (set-resource resource))
