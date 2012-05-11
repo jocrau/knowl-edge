@@ -82,30 +82,33 @@
   (time/unparse (time/formatter "EEEE dd MMMM, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
 (defn transform-resource [resource context]
-  (if-let [statements (seq (find-by-subject store resource))]
-    (let [types (find-types-of store resource)
-          context (conj-selector context [(type= (first types))])
-          snippet (template/select *template* (:rootline context))
-          grouped-statements (group-by #(predicate %) statements)]
-      (loop [snippet (template/transform snippet [template/root] (set-resource resource))
-             grouped-statements grouped-statements]
-        (if-not (seq grouped-statements)
-          snippet
-          (recur
-            (template/transform
-              snippet [(property= (ffirst grouped-statements))]
-              (template/clone-for
-                [statement (second (first grouped-statements))]
-                (template/do->
-                  (template/content (transform (object statement) context))
-                  (if (satisfies? knowl.edge.model/Literal (object statement))
-                    (if-let [datatype (-> statement object datatype)]
-                      (template/do->
-                        (set-datatype datatype)
-                        (set-content (object statement)))
-                      identity)
-                    identity))))
-            (rest grouped-statements)))))))
+  (if (< (count (:rootline context)) 6)
+    (if-let [statements (seq (find-by-subject store resource))]
+      (let [types (find-types-of store resource)
+            context (conj-selector context [(type= (first types))])
+            snippet (template/select *template* (:rootline context))
+            grouped-statements (group-by #(predicate %) statements)]
+        (loop [snippet (template/transform snippet [template/root] (set-resource resource))
+               grouped-statements grouped-statements]
+          (if-not (seq grouped-statements)
+            snippet
+            (recur
+              (template/transform
+                snippet [(property= (ffirst grouped-statements))]
+                (template/clone-for
+                  [statement (second (first grouped-statements))]
+                  (template/do->
+                    (template/content (transform (object statement) context))
+                    (if (satisfies? knowl.edge.model/Literal (object statement))
+                      (if-let [datatype (-> statement object datatype)]
+                        (template/do->
+                          (set-datatype datatype)
+                          (set-content (object statement)))
+                        identity)
+                      identity))))
+              (rest grouped-statements)))))
+      {:tag :a :href resource :content resource})
+    {:tag :span :content "Max. Depth"}))
 
 ;; Entry Point
 
