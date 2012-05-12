@@ -102,7 +102,7 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (if-let [statements (find-by-subject store resource)]
+    (if-let [statements (find-matching store resource)]
       (let [types (find-types-of store resource)
             context (conj-selector context [(into #{} (map #(type= %) types))])
             snippet (template/select *template* (:rootline context))

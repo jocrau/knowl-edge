@@ -25,7 +25,7 @@
 
 (defprotocol Store
   (find-by-query [this query-string] [this query-string service])
-  (find-by-subject [this resource])
-  (find-types-of [this resource]))
+  (find-types-of [this resource])
+  (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
 
 (deftype Endpoint [service options])

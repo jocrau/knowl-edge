@@ -24,6 +24,7 @@
    knowl.edge.implementation.jena)
 
 (in-ns 'knowl.edge.model)
+(require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.rdf.model ModelFactory)
         '(com.hp.hpl.jena.datatypes TypeMapper))
 
@@ -51,7 +52,7 @@
   (language
     [this]
     (let [language (.getLanguage this)]
-      (if (clojure.string/blank? language)
+      (if (string/blank? language)
         nil
         language))))
 
@@ -64,7 +65,7 @@
 (extend-protocol RDFFactory
   String
   (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
-                            (if (clojure.string/blank? this)
+                            (if (string/blank? this)
                               (.createResource model)
                               (.createResource model this))))
   (create-literal
@@ -104,14 +105,17 @@
 
 
 (in-ns 'knowl.edge.store)
+(use '[clojure.contrib.core :only (-?>)])
+(require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(knowl.edge.store Endpoint))
 
 (extend-type knowl.edge.store.Endpoint
   Store
   (find-by-query
-    ([this query-string] (knowl.edge.store/find-by-query this query-string (.service this)))
+    ([this query-string] (find-by-query this query-string (.service this)))
     ([this query-string service]
+      (println query-string)
       (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
         (let [options (.options this)]
           (if (and (:username options) (:password options))
@@ -119,11 +123,18 @@
           (try        
             (iterator-seq (.listStatements (.execConstruct query-execution)))
             (catch Exception e nil))))))
-  (find-by-subject
-    [this resource]
-    (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> ?p ?o . } WHERE { <" resource "> ?p ?o . FILTER ( lang(?o) = \"en\" )}")))
   (find-types-of
     [this resource]
     (map
       #(knowl.edge.model/object %)
-      (knowl.edge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }")))))
+      (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
+  (find-matching
+    ([this] (find-matching this nil nil nil))
+    ([this subject] (find-matching this subject nil nil))
+    ([this subject predicate] (find-matching this subject predicate nil))
+    ([this subject predicate object]
+      (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
+            predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+            object (or (-?> object (string/join ["<" ">"])) "?o")
+            statement (string/join " " [subject predicate object])]
+        (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . FILTER ( lang(?o) = \"en\" )}"))))))
