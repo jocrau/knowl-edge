@@ -45,8 +45,8 @@
                           (str "?" query-string))))
     (string? thing) (create-resource thing)))
 
-(defroutes route 
-  (GET "/" {{iri "iri"} :params :as request}
+(defroutes route
+  (GET "/resource*" {{iri "iri"} :params :as request}
        (dereference (resource iri)))
   (GET "*" [:as request]
        (dereference (resource request)))
