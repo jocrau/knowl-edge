@@ -115,7 +115,6 @@
   (find-by-query
     ([this query-string] (find-by-query this query-string (.service this)))
     ([this query-string service]
-      (println query-string)
       (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
         (let [options (.options this)]
           (if (and (:username options) (:password options))
@@ -137,4 +136,4 @@
             predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
             object (or (-?> object (string/join ["<" ">"])) "?o")
             statement (string/join " " [subject predicate object])]
-        (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . FILTER ( lang(?o) = \"en\" )}"))))))
+        (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . }"))))))
