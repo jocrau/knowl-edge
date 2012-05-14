@@ -23,8 +23,10 @@
     :author "Jochen Rau"}  
   knowl.edge.transformation
   (:refer-clojure :exclude [namespace])
-  (:use knowl.edge.store
-        knowl.edge.model)
+  (:use 
+    [clojure.contrib.core :only (-?>)]
+    knowl.edge.store
+    knowl.edge.model)
   (:require
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
@@ -143,5 +145,6 @@
 ;; Entry Point
 
 (defn dereference [resource]
-  (if-let [result (transform resource (Context. 0 []))]
-    (template/emit* result)))
+  (when-let [representation (-?> (find-matching store nil "http://knowl-edge.org/ontology/core#represents" (identifier resource)) first subject)]
+    (when-let [document (transform representation (Context. 0 []))]
+      (template/emit* document))))
