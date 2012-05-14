@@ -26,6 +26,9 @@
 (defprotocol Store
   (find-by-query [this query-string] [this query-string service])
   (find-types-of [this resource])
-  (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
+  (find-matching [this] [this subject] [this subject predicate] [this subject predicate object])
+  (unserialize [this source])
+  (serialize [this target]))
 
 (deftype Endpoint [service options])
+(deftype MemoryStore [model options])
