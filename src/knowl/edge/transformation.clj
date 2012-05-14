@@ -39,10 +39,8 @@
   #{(template/attr-has :typeof (identifier resource)) (template/attr-has :about (identifier resource))})
 
 (defn- property= [resource]
-  (let [selector-step [#{(template/attr-has :property (identifier resource)) (template/attr-has :rel (identifier resource))}]]
-    #_(println (clojure.zip/path selector-step))
-    selector-step
-    #_(some (template/attr? :typeof) (filter net.cgrand.xml/tag? (clojure.zip/path selector-step)))))
+  #{(template/attr-has :property (identifier resource))
+    (template/attr-has :rel (identifier resource))})
 
 (defn- property? []
   #{(template/attr? :property)
@@ -100,6 +98,22 @@
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
   (time/unparse (time/formatter "EEEE dd MMMM, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
+(defn transform-statement [statement context]
+  (let [object (object statement)]
+    (template/do->
+      (template/content (transform object context))
+      (if (satisfies? knowl.edge.model/Literal object)
+        (template/do->
+          (if-let [datatype (datatype object)]
+            (template/do->
+              (set-datatype datatype)
+              (set-content (value object)))
+            identity)
+          (if-let [language ( language object)]
+            (set-language language)
+            identity))
+        identity))))
+
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
     (if-let [statements (find-matching store resource)]
@@ -121,19 +135,7 @@
                 snippet [(property= (ffirst grouped-statements))]
                 (template/clone-for
                   [statement (second (first grouped-statements))]
-                  (template/do->
-                    (template/content (transform (object statement) context))
-                    (if (satisfies? knowl.edge.model/Literal (object statement))
-                      (template/do->
-                        (if-let [datatype (-> statement object datatype)]
-                          (template/do->
-                            (set-datatype datatype)
-                            (set-content (object statement)))
-                          identity)
-                        (if-let [language (-> statement object language)]
-                          (set-language language)
-                          identity))
-                      identity))))
+                  (transform-statement statement context)))
               (rest grouped-statements)))))
       {:tag :a :attrs {:href (identifier resource)} :content (identifier resource)})
     {:tag :span :content "Max. Depth"}))
