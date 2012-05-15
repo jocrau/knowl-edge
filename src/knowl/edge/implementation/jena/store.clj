@@ -88,5 +88,5 @@
 
 ;; Load the default graph
 (def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
-(import-into store "/Users/jocrau/Documents/typoplanet/workspaces/eclipse/knowl-edge/resources/private/data/abox.ttl" {})
+(import-into store "resources/private/data/abox.ttl" {})
 
