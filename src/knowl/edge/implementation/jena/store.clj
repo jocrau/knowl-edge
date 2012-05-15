@@ -89,4 +89,4 @@
 (def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
 
 (defn load-core-data []
-  (import-into store "resources/private/data/core.ttl" {}))
+  (import-into store (clojure.java.io/resource "private/data/core.ttl") {}))
