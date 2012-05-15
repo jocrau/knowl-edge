@@ -38,13 +38,13 @@
 	void:uriSpace "http://dbpedia.org/resource/" .
 
 <urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>
-	knowl:represents <http://localhost/blog> ;
+	knowl:represents </blog> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Blog"@en ;
 	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
-	knowl:represents <http://localhost/products> ;
+	knowl:represents </products> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Product Catalog"@en ;
 	ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;

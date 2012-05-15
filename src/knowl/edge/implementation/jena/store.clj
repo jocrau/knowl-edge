@@ -61,6 +61,9 @@
 (defn- serialization-format [options]
   (name (or (:format options) "TTL")))
 
+(defn- base-iri []
+  "http://knowl-edge.herokuapp.com/")
+
 (extend-type knowl.edge.store.MemoryStore
   Store
   (find-matching
@@ -78,12 +81,12 @@
   Exporter
   (import-into
     [this source options]
-    (with-open [reader (clojure.java.io/reader source)]
-      (.read (.model this) reader nil (serialization-format options))))
+    (with-open [stream (clojure.java.io/input-stream source)]
+      (.read (.model this) stream (base-iri) (serialization-format options))))
   (export-from
     [this target options]
-    (with-open [writer (clojure.java.io/writer target)]
-      (.write (.model this) writer (serialization-format options)))))
+    (with-open [stream (clojure.java.io/output-stream target)]
+      (.write (.model this) stream (serialization-format options)))))
 
 ;; Load the default graph into the in-memory store
 (def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
