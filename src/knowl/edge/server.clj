@@ -49,7 +49,7 @@
        (dereference (resource iri)))
   (GET "*" [:as request]
        (dereference (resource request)))
-  (route/files "/" {:root "resources/public/"})
+  (route/files "/static/" {:root "resources/public/"})
   (route/not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 
 (def app

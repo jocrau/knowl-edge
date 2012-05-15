@@ -89,4 +89,4 @@
 (def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
 
 (defn load-core-data []
-  (import-into store "resources/private/data/abox.ttl" {}))
+  (import-into store "resources/private/data/core.ttl" {}))
