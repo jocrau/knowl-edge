@@ -59,4 +59,5 @@
 
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 8080))]
+    (knowl.edge.store/load-core-data)
     (run-jetty #'app {:port port})))

@@ -74,7 +74,7 @@
     [this resource]
     (map
       #(knowl.edge.model/object %)
-      (find-matching this resource (knowl.edge.model/create-resource ["http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type"]))))
+      (find-matching this resource (knowl.edge.model/create-resource [:rdf :type]))))
   Exporter
   (import-into
     [this source options]
@@ -82,11 +82,11 @@
       (.read (.model this) reader nil (serialization-format options))))
   (export-from
     [this target options]
-    (println options)
     (with-open [writer (clojure.java.io/writer target)]
       (.write (.model this) writer (serialization-format options)))))
 
-;; Load the default graph
+;; Load the default graph into the in-memory store
 (def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
-(import-into store "resources/private/data/abox.ttl" {})
 
+(defn load-core-data []
+  (import-into store "resources/private/data/abox.ttl" {}))
