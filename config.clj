@@ -1,1 +1,0 @@
-(require '[knowl.edge.store.endpoint :as store])

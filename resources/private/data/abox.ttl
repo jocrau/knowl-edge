@@ -19,12 +19,23 @@
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix fresnel: <http://www.w3.org/2004/09/fresnel#> .
 @prefix knowl:   <http://knowl-edge.org/ontology/core#> .
+@prefix void:    <http://rdfs.org/ns/void#> .
 @prefix ex:      <http://example.com/ontology#> .
 
 
 <urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286>
-	a knowl:Application .
+	a knowl:Application ;
+	knowl:source <urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751> .
 
+<urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751>
+	a void:Dataset ;
+	void:sparqlEndpoint <http://localhost:3030/data/query> ;
+	void:uriSpace "http://localhost/" .
+
+<urn:uuid:58bb82d3-8f34-4c69-8c8d-872edeb6cc51>
+	a void:Dataset ;
+	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
+	void:uriSpace "http://dbpedia.org/resource/" .
 
 <urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>
 	knowl:represents <http://localhost/blog> ;
@@ -45,11 +56,15 @@
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post" ;
-      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274> .
+      knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>, <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>.
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
       cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+
+<urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>
+      rdf:type cnt:ContentAsXML ;
+      cnt:rest """Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof="http://xmlns.com/foaf/0.1/Person" property="http://xmlns.com/foaf/0.1/name">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""" .
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       rdf:type sioc:BlogPost ;
@@ -98,7 +113,7 @@
 <urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0>
       rdf:type gr:ActualProductOrServiceInstance ;
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
-      gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
+      gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
       gr:name "A Tipi"@en .
 
 <urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1>

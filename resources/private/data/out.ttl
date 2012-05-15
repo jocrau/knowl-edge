@@ -1,0 +1,150 @@
+<rdf:RDF
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:knowl="http://knowl-edge.org/ontology/core#"
+    xmlns:pto="http://www.productontology.org/id/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:prt="http://www.w3.org/2009/pointers#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ex="http://example.com/ontology#"
+    xmlns:sioc="http://rdfs.org/sioc/types#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:spin="http://spinrdf.org/sp#"
+    xmlns:gr="http://purl.org/goodrelations/v1#"
+    xmlns:dam="http://typo3.org/ontology/dam#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:ore="http://www.openarchives.org/ore/terms/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:fresnel="http://www.w3.org/2004/09/fresnel#"
+    xmlns:cnt="http://www.w3.org/2011/content#" > 
+  <rdf:Description rdf:about="urn:uuid:fe54a438-b924-447a-875c-2db010a8015f">
+    <knowl:contains rdf:resource="http://example.com/ACMECorp"/>
+    <ex:menu rdf:resource="urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff"/>
+    <rdfs:label xml:lang="en">Product Catalog</rdfs:label>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/Webpage"/>
+    <knowl:represents rdf:resource="http://localhost/products"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:814d0702-fca5-4539-b262-57919b9322e8">
+    <gr:validThrough rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-8-12T00:00:00+01:00</gr:validThrough>
+    <gr:validFrom rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-04-01T00:00:00+01:00</gr:validFrom>
+    <foaf:page rdf:resource="http://localhost:8080/foo/bar"/>
+    <gr:includes rdf:resource="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2"/>
+    <gr:hasPriceSpecification rdf:nodeID="A0"/>
+    <gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Sell"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#Offering"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <gr:validThrough rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-12-24T00:00:00+01:00</gr:validThrough>
+    <gr:hasCurrencyValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19.99</gr:hasCurrencyValue>
+    <gr:hasCurrency>USD</gr:hasCurrency>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#UnitPriceSpecification"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5">
+    <knowl:contains rdf:resource="urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a"/>
+    <knowl:contains rdf:resource="urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274"/>
+    <dc:title>My First Blog Post</dc:title>
+    <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-24T10:12:23+01:00</dcterms:created>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jennifer_Rau"/>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jochen_Rau"/>
+    <rdf:type rdf:resource="http://rdfs.org/sioc/types#BlogPost"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <gr:validThrough rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-12-24T00:00:00+01:00</gr:validThrough>
+    <gr:hasCurrencyValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19.99</gr:hasCurrencyValue>
+    <gr:hasCurrency>USD</gr:hasCurrency>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#UnitPriceSpecification"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3">
+    <knowl:contains rdf:resource="urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228"/>
+    <dc:title>My Second Blog Post</dc:title>
+    <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-24T12:21:23+01:00</dcterms:created>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jochen_Rau"/>
+    <rdf:type rdf:resource="http://rdfs.org/sioc/types#BlogPost"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286">
+    <knowl:source rdf:resource="urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751"/>
+    <rdf:type rdf:resource="http://knowl-edge.org/ontology/core#Application"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://typoplanet.de/resources/Jennifer_Rau">
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32</foaf:age>
+    <foaf:lastName>Rau</foaf:lastName>
+    <foaf:firstName>Jennifer</foaf:firstName>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://typoplanet.de/resources/Jochen_Rau">
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">41</foaf:age>
+    <foaf:lastName>Rau</foaf:lastName>
+    <foaf:firstName>Jochen</foaf:firstName>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a">
+    <cnt:rest>Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse &lt;span typeof="http://xmlns.com/foaf/0.1/Person" property="http://xmlns.com/foaf/0.1/name"&gt;John Doe&lt;/span&gt; dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</cnt:rest>
+    <rdf:type rdf:resource="http://www.w3.org/2011/content#ContentAsXML"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:814d0702-fca5-4539-b262-57919b9322e7">
+    <gr:validThrough rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-12-24T00:00:00+01:00</gr:validThrough>
+    <gr:validFrom rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-03-12T00:00:00+01:00</gr:validFrom>
+    <foaf:page rdf:resource="http://typo3.org/Tipis/foo.html"/>
+    <gr:includes rdf:resource="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1"/>
+    <gr:includes rdf:resource="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0"/>
+    <gr:hasPriceSpecification rdf:nodeID="A1"/>
+    <gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Sell"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#Offering"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31">
+    <knowl:contains rdf:resource="urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3"/>
+    <knowl:contains rdf:resource="urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5"/>
+    <rdfs:label xml:lang="en">Blog</rdfs:label>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/Webpage"/>
+    <knowl:represents rdf:resource="http://localhost/blog"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228">
+    <cnt:chars>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</cnt:chars>
+    <rdf:type rdf:resource="http://www.w3.org/2011/content#ContentAsText"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2">
+    <gr:name xml:lang="en">Apple MacBook Pro MC700LL/A 13.3-Inch Laptop</gr:name>
+    <gr:description xml:lang="en">Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds.</gr:description>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jochen_Rau"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:58bb82d3-8f34-4c69-8c8d-872edeb6cc51">
+    <void:uriSpace>http://dbpedia.org/resource/</void:uriSpace>
+    <void:sparqlEndpoint rdf:resource="http://dbpedia.org/sparql"/>
+    <rdf:type rdf:resource="http://rdfs.org/ns/void#Dataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff">
+    <knowl:query>PREFIX bibo: &lt;http://purl.org/ontology/bibo/&gt; PREFIX ex: &lt;http://example.com/ontology#&gt; PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt; CONSTRUCT { ?page a ex:PageTree ; ex:page ?title . } WHERE { ?page a bibo:Webpage ; dc:title ?title .}</knowl:query>
+    <rdf:type rdf:resource="http://spinrdf.org/sp#Construct"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0">
+    <gr:name xml:lang="en">A Tipi</gr:name>
+    <gr:description xml:lang="en">Lorem ipsum dolor sit amet, consectetur adipisicing, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</gr:description>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jochen_Rau"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1">
+    <gr:name xml:lang="en">Another Tipi</gr:name>
+    <gr:description xml:lang="en">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</gr:description>
+    <dc:creator rdf:resource="http://typoplanet.de/resources/Jennifer_Rau"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274">
+    <cnt:chars>Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</cnt:chars>
+    <rdf:type rdf:resource="http://www.w3.org/2011/content#ContentAsText"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.com/ACMECorp">
+    <gr:legalName>ACME Corp</gr:legalName>
+    <gr:offers rdf:resource="urn:uuid:814d0702-fca5-4539-b262-57919b9322e8"/>
+    <gr:offers rdf:resource="urn:uuid:814d0702-fca5-4539-b262-57919b9322e7"/>
+    <rdf:type rdf:resource="http://purl.org/goodrelations/v1#BusinessEntity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751">
+    <void:uriSpace>http://localhost/</void:uriSpace>
+    <void:sparqlEndpoint rdf:resource="http://localhost:3030/data/query"/>
+    <rdf:type rdf:resource="http://rdfs.org/ns/void#Dataset"/>
+  </rdf:Description>
+</rdf:RDF>

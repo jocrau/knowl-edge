@@ -21,93 +21,13 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the know:ledge Management System."
     :author "Jochen Rau"}
-   knowl.edge.implementation.jena)
-
-(in-ns 'knowl.edge.model)
-(require '[clojure.contrib.str-utils2 :as string])
-(import '(com.hp.hpl.jena.rdf.model ModelFactory)
-        '(com.hp.hpl.jena.datatypes TypeMapper))
-
-(extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  Value
-  (value [this] (.getURI this))
-  Resource
-  (identifier [this] (.getURI this))
-  (namespace [this] (.getNamespace this))
-  (local-name [this] (.getLocalName this)))
-
-(extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
-  Value
-  (value [this] (.getURI this)))
-
-(extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
-  Value
-  (value [this] (.getURI this)))
-
-(extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  Value
-  (value [this] (.getLexicalForm this))
-  Literal
-  (datatype [this] (.getDatatype this))
-  (language
-    [this]
-    (let [language (.getLanguage this)]
-      (if (string/blank? language)
-        nil
-        language))))
-
-(extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
-  Statement
-  (subject [statement] (.getSubject statement))
-  (predicate [statement] (.getPredicate statement))
-  (object [statement] (.getObject statement)))
-
-(extend-protocol RDFFactory
-  String
-  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
-                            (if (string/blank? this)
-                              (.createResource model)
-                              (.createResource model this))))
-  (create-literal
-    ([this] (with-open [model (ModelFactory/createDefaultModel)]
-              (.createLiteral model this)))
-    ([this language-or-datatype]
-      (with-open [model (ModelFactory/createDefaultModel)]
-        (if (iri-string? (name language-or-datatype))
-          (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
-          (.createLiteral model this (name language-or-datatype))))))
-  clojure.lang.IPersistentVector
-  (create-resource
-    [this]
-    (let [[prefix local-name] this
-          iri (str (resolve-prefix prefix) (name local-name))]
-      (with-open [model (ModelFactory/createDefaultModel)]
-        (.createResource model iri))))
-  clojure.lang.Keyword
-  (create-resource
-    [this]
-    (let [iri (str *base* (name this))]
-      (with-open [model (ModelFactory/createDefaultModel)]
-        (.createResource model iri))))
-  nil
-  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
-                            (.createResource model))))
-
-(in-ns 'knowl.edge.transformation)
-
-(extend-protocol Transformer
-  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  (transform [this context] (transform-literal this context))
-  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  (transform
-    [this context]
-    (transform-resource this context)))
-
+   knowl.edge.implementation.jena.store)
 
 (in-ns 'knowl.edge.store)
 (use '[clojure.contrib.core :only (-?>)])
 (require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
+        '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
         '(knowl.edge.store Endpoint))
 
 (extend-type knowl.edge.store.Endpoint
@@ -137,3 +57,36 @@
             object (or (-?> object (string/join ["<" ">"])) "?o")
             statement (string/join " " [subject predicate object])]
         (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . }"))))))
+
+(defn- serialization-format [options]
+  (name (or (:format options) "TTL")))
+
+(extend-type knowl.edge.store.MemoryStore
+  Store
+  (find-matching
+    ([this] (find-matching this nil nil nil))
+    ([this subject] (find-matching this subject nil nil))
+    ([this subject predicate] (find-matching this subject predicate nil))
+    ([this ^Resource subject ^Property predicate ^RDFNode object]
+      (let [model (.model this)]
+      (iterator-seq (.listStatements model subject predicate object)))))
+  (find-types-of
+    [this resource]
+    (map
+      #(knowl.edge.model/object %)
+      (find-matching this resource (knowl.edge.model/create-resource ["http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type"]))))
+  Exporter
+  (import-into
+    [this source options]
+    (with-open [reader (clojure.java.io/reader source)]
+      (.read (.model this) reader nil (serialization-format options))))
+  (export-from
+    [this target options]
+    (println options)
+    (with-open [writer (clojure.java.io/writer target)]
+      (.write (.model this) writer (serialization-format options)))))
+
+;; Load the default graph
+(def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
+(import-into store "/Users/jocrau/Documents/typoplanet/workspaces/eclipse/knowl-edge/resources/private/data/abox.ttl" {})
+

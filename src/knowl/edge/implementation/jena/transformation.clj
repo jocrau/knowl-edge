@@ -19,20 +19,16 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the know:ledge Management System."
+  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the know:ledge Management System."
     :author "Jochen Rau"}
-  knowl.edge.store)
+   knowl.edge.implementation.jena.transformation)
 
-(defprotocol Store
-  (find-by-query [this query-string] [this query-string service])
-  (find-types-of [this resource])
-  (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
+(in-ns 'knowl.edge.transformation)
 
-(defprotocol Exporter
-  (import-into [this source options])
-  (export-from [this target options]))
-
-(deftype Endpoint [service options])
-(deftype MemoryStore [model options])
-
-(use 'knowl.edge.implementation.jena.store)
+(extend-protocol Transformer
+  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
+  (transform [this context] (transform-literal this context))
+  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
+  (transform
+    [this context]
+    (transform-resource this context)))

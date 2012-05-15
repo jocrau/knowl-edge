@@ -33,7 +33,6 @@
     [net.cgrand.enlive-html :as template]))
 
 (def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
-(def store (knowl.edge.store.Endpoint. "http://localhost:3030/data/query" {}))
 
 ;; Predicates
 
@@ -145,6 +144,8 @@
 ;; Entry Point
 
 (defn dereference [resource]
-  (when-let [representation (-?> (find-matching store nil "http://knowl-edge.org/ontology/core#represents" (identifier resource)) first subject)]
+  (when-let [representation (-?> (find-matching store nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
     (when-let [document (transform representation (Context. 0 []))]
       (template/emit* document))))
+
+(use 'knowl.edge.implementation.jena.transformation)

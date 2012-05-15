@@ -24,7 +24,7 @@
   knowl.edge.model
   (:refer-clojure :exclude [namespace]))
 
-(def ^:dynamic *base* "http://knowl-edge.net/ontology/")
+(def ^:dynamic *base* "http://knowl-edge.net/ontology/core#")
 
 (defprotocol RDFFactory
   (create-resource [value])
@@ -99,7 +99,7 @@
 (defn resolve-prefix [prefix]
   (if-let [uri (get curies (name prefix))]
     uri
-    *base*))
+    prefix))
 
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
@@ -109,3 +109,5 @@
   (if (and (string? thing) (re-find iri-regex (name thing)))
     true
     false))
+
+(use 'knowl.edge.implementation.jena.model)

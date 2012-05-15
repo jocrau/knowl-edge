@@ -30,8 +30,7 @@
     ring.middleware.stacktrace
     ring.middleware.params
     knowl.edge.model
-    knowl.edge.transformation
-    knowl.edge.implementation.jena)
+    knowl.edge.transformation)
   (:require
     [compojure.route :as route]))
 
