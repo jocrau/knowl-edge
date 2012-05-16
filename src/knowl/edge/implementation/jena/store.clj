@@ -34,14 +34,12 @@
     (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
 
 (defn- find-matching* [this subject predicate object]
-  (println object)
   (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
         predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
         language-filter (if (nil? object)
                           " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
         object (or (-?> object (string/join ["<" ">"])) "?o")
         statement (string/join " " [subject predicate object])]
-    (println (str "CONSTRUCT { " statement " . } WHERE { " statement " . " language-filter " }"))
     (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . " language-filter " }"))))
 
 ;; Endpoint Implementation
@@ -102,7 +100,9 @@
 (def default-store (MemoryStore. (ModelFactory/createDefaultModel) {}))
 
 (defn load-core-data []
-  (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
+  (do
+    (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {})
+    #_(import-into default-store (clojure.java.io/resource "private/data/hickey.n3") {:format :N3})))
 
 (defn reload-core-data []
   (do

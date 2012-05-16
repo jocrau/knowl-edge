@@ -45,11 +45,11 @@
     (string? thing) (create-resource thing)))
 
 (defroutes route
-  (GET "/resource*" {{iri "iri"} :params :as request}
+  (route/files "/static/" {:root "resources/public/"})
+  (GET "/resource" {{iri "iri"} :params :as request}
        (dereference (resource iri)))
   (GET "*" [:as request]
        (dereference (resource request)))
-  (route/files "/static/" {:root "resources/public/"})
   (route/not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 
 (def app

@@ -118,7 +118,7 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (binding [*store* (store-for resource)]
+    (let [*store* (store-for resource)]
       (if-let [statements (find-matching *store* resource)]
         (let [types (find-types-of *store* resource)
               context (conj-selector context [(into #{} (map #(type= %) types))])
@@ -146,7 +146,7 @@
 ;; Entry Point
 
 (defn dereference [resource]
-  (when-let [representation (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
+  (let [representation (or (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject) resource)]
     (when-let [document (transform representation (Context. 0 []))]
       (template/emit* document))))
 
