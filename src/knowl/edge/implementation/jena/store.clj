@@ -93,3 +93,9 @@
 
 (defn load-core-data []
   (import-into store (clojure.java.io/resource "private/data/core.ttl") {}))
+
+(defn reload-core-data []
+  (do
+    (.removeAll (.model store ))
+    (load-core-data)))
+
