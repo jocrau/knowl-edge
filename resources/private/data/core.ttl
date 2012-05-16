@@ -27,11 +27,6 @@
 	a knowl:Application ;
 	knowl:source <urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751> .
 
-<urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751>
-	a void:Dataset ;
-	void:sparqlEndpoint <http://localhost:3030/data/query> ;
-	void:uriSpace "http://localhost/" .
-
 <urn:uuid:58bb82d3-8f34-4c69-8c8d-872edeb6cc51>
 	a void:Dataset ;
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
@@ -41,13 +36,12 @@
 	knowl:represents </blog> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Blog"@en ;
-	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
+	knowl:contains <http://dbpedia.org/resource/Rich_Hickey>, <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
 	knowl:represents </products> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Product Catalog"@en ;
-	ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;
 	knowl:contains <http://example.com/ACMECorp> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
@@ -55,36 +49,38 @@
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
-      dc:title "My First Blog Post" ;
+      dc:title "My First Blog Post"@en ;
       knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>, <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>.
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsText ;
-      cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+      cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
 
 <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>
       rdf:type cnt:ContentAsXML ;
-      cnt:rest """Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof="http://xmlns.com/foaf/0.1/Person" property="http://xmlns.com/foaf/0.1/name">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""" .
+      cnt:rest """Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof="http://xmlns.com/foaf/0.1/Person" property="http://xmlns.com/foaf/0.1/name">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""@en .
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       rdf:type sioc:BlogPost ;
-      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dc:creator <http://dbpedia.org/resource/Rich_Hickey> ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
       dc:title "My Second Blog Post" ;
       knowl:contains <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>.
 
 <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>
       rdf:type cnt:ContentAsText ;
-      cnt:chars "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum" .
+      cnt:chars "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"@en .
 
 <http://typoplanet.de/resources/Jochen_Rau>
       rdf:type foaf:Person ;
+      foaf:name "Jochen Rau" ;
       foaf:firstName "Jochen" ;
       foaf:lastName "Rau" ;
       foaf:age 41 .
 
 <http://typoplanet.de/resources/Jennifer_Rau>
       rdf:type foaf:Person ;
+      foaf:name "Jennifer Rau" ;
       foaf:firstName "Jennifer" ;
       foaf:lastName "Rau" ;
       foaf:age 32 .

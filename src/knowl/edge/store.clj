@@ -21,7 +21,8 @@
 (ns
   ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the know:ledge Management System."
     :author "Jochen Rau"}
-  knowl.edge.store)
+  knowl.edge.store
+  (:use [clojure.contrib.core :only (-?>)]))
 
 (defprotocol Store
   (find-by-query [this query-string] [this query-string service])
@@ -38,4 +39,17 @@
 (use 'knowl.edge.implementation.jena.store)
 
 (defn store-for [resource]
-  default-store)
+  (let [stores (find-by-query default-store (str "
+					PREFIX void: <http://rdfs.org/ns/void#>
+					CONSTRUCT {
+					?s void:sparqlEndpoint ?endpoint .
+					}
+					WHERE {
+					?s a void:Dataset .
+					?s void:sparqlEndpoint ?endpoint .
+					?s void:uriSpace ?uriSpace .
+					FILTER strStarts(\"" (knowl.edge.model/identifier resource) "\", ?uriSpace)
+					}"))]
+    (if-let [endpoint-iri (-?> stores first knowl.edge.model/object knowl.edge.model/value)]
+      (Endpoint. endpoint-iri {})
+      default-store)))

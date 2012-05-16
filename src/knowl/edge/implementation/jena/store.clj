@@ -24,7 +24,6 @@
    knowl.edge.implementation.jena.store)
 
 (in-ns 'knowl.edge.store)
-(use '[clojure.contrib.core :only (-?>)])
 (require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
@@ -35,11 +34,15 @@
     (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
 
 (defn- find-matching* [this subject predicate object]
+  (println object)
   (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
         predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+        language-filter (if (nil? object)
+                          " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
         object (or (-?> object (string/join ["<" ">"])) "?o")
         statement (string/join " " [subject predicate object])]
-    (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . }"))))
+    (println (str "CONSTRUCT { " statement " . } WHERE { " statement " . " language-filter " }"))
+    (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . " language-filter " }"))))
 
 ;; Endpoint Implementation
 
@@ -52,7 +55,7 @@
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
-          (try        
+          (try
             (iterator-seq (.listStatements (.execConstruct query-execution)))
             (catch Exception e nil))))))
   (find-types-of [this resource] (find-types-of* this resource))
@@ -103,6 +106,6 @@
 
 (defn reload-core-data []
   (do
-    (.removeAll (.model default-store ))
+    (.removeAll (.model default-store))
     (load-core-data)))
 

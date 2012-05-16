@@ -118,36 +118,36 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (if-let [statements (find-matching *store* resource)]
-      (let [types (find-types-of *store* resource)
-            context (conj-selector context [(into #{} (map #(type= %) types))])
-            snippet (template/select *template* (:rootline context))
-            snippet-predicates (extract-predicates snippet)
-            grouped-statements (group-by #(predicate %) statements)
-            query-predicates (keys grouped-statements)]
-        (loop [snippet (template/transform snippet [template/root]
-                                           (template/do->
-                                             (set-types types)
-                                             (set-resource resource)))
-               grouped-statements grouped-statements]
-          (if-not (seq grouped-statements)
-            snippet
-            (recur
-              (template/transform
-                snippet [(property= (ffirst grouped-statements))]
-                (template/clone-for
-                  [statement (second (first grouped-statements))]
-                  (transform-statement statement context)))
-              (rest grouped-statements)))))
-      {:tag :a :attrs {:href (identifier resource)} :content (identifier resource)})
+    (binding [*store* (store-for resource)]
+      (if-let [statements (find-matching *store* resource)]
+        (let [types (find-types-of *store* resource)
+              context (conj-selector context [(into #{} (map #(type= %) types))])
+              snippet (template/select *template* (:rootline context))
+              snippet-predicates (extract-predicates snippet)
+              grouped-statements (group-by #(predicate %) statements)
+              query-predicates (keys grouped-statements)]
+          (loop [snippet (template/transform snippet [template/root]
+                                             (template/do->
+                                               (set-types types)
+                                               (set-resource resource)))
+                 grouped-statements grouped-statements]
+            (if-not (seq grouped-statements)
+              snippet
+              (recur
+                (template/transform
+                  snippet [(property= (ffirst grouped-statements))]
+                  (template/clone-for
+                    [statement (second (first grouped-statements))]
+                    (transform-statement statement context)))
+                (rest grouped-statements)))))
+        {:tag :a :attrs {:href (identifier resource)} :content (identifier resource)}))
     {:tag :span :content "Max. Depth"}))
 
 ;; Entry Point
 
 (defn dereference [resource]
-  (binding [*store* (store-for resource)]
-    (when-let [representation (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
-      (when-let [document (transform representation (Context. 0 []))]
-        (template/emit* document)))))
+  (when-let [representation (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
+    (when-let [document (transform representation (Context. 0 []))]
+      (template/emit* document))))
 
 (use 'knowl.edge.implementation.jena.transformation)
