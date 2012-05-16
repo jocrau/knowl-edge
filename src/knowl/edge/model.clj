@@ -49,7 +49,9 @@
 
 (extend-type String
   Value
-  (value [this] this))
+  (value [this] this)
+  Resource
+  (identifier [this] this))
 
 (extend-type nil
   Value
