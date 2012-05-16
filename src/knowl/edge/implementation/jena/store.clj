@@ -30,6 +30,19 @@
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
         '(knowl.edge.store Endpoint))
 
+(defn- find-types-of* [this resource]
+  (map #(knowl.edge.model/object %)
+    (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
+
+(defn- find-matching* [this subject predicate object]
+  (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
+        predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+        object (or (-?> object (string/join ["<" ">"])) "?o")
+        statement (string/join " " [subject predicate object])]
+    (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . }"))))
+
+;; Endpoint Implementation
+
 (extend-type knowl.edge.store.Endpoint
   Store
   (find-by-query
@@ -42,21 +55,14 @@
           (try        
             (iterator-seq (.listStatements (.execConstruct query-execution)))
             (catch Exception e nil))))))
-  (find-types-of
-    [this resource]
-    (map
-      #(knowl.edge.model/object %)
-      (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
+  (find-types-of [this resource] (find-types-of* this resource))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this subject predicate object]
-      (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
-            predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
-            object (or (-?> object (string/join ["<" ">"])) "?o")
-            statement (string/join " " [subject predicate object])]
-        (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . }"))))))
+    ([this subject predicate object] (find-matching* this subject predicate object))))
+
+;; MemoryStore Implementation
 
 (defn- serialization-format [options]
   (name (or (:format options) "TTL")))
@@ -66,18 +72,19 @@
 
 (extend-type knowl.edge.store.MemoryStore
   Store
+  (find-by-query
+    ([this query-string]
+      (with-open [query-execution (QueryExecutionFactory/create query-string (.model this))]
+        (let [options (.options this)]
+          (try
+            (iterator-seq (.listStatements (.execConstruct query-execution)))
+            (catch Exception e nil))))))
+  (find-types-of [this resource] (find-types-of* this resource))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this ^Resource subject ^Property predicate ^RDFNode object]
-      (let [model (.model this)]
-      (iterator-seq (.listStatements model subject predicate object)))))
-  (find-types-of
-    [this resource]
-    (map
-      #(knowl.edge.model/object %)
-      (find-matching this resource (knowl.edge.model/create-resource [:rdf :type]))))
+    ([this subject predicate object] (find-matching* this subject predicate object)))
   Exporter
   (import-into
     [this source options]
@@ -89,13 +96,13 @@
       (.write (.model this) stream (serialization-format options)))))
 
 ;; Load the default graph into the in-memory store
-(def store (MemoryStore. (ModelFactory/createDefaultModel) {}))
+(def default-store (MemoryStore. (ModelFactory/createDefaultModel) {}))
 
 (defn load-core-data []
-  (import-into store (clojure.java.io/resource "private/data/core.ttl") {}))
+  (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
 
 (defn reload-core-data []
   (do
-    (.removeAll (.model store ))
+    (.removeAll (.model default-store ))
     (load-core-data)))
 

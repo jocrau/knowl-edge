@@ -33,6 +33,7 @@
     [net.cgrand.enlive-html :as template]))
 
 (def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def ^:dynamic *store* default-store)
 
 ;; Predicates
 
@@ -117,8 +118,8 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (if-let [statements (find-matching store resource)]
-      (let [types (find-types-of store resource)
+    (if-let [statements (find-matching *store* resource)]
+      (let [types (find-types-of *store* resource)
             context (conj-selector context [(into #{} (map #(type= %) types))])
             snippet (template/select *template* (:rootline context))
             snippet-predicates (extract-predicates snippet)
@@ -144,8 +145,9 @@
 ;; Entry Point
 
 (defn dereference [resource]
-  (when-let [representation (-?> (find-matching store nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
-    (when-let [document (transform representation (Context. 0 []))]
-      (template/emit* document))))
+  (binding [*store* (store-for resource)]
+    (when-let [representation (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)]
+      (when-let [document (transform representation (Context. 0 []))]
+        (template/emit* document)))))
 
 (use 'knowl.edge.implementation.jena.transformation)

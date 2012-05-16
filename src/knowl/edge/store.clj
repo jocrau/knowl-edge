@@ -36,3 +36,6 @@
 (deftype MemoryStore [model options])
 
 (use 'knowl.edge.implementation.jena.store)
+
+(defn store-for [resource]
+  default-store)
