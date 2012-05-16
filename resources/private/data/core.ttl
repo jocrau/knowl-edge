@@ -135,7 +135,7 @@
       		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>  ;
       foaf:page <http://localhost:8080/foo/bar> ;
       gr:validFrom "2011-04-01T00:00:00+01:00"^^xsd:dateTime ;
-      gr:validThrough "2011-8-12T00:00:00+01:00"^^xsd:dateTime .
+      gr:validThrough "2011-08-12T00:00:00+01:00"^^xsd:dateTime .
 
 <urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>
       rdf:type gr:ActualProductOrServiceInstance ;
