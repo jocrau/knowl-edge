@@ -62,7 +62,7 @@
   (name (or (:format options) "TTL")))
 
 (defn- base-iri []
-  "http://knowl-edge.herokuapp.com/")
+  (or (System/getenv "BASE_IRI") "http://localhost/"))
 
 (extend-type knowl.edge.store.MemoryStore
   Store
