@@ -1,13 +1,9 @@
-# knowl
+# knowl:edge
 
-FIXME: write description
-
-## Usage
-
-FIXME: write
+knowl:edge is a new kind of Knowledge Management System. It is solely based on Semantic Web technologies, like RDF, OWL, RDFa, and SPARQL. It is written in Clojure.
 
 ## License
 
-Copyright (C) 2012 FIXME
+Copyright (C) 2012 Jochen Rau
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under MIT License.
