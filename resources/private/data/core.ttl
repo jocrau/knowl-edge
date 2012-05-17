@@ -56,7 +56,6 @@
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post"@en ;
-      knowl: "My First Blog Post"@en ;
       knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>, <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>.
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>

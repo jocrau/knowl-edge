@@ -55,6 +55,9 @@ p {
 	
 a, p a {
 	text-decoration: none;
+}
+
+a.external-link {
     padding: 0 10px 0 10px;
     display: block;
 }
