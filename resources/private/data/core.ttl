@@ -22,7 +22,6 @@
 @prefix void:    <http://rdfs.org/ns/void#> .
 @prefix ex:      <http://example.com/ontology#> .
 
-
 <urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286>
 	a knowl:Application ;
 	knowl:source <urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751> .
@@ -49,6 +48,12 @@
 	rdf:type bibo:Webpage ;
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains <http://example.com/ACMECorp> .
+
+<urn:uuid:3289d35a-db8e-49a1-bc9b-9d2c4733a352>
+	knowl:represents </bostonians> ;
+	rdf:type bibo:Webpage ;
+	rdfs:label "Early Bostonians"@en ;
+	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
@@ -148,4 +153,25 @@
 
 <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
     rdf:type sp:Construct ;
-	knowl:query "PREFIX bibo: <http://purl.org/ontology/bibo/> PREFIX ex: <http://example.com/ontology#> PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT { ?page a ex:PageTree ; ex:page ?title . } WHERE { ?page a bibo:Webpage ; dc:title ?title .}" .
+	knowl:query """
+		PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+		PREFIX dbr: <http://dbpedia.org/resource/>
+		PREFIX dbo: <http://dbpedia.org/ontology/>
+		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+		CONSTRUCT {
+		  ?resource foaf:name ?name .
+		  ?resource dbo:birthDate ?birthDate .
+		  ?resource dbo:deathDate ?deathDate .
+		  ?resource dbo:abstract ?abstract .
+		}
+		WHERE {
+		  ?resource a foaf:Person .
+		  ?resource foaf:name ?name .
+		  ?resource dbo:birthPlace dbr:Boston .
+		  ?resource dbo:birthDate ?birthDate .
+		  ?resource dbo:deathDate ?deathDate .
+		  ?resource dbo:deathDate ?deathDate .
+		  ?resource dbo:abstract ?abstract .
+		  FILTER (?birthDate < "1900-01-01"^^xsd:date)
+		}
+	""" .
