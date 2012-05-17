@@ -6,28 +6,27 @@
 	<link rel="icon" href="static/images/favicon.gif" type="image/x-icon"/>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
-    <link rel="stylesheet" href="static/lib/hallo/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.8.16.custom.css" />
-    <link rel="stylesheet" href="static/lib/hallo/hallo.css" />
-    <link rel="stylesheet" href="static/lib/hallo/image.css" />
-    <link rel="stylesheet" href="static/lib/hallo/fontawesome/css/font-awesome.css" charset="utf-8" />
-    <link rel="stylesheet" href="static/lib/hallo/annotate.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+		<link rel="stylesheet" href="static/lib/hallo/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.8.16.custom.css" />
+		<link rel="stylesheet" href="static/lib/hallo/hallo.css" />
+		<link rel="stylesheet" href="static/lib/hallo/image.css" />
+		<link rel="stylesheet" href="static/lib/hallo/fontawesome/css/font-awesome.css" charset="utf-8" />
+		<link rel="stylesheet" href="static/lib/hallo/annotate.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
 
-    <script src="http://szabyg.github.com/annotate.js/lib/underscore-min.js"></script>
-    <script src="http://szabyg.github.com/annotate.js/lib/backbone-min.js"></script>
-    <script src="http://szabyg.github.com/annotate.js/lib/jquery.rdfquery.min.js"></script>
+		<script src="http://szabyg.github.com/annotate.js/lib/underscore-min.js"></script>
+		<script src="http://szabyg.github.com/annotate.js/lib/backbone-min.js"></script>
+		<script src="http://szabyg.github.com/annotate.js/lib/jquery.rdfquery.min.js"></script>
 
-    <script src="http://szabyg.github.com/annotate.js/lib/vie/vie-latest.js"></script>
-    <script src="http://szabyg.github.com/annotate.js/lib/annotate.js"></script>
+		<script src="http://szabyg.github.com/annotate.js/lib/vie/vie-latest.js"></script>
+		<script src="http://szabyg.github.com/annotate.js/lib/annotate.js"></script>
 
-    <script src="static/lib/hallo/hallo.js"></script>
+		<script src="static/lib/hallo/hallo.js"></script>
 	</head>
 	<body>
 		<div class="bg">
-			<!--start container-->
 			<div id="container">
 				<!--start header-->
 				<header>
@@ -37,14 +36,12 @@
 					<!--start menu-->
 					<nav>
 						<ul>
-							<li><a href="#" class="current">Home</a></li>
-							<li><a href="blog">News</a></li>
+							<li><a href="blog" class="current">Blog</a></li>
+							<li><a href="people">People</a></li>
 							<li><a href="products">Products</a></li>
 						</ul>
 					</nav>
 					<!--end menu-->
-				    <button id="enable">Enable</button>
-				    <button id="disable">Disable</button>
 					<!--end header-->
 				</header>
 				<!--start holder-->
@@ -71,7 +68,7 @@
 								<div property="http://www.w3.org/2011/content#rest" class="editable">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</div>
 							</div>
 						</p>
-						<a href="#"><span class="button">Read more</span></a>
+						<a rel="http://dbpedia.org/ontology/wikiPageExternalLink" href="#"><span class="button">Read more</span></a>
 					</div>
 
 					<div about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
@@ -110,47 +107,39 @@
 		<!--end container-->
 		<!--start footer-->
 		<footer>
-			<div class="container">  
+			<div class="container"> 
+				<div id="FooterTree">Web design by marija zaric - creative simplicity</div>
 				<div id="FooterTwo"> © 2012 Jochen Rau </div>
 			</div>
 		</footer>
 		<!--end footer-->
 	</div>
-	<!--end bg-->
-    <script>
-      jQuery('#enable').button().click(function() {
-        jQuery('.editable').hallo({
-          plugins: {
-            'halloformat': {},
-            'halloblock': {},
-            'hallojustify': {},
-            'hallolists': {},
-            'hallolink': {},
-            'halloannotate': {},
-            'halloreundo': {}
-          },
-          editable: true,
-          showAlways: true
-        })
-        .hallo('protectFocusFrom', jQuery('#enable'));
-        jQuery('.editable').bind('hallomodified', function(event, data) {
-            jQuery('#modified').html("Editables modified");
-        });
-        jQuery('.editable').bind('halloselected', function(event, data) {
-            jQuery('#modified').html("Selection made");
-        });
-        jQuery('.editable').bind('hallounselected', function(event, data) {
-            jQuery('#modified').html("Selection removed");
-        });
-      });
-      jQuery('#disable').button().click(function() {
-        jQuery('.editable').hallo({editable: false});
-      });
-      jQuery('.editable').bind('hellodeactivated', function() {
-          alert("foobar");
-        $(this).hallo({editable:false});
-      });
-    </script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery('.editable').hallo({
+				plugins: {
+					'halloformat': {},
+					'halloblock': {},
+					'hallojustify': {},
+					'hallolists': {},
+					'hallolink': {},
+					'halloannotate': {},
+					'halloreundo': {}
+				},
+				editable: true,
+				showAlways: true
+			});
+			jQuery('.editable').bind('hallomodified', function(event, data) {
+				jQuery('#modified').html("Editables modified");
+			});
+			jQuery('.editable').bind('halloselected', function(event, data) {
+				jQuery('#modified').html("Selection made");
+			});
+			jQuery('.editable').bind('hallounselected', function(event, data) {
+				jQuery('#modified').html("Selection removed");
+			});
+		});
+	</script>
 	<!-- Free template distributed by http://freehtml5templates.com -->
 </body>
 </html>

@@ -38,6 +38,12 @@
 	rdfs:label "Blog"@en ;
 	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
+<urn:uuid:b092baa8-9f16-4bba-aaf5-d48d3b447474>
+	knowl:represents </people> ;
+	rdf:type bibo:Webpage ;
+	rdfs:label "People"@en ;
+	knowl:contains <http://dbpedia.org/resource/Rich_Hickey>, <http://dbpedia.org/resource/Ted_Williams> .
+
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
 	knowl:represents </products> ;
 	rdf:type bibo:Webpage ;
@@ -50,6 +56,7 @@
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post"@en ;
+      knowl: "My First Blog Post"@en ;
       knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>, <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>.
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>

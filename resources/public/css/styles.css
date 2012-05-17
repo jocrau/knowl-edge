@@ -24,7 +24,7 @@ ol, ul {
 }
 
 a img {
-   border: none
+   border: none ;
 }
 
 aside, details, figcaption, figure, 
@@ -46,13 +46,7 @@ body {
 	color: #575757;
 	margin: 0 0 1px; height: 100%; 
 	line-height: 1.7;
-	border-top: 10px solid black;
-}
-
-.bg {
-	background-image: url(../images/bg.png); 
-	background-position: left top;
-	background-repeat: repeat;
+	border-top: 10px solid #ddd;
 }
 
 p {
@@ -61,6 +55,8 @@ p {
 	
 a, p a {
 	text-decoration: none;
+    padding: 0 10px 0 10px;
+    display: block;
 }
 	
 a: hover {
