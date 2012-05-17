@@ -161,6 +161,23 @@
                                           (transform-statement statement context)))))
           (rest grouped-statements))))))
 
+(defn transform-query [query store context]
+  (when-let [statements (find-by-query store query)]
+    (do (when (not= default-store store) (add default-store statements))
+      (let [grouped-statements (group-by #(subject %) statements)]
+        (loop [grouped-statements grouped-statements
+               result []]
+          (if-not (seq grouped-statements)
+            result
+            (recur
+              (rest grouped-statements)
+              (into
+                result
+                (let [statement-group (first grouped-statements)
+                      resource (key statement-group)
+                      types (find-types-of store resource)
+                      statements (val statement-group)]
+                  (transform-statements statements resource types context))))))))))
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
@@ -173,9 +190,14 @@
           (let [store (first stores)]
             (if-let [statements (find-matching store resource)]
               (let [types (find-types-of store resource)]
-                (do
-                  (when (not= default-store store) (add default-store statements))
-                  (transform-statements statements resource types context))))))))))
+                (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
+                  (when-let [query (-> (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#query") statements) first object value)]
+                    (when-let [service-statements (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#sparqlEndpoint") statements)]
+                      (let [store (knowl.edge.store.Endpoint. (-> service-statements first object value) {})]
+                        (transform-query query store context))))
+                  (do
+                    (when (not= default-store store) (add default-store statements))
+                    (transform-statements statements resource types context)))))))))))
 
 ;; Entry Point
 
