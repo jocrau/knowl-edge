@@ -6,8 +6,16 @@
 	<link rel="icon" href="static/images/favicon.gif" type="image/x-icon"/>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+	<script src="static/js/aloha/aloha.js" data-aloha-plugins="common/format"></script>
+	<link rel="stylesheet" href="static/css/aloha/aloha.css" type="text/css">
+    <script type="text/javascript">
+            Aloha.ready( function() {
+                   var $ = Aloha.jQuery;
+                   $('.editable').aloha();
+            });
+     </script>
 	</head>
 	<body>
 		<div class="bg">
@@ -31,18 +39,25 @@
 				</header>
 				<!--start holder-->
 				<div class="holder_content" rel="http://knowl-edge.org/ontology/core#contains">
+					
+					<div about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople">
+						<h3 property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</h3>
+						<div property="http://dbpedia.org/ontology/abstract" class="editable">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+					</div>
+					
+					
 					<div about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
-						<h3 property="http://purl.org/dc/elements/1.1/title">About Us</h3>
+						<h3 property="http://purl.org/dc/elements/1.1/title" class="editable">About Us</h3>
 						<ul>
 							Author(s):
 							<li rel="http://purl.org/dc/elements/1.1/creator">
-								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span>
+								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
 							</li>
 						</ul>
 						<div>Published: <span property="http://purl.org/dc/terms/created" content="1970-01-01T00:00:00+00:00">Jan 1 1970</span></div>
 						<p rel="http://knowl-edge.org/ontology/core#contains">
 							<div about="urn:uuid:aebb3866-7cf0-4d4a-ad58-56c3d90c5bb5" typeof="http://www.w3.org/2011/content#ContentAsText http://www.w3.org/2011/content#ContentAsXML">
-								<p property="http://www.w3.org/2011/content#chars http://www.w3.org/2011/content#rest">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</p>
+								<p property="http://www.w3.org/2011/content#chars http://www.w3.org/2011/content#rest" class="editable">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</p>
 							</div>
 						</p>
 						<a href="#"><span class="button">Read more</span></a>
@@ -56,9 +71,9 @@
 								<div rel="http://purl.org/goodrelations/v1#includes">
 									<div typeof="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance">
 										<div>
-											<strong><span property="http://purl.org/goodrelations/v1#name">Product A</span></strong>
+											<strong><span property="http://purl.org/goodrelations/v1#name" class="editable">Product A</span></strong>
 										</div>
-										<div property="http://purl.org/goodrelations/v1#description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+										<div property="http://purl.org/goodrelations/v1#description" class="editable">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 										<div>Creator:&nbsp;<span rel="http://purl.org/dc/elements/1.1/creator"><span about="http://example.com/person2" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span> (<span property="http://xmlns.com/foaf/0.1/age">60</span> years old)</span></span></div>
 									</div>
 								</div>

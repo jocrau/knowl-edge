@@ -11,22 +11,21 @@
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dam:     <http://typo3.org/ontology/dam#> .
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
-@prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
-@prefix spin:    <http://spinrdf.org/sp#> .
-@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix knowl:   <http://knowl-edge.org/ontology/core#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix spin:    <http://spinrdf.org/sp#> .
 @prefix pto:     <http://www.productontology.org/id/> .
-@prefix gr:      <http://purl.org/goodrelations/v1#> .
 @prefix fresnel:  <http://www.w3.org/2004/09/fresnel#> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
 
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
       a       bibo:Webpage ;
       rdfs:label "Product Catalog"@en ;
-      ex:menu <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> ;
       knowl:contains <http://example.com/ACMECorp> ;
-      knowl:represents <http://knowl-edge.herokuapp.com/products> .
+      knowl:represents <http://localhost/products> .
 
 <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8>
       a       gr:Offering ;
@@ -40,20 +39,20 @@
               ] ;
       gr:includes <urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2> ;
       gr:validFrom "2011-04-01T00:00:00+01:00"^^xsd:dateTime ;
-      gr:validThrough "2011-8-12T00:00:00+01:00"^^xsd:dateTime ;
+      gr:validThrough "2011-08-12T00:00:00+01:00"^^xsd:dateTime ;
       foaf:page <http://localhost:8080/foo/bar> .
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       a       sioc:BlogPost ;
       knowl:contains <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274> , <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a> ;
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> , <http://typoplanet.de/resources/Jochen_Rau> ;
-      dc:title "My First Blog Post" ;
+      dc:title "My First Blog Post"@en ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime .
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       a       sioc:BlogPost ;
       knowl:contains <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228> ;
-      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+      dc:creator <http://dbpedia.org/resource/Rich_Hickey> ;
       dc:title "My Second Blog Post" ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime .
 
@@ -65,17 +64,19 @@
       a       foaf:Person ;
       foaf:age 32 ;
       foaf:firstName "Jennifer" ;
-      foaf:lastName "Rau" .
+      foaf:lastName "Rau" ;
+      foaf:name "Jennifer Rau" .
 
 <http://typoplanet.de/resources/Jochen_Rau>
       a       foaf:Person ;
       foaf:age 41 ;
       foaf:firstName "Jochen" ;
-      foaf:lastName "Rau" .
+      foaf:lastName "Rau" ;
+      foaf:name "Jochen Rau" .
 
 <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>
       a       cnt:ContentAsXML ;
-      cnt:rest "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof=\"http://xmlns.com/foaf/0.1/Person\" property=\"http://xmlns.com/foaf/0.1/name\">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+      cnt:rest "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof=\"http://xmlns.com/foaf/0.1/Person\" property=\"http://xmlns.com/foaf/0.1/name\">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
 
 <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>
       a       gr:Offering ;
@@ -92,15 +93,30 @@
       gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime ;
       foaf:page <http://typo3.org/Tipis/foo.html> .
 
+<http://dbpedia.org/resource/Rich_Hickey>
+      a       <http://dbpedia.org/class/yago/LivingPeople> ;
+      rdfs:comment "Rich Hickey is the creator of the Clojure programming language, a Lisp dialect built on top of the Java Virtual Machine. Before Clojure, he developed dotLisp, a similar project based on the . NET platform. Hickey is an independent software developer and a consultant with over 20 years of experience in many facets of software development."@en ;
+      rdfs:label "Rich Hickey"@en ;
+      <http://dbpedia.org/ontology/abstract>
+              "Rich Hickey is the creator of the Clojure programming language, a Lisp dialect built on top of the Java Virtual Machine. Before Clojure, he developed dotLisp, a similar project based on the . NET platform. Hickey is an independent software developer and a consultant with over 20 years of experience in many facets of software development. He has worked on scheduling systems, broadcast automation, audio analysis and fingerprinting, database design, yield management, exit poll systems, and machine listening. He spent about 2½ years working on Clojure before releasing it to the world, much of that time working exclusively on Clojure without external funding. When he finally announced it, the announcement consisted of one email to some friends in the Common Lisp community."@en ;
+      <http://dbpedia.org/ontology/thumbnail>
+              <http://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Rich_Hickey.jpg/200px-Rich_Hickey.jpg> ;
+      <http://dbpedia.org/ontology/wikiPageExternalLink>
+              <http://www.infoq.com/presentations/hickey-clojure> , <http://blog.objectmentor.com/articles/2009/06/05/rich-hickey-on-testing> , <http://www.lisp50.org/schedule/schedule/hickey.html> , <http://www.codequarterly.com/2011/rich-hickey/> , <http://www.simple-talk.com/opinion/geek-of-the-week/rich-hickey-geek-of-the-week/> , <http://www.artima.com/articles/hickey_on_time.html> , <http://www.infoq.com/interviews/hickey-clojure-protocols> , <http://www.linuxjournal.com/article/10708> , <http://www.infoq.com/interviews/hickey-clojure> , <http://channel9.msdn.com/Shows/Going+Deep/Expert-to-Expert-Rich-Hickey-and-Brian-Beckman-Inside-Clojure> , <http://www.infoq.com/presentations/Value-Identity-State-Rich-Hickey> , <http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey> , <http://clojure.blip.tv/posts?view=archive&nsfw=dc> , <http://clojure.org/> ;
+      dcterms:subject <http://dbpedia.org/resource/Category:Living_people> , <http://dbpedia.org/resource/Category:Year_of_birth_missing_%28living_people%29> ;
+      owl:sameAs <http://rdf.freebase.com/ns/m/058fmbt> ;
+      foaf:depiction <http://upload.wikimedia.org/wikipedia/commons/f/f4/Rich_Hickey.jpg> ;
+      foaf:page <http://en.wikipedia.org/wiki/Rich_Hickey> .
+
 <urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>
       a       bibo:Webpage ;
       rdfs:label "Blog"@en ;
-      knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> , <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> ;
-      knowl:represents <http://knowl-edge.herokuapp.com/blog> .
+      knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> , <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> , <http://dbpedia.org/resource/Rich_Hickey> ;
+      knowl:represents <http://localhost/blog> .
 
 <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>
       a       cnt:ContentAsText ;
-      cnt:chars "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum" .
+      cnt:chars "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"@en .
 
 <urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>
       a       gr:ActualProductOrServiceInstance ;
@@ -131,14 +147,9 @@
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       a       cnt:ContentAsText ;
-      cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." .
+      cnt:chars "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
 
 <http://example.com/ACMECorp>
       a       gr:BusinessEntity ;
       gr:legalName "ACME Corp" ;
       gr:offers <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8> , <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7> .
-
-<urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751>
-      a       void:Dataset ;
-      void:sparqlEndpoint <http://localhost:3030/data/query> ;
-      void:uriSpace "http://localhost/" .

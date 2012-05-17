@@ -73,6 +73,7 @@
 
 (extend-type knowl.edge.store.MemoryStore
   Store
+  (add [this statements] (.add (.model this) statements))
   (find-by-query
     ([this query-string]
       (with-open [query-execution (QueryExecutionFactory/create query-string (.model this))]
