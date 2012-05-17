@@ -68,6 +68,9 @@
 (defn- set-relation [resource]
   (template/set-attr :rel (identifier resource)))
 
+(defn- set-reference [resource]
+  (template/set-attr :href (identifier resource)))
+
 (defn- set-types [types]
   (template/set-attr :typeof (string/join " " (map str types))))
 
@@ -109,20 +112,25 @@
   (time/unparse (time/formatter "EEEE dd MMMM, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
 
 (defn transform-statement [statement context]
-  (let [object (object statement)]
-    (template/do->
-      (template/content (transform object context))
-      (if (satisfies? knowl.edge.model/Literal object)
-        (template/do->
-          (if-let [datatype (datatype object)]
-            (template/do->
-              (set-datatype datatype)
-              (set-content (value object)))
-            identity)
-          (if-let [language ( language object)]
-            (set-language language)
-            identity))
-        identity))))
+  (let [predicate (predicate statement)
+        object (object statement)]
+    (if (= (identifier predicate) "http://dbpedia.org/ontology/wikiPageExternalLink")
+      (template/do->
+        (set-reference object)
+        (template/content (value object)))
+      (template/do->
+        (template/content (transform object context))
+        (if (satisfies? knowl.edge.model/Literal object)
+          (template/do->
+            (if-let [datatype (datatype object)]
+              (template/do->
+                (set-datatype datatype)
+                (set-content (value object)))
+              identity)
+            (if-let [language ( language object)]
+              (set-language language)
+              identity))
+          identity)))))
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
@@ -162,8 +170,7 @@
         (when-let [statements (find-matching store resource)]
           (do
             (add default-store statements)
-            (transform-statements statements resource (find-types-of store resource) context)))))
-    {:tag :span :content "Max. Depth"}))
+            (transform-statements statements resource (find-types-of store resource) context)))))))
 
 ;; Entry Point
 

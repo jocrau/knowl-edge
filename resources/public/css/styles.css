@@ -60,8 +60,7 @@ p {
 }
 	
 a, p a {
-	text-decoration: underline;
-	color: white;
+	text-decoration: none;
 }
 	
 a: hover {
