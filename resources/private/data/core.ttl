@@ -42,7 +42,7 @@
 	knowl:represents </people> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "People"@en ;
-	knowl:contains <http://dbpedia.org/resource/Joseph_Dennie>, <http://dbpedia.org/resource/Rich_Hickey>, <http://dbpedia.org/resource/Ted_Williams> .
+	knowl:contains <http://dbpedia.org/resource/Rich_Hickey>, <http://dbpedia.org/resource/Ted_Williams> .
 
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
 	knowl:represents </products> ;
