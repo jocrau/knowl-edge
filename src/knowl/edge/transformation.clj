@@ -41,8 +41,10 @@
   #{(template/attr-has :typeof (identifier resource)) (template/attr-has :about (identifier resource))})
 
 (defn- property= [resource]
-  #{(template/attr-has :property (identifier resource))
-    (template/attr-has :rel (identifier resource))})
+  (template/attr-has :property (identifier resource)))
+
+(defn- relation= [resource]
+  (template/attr-has :rel (identifier resource)))
 
 (defn- property? []
   #{(template/attr? :property)
@@ -59,6 +61,12 @@
 
 (defn- set-resource [resource]
   (template/set-attr :about (identifier resource)))
+
+(defn- set-property [resource]
+  (template/set-attr :property (identifier resource)))
+
+(defn- set-relation [resource]
+  (template/set-attr :rel (identifier resource)))
 
 (defn- set-types [types]
   (template/set-attr :typeof (string/join " " (map str types))))
@@ -130,11 +138,19 @@
       (if-not (seq grouped-statements)
         snippet
         (recur
-          (template/transform
-            snippet [(property= (ffirst grouped-statements))]
-            (template/clone-for
-              [statement (second (first grouped-statements))]
-              (transform-statement statement context)))
+          (let [predicate (ffirst grouped-statements)]
+            (template/at
+              snippet
+              [(property= predicate)] (template/do->
+                                        (set-property predicate)
+                                        (template/clone-for
+                                          [statement (second (first grouped-statements))]
+                                          (transform-statement statement context)))
+              [(relation= predicate)] (template/do->
+                                        (set-relation predicate)
+                                        (template/clone-for
+                                          [statement (second (first grouped-statements))]
+                                          (transform-statement statement context)))))
           (rest grouped-statements))))))
 
 
