@@ -174,7 +174,7 @@
             (if-let [statements (find-matching store resource)]
               (let [types (find-types-of store resource)]
                 (do
-                  (add default-store statements)
+                  (when (not= default-store store) (add default-store statements))
                   (transform-statements statements resource types context))))))))))
 
 ;; Entry Point
