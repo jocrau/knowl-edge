@@ -36,7 +36,7 @@
 	knowl:represents </blog> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Blog"@en ;
-	knowl:contains <http://dbpedia.org/resource/Rich_Hickey>, <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
+	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
 <urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
 	knowl:represents </products> ;
@@ -62,7 +62,7 @@
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       rdf:type sioc:BlogPost ;
-      dc:creator <http://dbpedia.org/resource/Rich_Hickey> ;
+      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
       dc:title "My Second Blog Post" ;
       knowl:contains <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>.

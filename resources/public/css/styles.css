@@ -261,14 +261,11 @@ a.photo_hover2: hover {
 
 footer {
 	position: relative;
+	top: 20px;
 	height: 90px;
 	clear: both;
 	width: 100%;
-	background-image: url(../images/footer.png);
-	background-position: left top;
-	background-repeat: repeat-x;
-	margin-bottom: 18px;
-	background-color: black;
+	background-color: #ddd;
 }
 
 #FooterOne, #FooterTwo, #FooterTree {
@@ -399,9 +396,8 @@ nav ul li a.current {
 	position: relative;
 	margin-top: 12px;
 	padding: 9px;
-	background-color: black;
+	background-color: #ddd;
 	display: inline-block;
-	color: white;
 	cursor: pointer;
 	text-align: center;
 	text-decoration: none;

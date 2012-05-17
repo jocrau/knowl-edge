@@ -8,14 +8,22 @@
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
-	<script src="static/js/aloha/aloha.js" data-aloha-plugins="common/format"></script>
-	<link rel="stylesheet" href="static/css/aloha/aloha.css" type="text/css">
-    <script type="text/javascript">
-            Aloha.ready( function() {
-                   var $ = Aloha.jQuery;
-                   $('.editable').aloha();
-            });
-     </script>
+    <link rel="stylesheet" href="static/lib/hallo/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" href="static/lib/hallo/hallo.css" />
+    <link rel="stylesheet" href="static/lib/hallo/image.css" />
+    <link rel="stylesheet" href="static/lib/hallo/fontawesome/css/font-awesome.css" charset="utf-8" />
+    <link rel="stylesheet" href="static/lib/hallo/annotate.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+
+    <script src="http://szabyg.github.com/annotate.js/lib/underscore-min.js"></script>
+    <script src="http://szabyg.github.com/annotate.js/lib/backbone-min.js"></script>
+    <script src="http://szabyg.github.com/annotate.js/lib/jquery.rdfquery.min.js"></script>
+
+    <script src="http://szabyg.github.com/annotate.js/lib/vie/vie-latest.js"></script>
+    <script src="http://szabyg.github.com/annotate.js/lib/annotate.js"></script>
+
+    <script src="static/lib/hallo/hallo.js"></script>
 	</head>
 	<body>
 		<div class="bg">
@@ -35,6 +43,8 @@
 						</ul>
 					</nav>
 					<!--end menu-->
+				    <button id="enable">Enable</button>
+				    <button id="disable">Disable</button>
 					<!--end header-->
 				</header>
 				<!--start holder-->
@@ -102,12 +112,45 @@
 		<footer>
 			<div class="container">  
 				<div id="FooterTwo"> © 2012 Jochen Rau </div>
-				<div id="FooterTree">Design by <a href="http://www.marijazaric.com">marija zaric - creative simplicity</a> </div>
 			</div>
 		</footer>
 		<!--end footer-->
 	</div>
 	<!--end bg-->
+    <script>
+      jQuery('#enable').button().click(function() {
+        jQuery('.editable').hallo({
+          plugins: {
+            'halloformat': {},
+            'halloblock': {},
+            'hallojustify': {},
+            'hallolists': {},
+            'hallolink': {},
+            'halloannotate': {},
+            'halloreundo': {}
+          },
+          editable: true,
+          showAlways: true
+        })
+        .hallo('protectFocusFrom', jQuery('#enable'));
+        jQuery('.editable').bind('hallomodified', function(event, data) {
+            jQuery('#modified').html("Editables modified");
+        });
+        jQuery('.editable').bind('halloselected', function(event, data) {
+            jQuery('#modified').html("Selection made");
+        });
+        jQuery('.editable').bind('hallounselected', function(event, data) {
+            jQuery('#modified').html("Selection removed");
+        });
+      });
+      jQuery('#disable').button().click(function() {
+        jQuery('.editable').hallo({editable: false});
+      });
+      jQuery('.editable').bind('hellodeactivated', function() {
+          alert("foobar");
+        $(this).hallo({editable:false});
+      });
+    </script>
 	<!-- Free template distributed by http://freehtml5templates.com -->
 </body>
 </html>
