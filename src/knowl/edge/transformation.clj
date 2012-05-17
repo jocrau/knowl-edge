@@ -164,13 +164,18 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (if-let [statements (find-matching *store* resource)]
-      (transform-statements statements resource (find-types-of *store* resource) context)
-      (let [store (store-for resource)]
-        (when-let [statements (find-matching store resource)]
-          (do
-            (add default-store statements)
-            (transform-statements statements resource (find-types-of store resource) context)))))))
+    (loop [stores (stores-for resource)
+           representation nil]
+      (if (or (not (seq stores)) representation)
+        representation
+        (recur
+          (rest stores)
+          (let [store (first stores)]
+            (if-let [statements (find-matching store resource)]
+              (let [types (find-types-of store resource)]
+                (do
+                  (add default-store statements)
+                  (transform-statements statements resource types context))))))))))
 
 ;; Entry Point
 

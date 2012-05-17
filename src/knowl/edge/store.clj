@@ -39,8 +39,8 @@
 
 (use 'knowl.edge.implementation.jena.store)
 
-(defn store-for [resource]
-  (let [stores (find-by-query default-store (str "
+(defn stores-for-memo [resource]
+    (let [stores (find-by-query default-store (str "
 					PREFIX void: <http://rdfs.org/ns/void#>
 					CONSTRUCT {
 					?s void:sparqlEndpoint ?endpoint .
@@ -51,6 +51,9 @@
 					?s void:uriSpace ?uriSpace .
 					FILTER strStarts(\"" (knowl.edge.model/identifier resource) "\", ?uriSpace)
 					}"))]
-    (if-let [endpoint-iri (-?> stores first knowl.edge.model/object knowl.edge.model/value)]
-      (Endpoint. endpoint-iri {})
-      default-store)))
+    (conj (map
+            #(Endpoint. (-> % knowl.edge.model/object knowl.edge.model/value) {})
+            stores)
+          default-store)))
+
+(defn stores-for [resource] (stores-for-memo resource))
