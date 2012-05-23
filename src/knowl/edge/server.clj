@@ -57,7 +57,11 @@
     (wrap-params)
     (wrap-stacktrace)))
 
-(defn -main []
+(defonce server
   (let [port (Integer. (or (System/getenv "PORT") 8080))]
+    (run-jetty #'app {:port port :join? false})))
+
+(defn -main []
+  (do
     (knowl.edge.store/load-core-data)
-    (run-jetty #'app {:port port})))
+    (.start server)))
