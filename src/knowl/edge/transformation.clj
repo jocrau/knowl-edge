@@ -207,7 +207,6 @@
   (if (< (count (:rootline context)) 6)
     (if-let [statements (fetch-statements resource context)]
       (let [types (extract-types-from statements)]
-        (println types)
         (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
           (when-let [query (extract-query-from statements)]
             (when-let [service (extract-service-from statements)]
