@@ -27,6 +27,7 @@
 (require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
+        '(com.hp.hpl.jena.ontology OntModelSpec)
         '(knowl.edge.store Endpoint))
 
 (defn- find-types-of* [this resource]
@@ -98,7 +99,7 @@
       (.write (.model this) stream (serialization-format options)))))
 
 ;; Load the default graph into the in-memory store
-(def default-store (MemoryStore. (ModelFactory/createDefaultModel) {}))
+(def default-store (MemoryStore. (ModelFactory/createOntologyModel (OntModelSpec/OWL_MEM)) {}))
 
 (defn load-core-data []
   (do
