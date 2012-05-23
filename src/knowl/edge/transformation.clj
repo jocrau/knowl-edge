@@ -188,9 +188,7 @@
           (rest stores)
           (let [store (first stores)]
             (let [new-statements (find-matching store resource)]
-              (do
-                (when (not= default-store store) (add default-store statements))
-                (into statements new-statements))))))))
+              (into statements new-statements)))))))
 
 (defn- extract-types-from [statements]
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") statements))]
