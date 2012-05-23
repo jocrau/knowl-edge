@@ -179,25 +179,42 @@
                       statements (val statement-group)]
                   (transform-statements statements resource types context))))))))))
 
-(defn transform-resource [resource context]
-  (if (< (count (:rootline context)) 6)
-    (loop [stores (stores-for resource)
-           representation nil]
-      (if (or (not (seq stores)) representation)
-        representation
+(defn fetch-statements [resource context]
+  (loop [stores (stores-for resource)
+         statements '()]
+      (if-not (seq stores)
+        statements
         (recur
           (rest stores)
           (let [store (first stores)]
-            (if-let [statements (find-matching store resource)]
-              (let [types (find-types-of store resource)]
-                (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
-                  (when-let [query (-> (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#query") statements) first object value)]
-                    (when-let [service-statements (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#sparqlEndpoint") statements)]
-                      (let [store (knowl.edge.store.Endpoint. (-> service-statements first object value) {})]
-                        (transform-query query store context))))
-                  (do
-                    (when (not= default-store store) (add default-store statements))
-                    (transform-statements statements resource types context)))))))))))
+            (let [new-statements (find-matching store resource)]
+              (do
+                (when (not= default-store store) (add default-store statements))
+                (into statements new-statements))))))))
+
+(defn- extract-types-from [statements]
+  (when-let [type-statements (-> (filter #(= (-> % predicate identifier) "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") statements))]
+    (into #{} (map #(-> % object value) type-statements))))
+
+(defn- extract-query-from [statements]
+  (-> (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#query") statements) first object value))
+
+(defn- extract-service-from [statements]
+  (when-let [service-statements (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#sparqlEndpoint") statements)]
+    (-> service-statements first object value)))
+
+(defn transform-resource [resource context]
+  (if (< (count (:rootline context)) 6)
+    (if-let [statements (fetch-statements resource context)]
+      (let [types (extract-types-from statements)]
+        (println types)
+        (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
+          (when-let [query (extract-query-from statements)]
+            (when-let [service (extract-service-from statements)]
+              (let [store (knowl.edge.store.Endpoint. service {})]
+                (transform-query query store context))))
+          (do
+            (transform-statements statements resource types context)))))))
 
 ;; Entry Point
 
