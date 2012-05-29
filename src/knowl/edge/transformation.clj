@@ -48,7 +48,7 @@
 
 (defn- property? []
   #{(template/attr? :property)
-    (template/attr-has :rel)})
+    (template/attr? :rel)})
 
 (defn- set-datatype [datatype]
   (template/set-attr :datatype (value datatype)))
