@@ -19,7 +19,7 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the know:ledge Management System."
+  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
    knowl.edge.implementation.jena.transformation)
 

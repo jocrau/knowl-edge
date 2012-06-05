@@ -19,7 +19,7 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace defines an entry point for the know:ledge management system."
+  ^{:doc "This namespace defines an entry point for the knowl:edge management system."
     :author "Jochen Rau"}
   knowl.edge.server
   (:gen-class)

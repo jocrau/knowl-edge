@@ -19,7 +19,7 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the know:ledge Management System."
+  ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
   knowl.edge.store
   (:use [clojure.contrib.core :only (-?>)]))

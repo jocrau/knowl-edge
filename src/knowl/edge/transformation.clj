@@ -19,7 +19,7 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the know:ledge management system."
+  ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the knowl:edge management system."
     :author "Jochen Rau"}  
   knowl.edge.transformation
   (:refer-clojure :exclude [namespace])
