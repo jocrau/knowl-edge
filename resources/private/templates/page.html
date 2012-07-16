@@ -8,22 +8,6 @@
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
-		<link rel="stylesheet" href="static/lib/hallo/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.8.16.custom.css" />
-		<link rel="stylesheet" href="static/lib/hallo/hallo.css" />
-		<link rel="stylesheet" href="static/lib/hallo/image.css" />
-		<link rel="stylesheet" href="static/lib/hallo/fontawesome/css/font-awesome.css" charset="utf-8" />
-		<link rel="stylesheet" href="static/lib/hallo/annotate.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
-
-		<script src="http://szabyg.github.com/annotate.js/lib/underscore-min.js"></script>
-		<script src="http://szabyg.github.com/annotate.js/lib/backbone-min.js"></script>
-		<script src="http://szabyg.github.com/annotate.js/lib/jquery.rdfquery.min.js"></script>
-
-		<script src="http://szabyg.github.com/annotate.js/lib/vie/vie-latest.js"></script>
-		<script src="http://szabyg.github.com/annotate.js/lib/annotate.js"></script>
-
-		<script src="static/lib/hallo/hallo.js"></script>
 	</head>
 	<body>
 		<div class="bg">
@@ -115,32 +99,6 @@
 		</footer>
 		<!--end footer-->
 	</div>
-	<script>
-		jQuery(document).ready(function() {
-			jQuery('.editable').hallo({
-				plugins: {
-					'halloformat': {},
-					'halloblock': {},
-					'hallojustify': {},
-					'hallolists': {},
-					'hallolink': {},
-					'halloannotate': {},
-					'halloreundo': {}
-				},
-				editable: true,
-				showAlways: true
-			});
-			jQuery('.editable').bind('hallomodified', function(event, data) {
-				jQuery('#modified').html("Editables modified");
-			});
-			jQuery('.editable').bind('halloselected', function(event, data) {
-				jQuery('#modified').html("Selection made");
-			});
-			jQuery('.editable').bind('hallounselected', function(event, data) {
-				jQuery('#modified').html("Selection removed");
-			});
-		});
-	</script>
 	<!-- Free template distributed by http://freehtml5templates.com -->
 </body>
 </html>
