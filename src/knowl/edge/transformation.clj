@@ -30,49 +30,49 @@
   (:require
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
-    [net.cgrand.enlive-html :as template]))
+    [net.cgrand.enlive-html :as enlive]))
 
-(def ^:dynamic *template* (template/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
 (def ^:dynamic *store* default-store)
 
 ;; Predicates
 
 (defn- type= [resource]
-  #{(template/attr-has :typeof (identifier resource)) (template/attr-has :about (identifier resource))})
+  #{(enlive/attr-has :typeof (identifier resource)) (enlive/attr-has :about (identifier resource))})
 
 (defn- property= [resource]
-  (template/attr-has :property (identifier resource)))
+  (enlive/attr-has :property (identifier resource)))
 
 (defn- relation= [resource]
-  (template/attr-has :rel (identifier resource)))
+  (enlive/attr-has :rel (identifier resource)))
 
 (defn- property? []
-  #{(template/attr? :property)
-    (template/attr? :rel)})
+  #{(enlive/attr? :property)
+    (enlive/attr? :rel)})
 
 (defn- set-datatype [datatype]
-  (template/set-attr :datatype (value datatype)))
+  (enlive/set-attr :datatype (value datatype)))
 
 (defn- set-language [language]
-  (comp (template/set-attr :lang (value language)) (template/set-attr :xml:lang (value language))))
+  (comp (enlive/set-attr :lang (value language)) (enlive/set-attr :xml:lang (value language))))
 
 (defn- set-content [resource]
-  (template/set-attr :content (value resource)))
+  (enlive/set-attr :content (value resource)))
 
 (defn- set-resource [resource]
-  (template/set-attr :about (identifier resource)))
+  (enlive/set-attr :about (identifier resource)))
 
 (defn- set-property [resource]
-  (template/set-attr :property (identifier resource)))
+  (enlive/set-attr :property (identifier resource)))
 
 (defn- set-relation [resource]
-  (template/set-attr :rel (identifier resource)))
+  (enlive/set-attr :rel (identifier resource)))
 
 (defn- set-reference [resource]
-  (template/set-attr :href (identifier resource)))
+  (enlive/set-attr :href (identifier resource)))
 
 (defn- set-types [types]
-  (template/set-attr :typeof (string/join " " (map str types))))
+  (enlive/set-attr :typeof (string/join " " (map str types))))
 
 ;; Helper functions
 
@@ -80,7 +80,7 @@
   (filter #(string/contains? % ":")
           (map #(or (-> % :attrs :property)
                     (-> % :attrs :rel))
-               (template/select snippet [(property?)]))))
+               (enlive/select snippet [(property?)]))))
 
 ;; Context
 
@@ -115,15 +115,15 @@
   (let [predicate (predicate statement)
         object (object statement)]
     (if (= (identifier predicate) "http://dbpedia.org/ontology/wikiPageExternalLink")
-      (template/do->
+      (enlive/do->
         (set-reference object)
-        (template/content (value object)))
-      (template/do->
-        (template/content (transform object context))
+        (enlive/content (value object)))
+      (enlive/do->
+        (enlive/content (transform object context))
         (if (satisfies? knowl.edge.model/Literal object)
-          (template/do->
+          (enlive/do->
             (if-let [datatype (datatype object)]
-              (template/do->
+              (enlive/do->
                 (set-datatype datatype)
                 (set-content (value object)))
               identity)
@@ -134,12 +134,12 @@
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (template/select *template* (:rootline context))
+        snippet (enlive/select *template* (:rootline context))
         snippet-predicates (extract-predicates snippet)
         grouped-statements (group-by #(predicate %) statements)
         query-predicates (keys grouped-statements)]
-    (loop [snippet (template/transform snippet [template/root]
-                                       (template/do->
+    (loop [snippet (enlive/transform snippet [enlive/root]
+                                       (enlive/do->
                                          (set-types types)
                                          (set-resource resource)))
            grouped-statements grouped-statements]
@@ -147,16 +147,16 @@
         snippet
         (recur
           (let [predicate (ffirst grouped-statements)]
-            (template/at
+            (enlive/at
               snippet
-              [(property= predicate)] (template/do->
+              [(property= predicate)] (enlive/do->
                                         (set-property predicate)
-                                        (template/clone-for
+                                        (enlive/clone-for
                                           [statement (second (first grouped-statements))]
                                           (transform-statement statement context)))
-              [(relation= predicate)] (template/do->
+              [(relation= predicate)] (enlive/do->
                                         (set-relation predicate)
-                                        (template/clone-for
+                                        (enlive/clone-for
                                           [statement (second (first grouped-statements))]
                                           (transform-statement statement context)))))
           (rest grouped-statements))))))
@@ -220,6 +220,6 @@
                          (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)
                          resource)]
     (when-let [document (transform representation (Context. 0 []))]
-      (template/emit* document))))
+      (enlive/emit* document))))
 
 (use 'knowl.edge.implementation.jena.transformation)
