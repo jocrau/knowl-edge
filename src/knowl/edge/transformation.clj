@@ -134,7 +134,7 @@
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (enlive/select *template* (:rootline context))
+        snippet (enlive/select (enlive/html-resource (java.io.File. "resources/private/templates/page.html")) (:rootline context))
         snippet-predicates (extract-predicates snippet)
         grouped-statements (group-by #(predicate %) statements)
         query-predicates (keys grouped-statements)]

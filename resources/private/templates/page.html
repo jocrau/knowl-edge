@@ -1,62 +1,101 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en" about="http://example.com/foo" typeof="http://purl.org/ontology/bibo/Webpage">
+<html lang="en" about="http://example.com/foo" typeof="http://purl.org/ontology/bibo/Webpage">
 <head>
 	<meta charset="UTF-8">
 	<title property="http://www.w3.org/2000/01/rdf-schema#label">knowl:edge - Home</title>
 	<link rel="icon" href="static/images/favicon.gif" type="image/x-icon"/>
-	<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<script src="static/lib/green-turtle/RDFa.0.16.0.js"></script>
+ 
+	<!-- load the jQuery and require.js libraries -->
+	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/vendor/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
+	
+	<!-- load the Aloha Editor core and some plugins -->
+	<script src="http://cdn.aloha-editor.org/latest/lib/aloha.js" data-aloha-plugins="common/format,common/list,common/link"></script>
+	 
+	<!-- load the Aloha Editor CSS styles -->
+	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
+	
+	<!-- make all elements with class="editable" editable with Aloha Editor -->
+	<script type="text/javascript">
+	var history = [];
+	Aloha.ready(function() {
+		RDFa.attach(document);
+		var editableElements = document.getElementsByProperty("http://www.w3.org/2011/content#rest");
+		Aloha.jQuery(editableElements).aloha();
+		Aloha.bind(
+			"aloha-smart-content-changed",
+			function(jEvent, info) {
+				console.log('content changed editable "' + info["editable"].getId() + '" changed' );
+				history.push(document.data._data_);
+				RDFa.attach(document,true);
+		});
+	});
+	</script>
 	</head>
 	<body>
-		<div class="bg">
-			<div id="container">
-				<!--start header-->
-				<header>
-					<!--start logo-->
-					<a href="#" id="logo"><img src="static/images/logo.png" width="180" height="43" alt="logo"/></a>    
-					<!--end logo-->
-					<!--start menu-->
-					<nav>
-						<ul>
-							<li><a href="blog">Blog</a></li>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="#">knowl:edge</a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="active"><a href="blog">Blog</a></li>
 							<li><a href="people">People</a></li>
 							<li><a href="products">Products</a></li>
 							<li><a href="bostonians">Bostonians</a></li>
 						</ul>
-					</nav>
-					<!--end menu-->
-					<!--end header-->
-				</header>
-				<!--start holder-->
-				<div class="holder_content" rel="http://knowl-edge.org/ontology/core#contains">
-					
-					<div about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople">
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="container">
+			<div class="row">
+				<div rel="http://knowl-edge.org/ontology/core#contains">			
+					<div class="span12" about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople">
 						<h3 property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</h3>
 						<div property="http://dbpedia.org/ontology/abstract" class="editable">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 						<div><a class="external-link" rel="http://dbpedia.org/ontology/wikiPageExternalLink" href="http://example.com">Link</a></div>
 					</div>
 					
 					
-					<div about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
-						<h3 property="http://purl.org/dc/elements/1.1/title" class="editable">About Us</h3>
-						Author(s):
-						<ul class="authors">
-							<li rel="http://purl.org/dc/elements/1.1/creator">
-								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
-							</li>
-						</ul>
-						<div>Published: <span property="http://purl.org/dc/terms/created" content="1970-01-01T00:00:00+00:00">Jan 1 1970</span></div>
+					<div class="span6" about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://rdfs.org/sioc/types#BlogPost">
+						<h3 property="http://purl.org/dc/elements/1.1/title">About Us</h3>
+						<div class="well">
+							Author(s):
+							<ul class="authors">
+								<li rel="http://purl.org/dc/elements/1.1/creator">
+									<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person http://dbpedia.org/class/yago/LivingPeople"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
+								</li>
+							</ul>
+							<div>Published: <span property="http://purl.org/dc/terms/created" content="1970-01-01T00:00:00+00:00">Jan 1 1970</span></div>
+						</div>
 						<p rel="http://knowl-edge.org/ontology/core#contains">
 							<div about="urn:uuid:aebb3866-7cf0-4d4a-ad58-56c3d90c5bb5" typeof="http://www.w3.org/2011/content#ContentAsXML">
 								<div property="http://www.w3.org/2011/content#rest" class="editable">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</div>
 							</div>
 						</p>
-						<a rel="http://dbpedia.org/ontology/wikiPageExternalLink" href="#"><span class="button">Read more</span></a>
+						<a rel="http://dbpedia.org/ontology/wikiPageExternalLink" href="#"><span class="btn btn-mini">Read more</span></a>
 					</div>
 
-					<div about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
+					<div class="span12" about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
 						<h1 property="http://purl.org/goodrelations/v1#legalName">Company Ltd.</h1>
 						<h2>Our Offers</h2>
 						<ul rel="http://purl.org/goodrelations/v1#offers">
@@ -75,7 +114,7 @@
 						</ul>
 					</div>
 					
-					<div about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://dbpedia.org/ontology/Software">
+					<div class="span12" about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://dbpedia.org/ontology/Software">
 						<h3 property="http://dbpedia.org/property/name">Software</h3>
 						<p property="http://dbpedia.org/ontology/abstract">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</p>
 						<div rel="http://dbpedia.org/property/platform"> 
@@ -84,21 +123,15 @@
 							</span>
 						</div>
 					</div>
-					
 				</div>
 			</div>
-			<!--end holder-->
 		</div>
-		<!--end container-->
-		<!--start footer-->
-		<footer>
-			<div class="container"> 
-				<div id="FooterTree">Web design by marija zaric - creative simplicity</div>
-				<div id="FooterTwo"> © 2012 Jochen Rau </div>
+		
+		<footer class="container footer">
+			<div class="row">
+				<div class="span12"> © 2012 Jochen Rau </div>				
 			</div>
 		</footer>
-		<!--end footer-->
 	</div>
-	<!-- Free template distributed by http://freehtml5templates.com -->
 </body>
 </html>
