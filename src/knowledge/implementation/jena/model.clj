@@ -21,9 +21,9 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-   knowl.edge.implementation.jena.model)
+   knowledge.implementation.jena.model)
 
-(in-ns 'knowl.edge.model)
+(in-ns 'knowledge.model)
 (require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.rdf.model ModelFactory)
         '(com.hp.hpl.jena.datatypes TypeMapper))

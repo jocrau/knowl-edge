@@ -21,7 +21,7 @@
 (ns
   ^{:doc "This namespace defines an entry point for the knowl:edge management system."
     :author "Jochen Rau"}
-  knowl.edge.server
+  knowledge.server
   (:gen-class)
   (:refer-clojure :exclude [namespace])
   (:use
@@ -29,19 +29,19 @@
     ring.adapter.jetty
     ring.middleware.stacktrace
     ring.middleware.params
-    knowl.edge.model
-    knowl.edge.transformation)
+    knowledge.model
+    knowledge.transformation)
   (:require
     [compojure.route :as route]))
 
 (defn resource [thing]
   (cond
-    (map? thing) (create-resource
-                   (str (name (:scheme thing))
-                        "://" (:server-name thing)
-                        (:uri thing)
-                        (if-let [query-string (:query-string thing)]
-                          (str "?" query-string))))
+    (map? thing) (let [uri (str (name (:scheme thing))
+                                "://" (:server-name thing)
+                                (:uri thing)
+                                (if-let [query-string (:query-string thing)]
+                                  (str "?" query-string)))]
+                   (create-resource uri))
     (string? thing) (create-resource thing)))
 
 (defroutes route
@@ -63,5 +63,5 @@
 
 (defn -main []
   (do
-    (knowl.edge.store/load-core-data)
+    (knowledge.store/load-core-data)
     (.start server)))

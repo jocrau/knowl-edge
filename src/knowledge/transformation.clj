@@ -21,12 +21,12 @@
 (ns
   ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the knowl:edge management system."
     :author "Jochen Rau"}  
-  knowl.edge.transformation
+  knowledge.transformation
   (:refer-clojure :exclude [namespace])
   (:use 
     [clojure.contrib.core :only (-?>)]
-    knowl.edge.store
-    knowl.edge.model)
+    knowledge.store
+    knowledge.model)
   (:require
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
@@ -120,7 +120,7 @@
         (enlive/content (value object)))
       (enlive/do->
         (enlive/content (transform object context))
-        (if (satisfies? knowl.edge.model/Literal object)
+        (if (satisfies? knowledge.model/Literal object)
           (enlive/do->
             (if-let [datatype (datatype object)]
               (enlive/do->
@@ -134,7 +134,7 @@
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (enlive/select (enlive/html-resource (java.io.File. "resources/private/templates/page.html")) (:rootline context))
+        snippet (enlive/select *template* (:rootline context))
         snippet-predicates (extract-predicates snippet)
         grouped-statements (group-by #(predicate %) statements)
         query-predicates (keys grouped-statements)]
@@ -208,7 +208,7 @@
         (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
           (when-let [query (extract-query-from statements)]
             (when-let [service (extract-service-from statements)]
-              (let [store (knowl.edge.store.Endpoint. service {})]
+              (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
           (do
             (transform-statements statements resource types context)))))))
@@ -222,4 +222,4 @@
     (when-let [document (transform representation (Context. 0 []))]
       (enlive/emit* document))))
 
-(use 'knowl.edge.implementation.jena.transformation)
+(use 'knowledge.implementation.jena.transformation)

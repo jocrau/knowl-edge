@@ -1,1 +1,1 @@
-web: lein trampoline run -m knowl.edge.server
+web: lein trampoline run -m knowledge.server

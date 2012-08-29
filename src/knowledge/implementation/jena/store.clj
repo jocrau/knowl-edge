@@ -21,17 +21,17 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-   knowl.edge.implementation.jena.store)
+   knowledge.implementation.jena.store)
 
-(in-ns 'knowl.edge.store)
+(in-ns 'knowledge.store)
 (require '[clojure.contrib.str-utils2 :as string])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
         '(com.hp.hpl.jena.ontology OntModelSpec)
-        '(knowl.edge.store Endpoint))
+        '(knowledge.store Endpoint))
 
 (defn- find-types-of* [this resource]
-  (map #(knowl.edge.model/object %)
+  (map #(knowledge.model/object %)
     (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
 
 (defn- find-matching* [this subject predicate object]
@@ -40,12 +40,13 @@
         language-filter (if (nil? object)
                           " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
         object (or (-?> object (string/join ["<" ">"])) "?o")
-        statement (string/join " " [subject predicate object])]
-    (find-by-query this (str "CONSTRUCT { " statement " . } WHERE { " statement " . " language-filter " }"))))
+        pattern (string/join " " [subject predicate object])
+        statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
+    (find-by-query this statement)))
 
 ;; Endpoint Implementation
 
-(extend-type knowl.edge.store.Endpoint
+(extend-type knowledge.store.Endpoint
   Store
   (find-by-query
     ([this query-string] (find-by-query this query-string (.service this)))
@@ -72,7 +73,7 @@
 (defn- base-iri []
   (or (System/getenv "BASE_IRI") "http://localhost/"))
 
-(extend-type knowl.edge.store.MemoryStore
+(extend-type knowledge.store.MemoryStore
   Store
   (add [this statements] (.add (.model this) statements))
   (find-by-query
@@ -102,9 +103,7 @@
 (def default-store (MemoryStore. (ModelFactory/createOntologyModel (OntModelSpec/OWL_MEM)) {}))
 
 (defn load-core-data []
-  (do
-    (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {})
-    #_(import-into default-store (clojure.java.io/resource "private/data/hickey.n3") {:format :N3})))
+  (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
 
 (defn reload-core-data []
   (do

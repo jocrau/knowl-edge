@@ -21,7 +21,7 @@
 (ns
   ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-  knowl.edge.store
+  knowledge.store
   (:use [clojure.contrib.core :only (-?>)]))
 
 (defprotocol Store
@@ -37,7 +37,7 @@
 (deftype Endpoint [service options])
 (deftype MemoryStore [model options])
 
-(use 'knowl.edge.implementation.jena.store)
+(use 'knowledge.implementation.jena.store)
 
 (defn stores-for-memo [resource]
     (let [stores (find-by-query default-store (str "
@@ -49,10 +49,10 @@
 					?s a void:Dataset .
 					?s void:sparqlEndpoint ?endpoint .
 					?s void:uriSpace ?uriSpace .
-					FILTER strStarts(\"" (knowl.edge.model/identifier resource) "\", ?uriSpace)
+					FILTER strStarts(\"" (knowledge.model/identifier resource) "\", ?uriSpace)
 					}"))]
     (conj (map
-            #(Endpoint. (-> % knowl.edge.model/object knowl.edge.model/value) {})
+            #(Endpoint. (-> % knowledge.model/object knowledge.model/value) {})
             stores)
           default-store)))
 

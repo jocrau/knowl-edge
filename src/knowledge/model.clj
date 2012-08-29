@@ -21,7 +21,7 @@
 (ns
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-  knowl.edge.model
+  knowledge.model
   (:refer-clojure :exclude [namespace]))
 
 (def ^:dynamic *base* "http://knowl-edge.net/ontology/core#")
@@ -112,4 +112,4 @@
     true
     false))
 
-(use 'knowl.edge.implementation.jena.model)
+(use 'knowledge.implementation.jena.model)
