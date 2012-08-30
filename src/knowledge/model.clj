@@ -63,6 +63,14 @@
   Literal
   (datatype [this] nil)
   (language [this] nil))
+  
+
+(def know "http://knowl-edge.org/ontology/core#")
+(def rdf:type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+(def know:query (str know "query"))
+(def know:sparqlEndpoint (str know "sparqlEndpoint"))
+(def spin:Construct "http://spinrdf.org/sp#Construct")
+(def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 
 (def curies {"xml" "http://www.w3.org/XML/1998/namespace"
              "xmlns" "http://www.w3.org/2000/xmlns/"

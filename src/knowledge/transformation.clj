@@ -114,7 +114,7 @@
 (defn transform-statement [statement context]
   (let [predicate (predicate statement)
         object (object statement)]
-    (if (= (identifier predicate) "http://dbpedia.org/ontology/wikiPageExternalLink")
+    (if (= (identifier predicate) dbo:wikiPageExternalLink)
       (enlive/do->
         (set-reference object)
         (enlive/content (value object)))
@@ -127,7 +127,7 @@
                 (set-datatype datatype)
                 (set-content (value object)))
               identity)
-            (if-let [language ( language object)]
+            (if-let [language (language object)]
               (set-language language)
               identity))
           identity)))))
@@ -191,21 +191,21 @@
               (into statements new-statements)))))))
 
 (defn- extract-types-from [statements]
-  (when-let [type-statements (-> (filter #(= (-> % predicate identifier) "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") statements))]
+  (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
     (into #{} (map #(-> % object value) type-statements))))
 
 (defn- extract-query-from [statements]
-  (-> (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#query") statements) first object value))
+  (-> (filter #(= (-> % predicate identifier) know:query) statements) first object value))
 
 (defn- extract-service-from [statements]
-  (when-let [service-statements (filter #(= (-> % predicate identifier) "http://knowl-edge.org/ontology/core#sparqlEndpoint") statements)]
+  (when-let [service-statements (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements)]
     (-> service-statements first object value)))
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
     (if-let [statements (fetch-statements resource context)]
       (let [types (extract-types-from statements)]
-        (if (some #(= (identifier %) "http://spinrdf.org/sp#Construct") types)
+        (if (some #(= (identifier %) spin:Construct) types)
           (when-let [query (extract-query-from statements)]
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
@@ -217,7 +217,7 @@
 
 (defn dereference [resource]
   (let [representation (or
-                         (-?> (find-matching *store* nil (create-resource ["http://knowl-edge.org/ontology/core#" "represents"]) resource) first subject)
+                         (-?> (find-matching *store* nil (create-resource [know "represents"]) resource) first subject)
                          resource)]
     (when-let [document (transform representation (Context. 0 []))]
       (enlive/emit* document))))
