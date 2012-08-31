@@ -15,6 +15,7 @@
     <![endif]-->
 
 	<script src="static/lib/green-turtle/RDFa.0.16.0.js"></script>
+	<script src="static/js/application.js"></script>
  
 	<!-- load the jQuery and require.js libraries -->
 	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/vendor/jquery-1.7.2.js"></script>
@@ -28,18 +29,16 @@
 	
 	<!-- make all elements with class="editable" editable with Aloha Editor -->
 	<script type="text/javascript">
-	var history = [];
 	Aloha.ready(function() {
-		RDFa.attach(document);
-		var editableElements = document.getElementsByProperty("http://www.w3.org/2011/content#rest");
-		Aloha.jQuery(editableElements).aloha();
-		Aloha.bind(
-			"aloha-smart-content-changed",
-			function(jEvent, info) {
-				console.log('content changed editable "' + info["editable"].getId() + '" changed' );
-				history.push(document.data._data_);
-				RDFa.attach(document,true);
-		});
+		document.addEventListener(
+			"rdfa.loaded",
+			function() {
+				RDFa.attach(document);
+				var editableElements = document.getElementsByProperty("http://www.w3.org/2011/content#rest");
+				Aloha.jQuery(editableElements).aloha();
+			},
+			false
+		);
 	});
 	</script>
 	</head>
@@ -61,6 +60,7 @@
 							<li><a href="bostonians">Bostonians</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
+					<a href="javascript:void(0)" onclick="alert(webapp.greet('ClojureScript'));" class="btn pull-right">Save</button>
 				</div>
 			</div>
 		</div>

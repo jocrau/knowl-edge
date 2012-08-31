@@ -8,6 +8,13 @@
                  [clj-time "0.4.1"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
+  :plugins [[lein-cljsbuild "0.2.7"]]
+  :cljsbuild {
+      :builds [{
+          :source-path "src"
+          :compiler {
+            :output-to "resources/public/js/application.js"  ; default: main.js in current directory
+            :optimizations :advanced}}]}
   :resource-paths ["resources"]
   :aot [knowledge.server]
   :main knowledge.server
