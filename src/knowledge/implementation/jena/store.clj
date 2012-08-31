@@ -25,13 +25,14 @@
 
 (in-ns 'knowledge.store)
 (require '[clojure.contrib.str-utils2 :as string])
+(require '[knowledge.model :as model])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
         '(com.hp.hpl.jena.ontology OntModelSpec)
         '(knowledge.store Endpoint))
 
 (defn- find-types-of* [this resource]
-  (map #(knowledge.model/object %)
+  (map #(model/object %)
     (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
 
 (defn- find-matching* [this subject predicate object]
