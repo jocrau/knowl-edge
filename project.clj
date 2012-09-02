@@ -14,7 +14,8 @@
           :source-path "src"
           :compiler {
             :output-to "resources/public/js/application.js"  ; default: main.js in current directory
-            :optimizations :advanced}}]}
+            :optimizations :simple
+			:pretty-print true}}]}
   :resource-paths ["resources"]
   :aot [knowledge.server]
   :main knowledge.server
