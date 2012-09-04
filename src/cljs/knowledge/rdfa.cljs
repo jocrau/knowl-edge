@@ -1,6 +1,7 @@
-(ns webapp
+(ns knowledge.rdfa
   (:require [goog.dom :as dom]
-            [cljs.core :as cljs]))
+            [cljs.core :as cljs]
+            [clojure.browser.net :as net]))
 
 (defn ^:export test-rdfa []
   (let [nodes (.getElementsByProperty js/document "http://www.w3.org/2011/content#rest")]
@@ -49,6 +50,8 @@
              (str representation (serialize-predicates subject predicates)))))))
 
 (defn ^:export export-graph []
-  (let [graph (cljs/js->clj js/document.data._data_.triplesGraph)
-        representation (serialize-triples graph)]
-    representation))
+  (let [connection (net/xhr-connection)
+        graph (cljs/js->clj js/document.data._data_.triplesGraph)
+        representation (serialize-triples graph)
+        headers {"Content-Type" "text/turtle;charset=UTF-8"}]
+    (net/transmit connection "http://localhost:8080/resource" "POST" representation)))

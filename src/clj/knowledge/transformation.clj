@@ -33,7 +33,6 @@
     [net.cgrand.enlive-html :as enlive]))
 
 (def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
-(def ^:dynamic *store* default-store)
 
 ;; Predicates
 
@@ -217,7 +216,7 @@
 
 (defn dereference [resource]
   (let [representation (or
-                         (-?> (find-matching *store* nil (create-resource [know "represents"]) resource) first subject)
+                         (-?> (find-matching default-store nil (create-resource [know "represents"]) resource) first subject)
                          resource)]
     (when-let [document (transform representation (Context. 0 []))]
       (enlive/emit* document))))

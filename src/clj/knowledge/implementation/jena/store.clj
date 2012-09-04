@@ -29,7 +29,7 @@
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
         '(com.hp.hpl.jena.ontology OntModelSpec)
-        '(knowledge.store Endpoint))
+        '(knowledge.store Endpoint MemoryStore))
 
 (defn- find-types-of* [this resource]
   (map #(model/object %)
@@ -75,8 +75,9 @@
   (or (System/getenv "BASE_IRI") "http://localhost/"))
 
 (extend-type knowledge.store.MemoryStore
-  Store
-  (add [this statements] (.add (.model this) statements))
+  knowledge.store/Store
+  (add [this statements]
+       (.add (.model this) statements (base-iri) "TTL"))
   (find-by-query
     ([this query-string]
       (with-open [query-execution (QueryExecutionFactory/create query-string (.model this))]
@@ -90,7 +91,7 @@
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
     ([this subject predicate object] (find-matching* this subject predicate object)))
-  Exporter
+  knowledge.store/Exporter
   (import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]

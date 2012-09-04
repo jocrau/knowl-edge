@@ -30,6 +30,7 @@
     ring.middleware.stacktrace
     ring.middleware.params
     knowledge.model
+    [knowledge.store :as store]
     knowledge.transformation)
   (:require
     [compojure.route :as route]))
@@ -46,6 +47,9 @@
 
 (defroutes route
   (route/files "/static/" {:root "resources/public/"})
+  (POST "/resource" {body :body}
+        (store/add store/default-store body)
+        "ok")
   (GET "/resource" {{iri "iri"} :params :as request}
        (dereference (resource iri)))
   (GET "*" [:as request]
