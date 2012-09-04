@@ -33,7 +33,7 @@
 
 (defn- find-types-of* [this resource]
   (map #(model/object %)
-    (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
+       (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
 
 (defn- find-matching* [this subject predicate object]
   (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
@@ -75,8 +75,8 @@
   (or (System/getenv "BASE_IRI") "http://localhost/"))
 
 (extend-type knowledge.store.MemoryStore
-  knowledge.store/Store
-  (add [this statements]
+  Store
+  (add-statements [this statements]
        (.add (.model this) statements (base-iri) "TTL"))
   (find-by-query
     ([this query-string]
@@ -91,7 +91,7 @@
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
     ([this subject predicate object] (find-matching* this subject predicate object)))
-  knowledge.store/Exporter
+  Exporter
   (import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]

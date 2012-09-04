@@ -162,7 +162,7 @@
 
 (defn transform-query [query store context]
   (when-let [statements (find-by-query store query)]
-    (do (when (not= default-store store) (add default-store statements))
+    (do (when (not= default-store store) (add-statements default-store statements))
       (let [grouped-statements (group-by #(subject %) statements)]
         (loop [grouped-statements grouped-statements
                result []]

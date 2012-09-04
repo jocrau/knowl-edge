@@ -25,7 +25,7 @@
   (:use [clojure.contrib.core :only (-?>)]))
 
 (defprotocol Store
-  (add [this statements])
+  (add-statements [this statements])
   (find-by-query [this query-string] [this query-string service])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
