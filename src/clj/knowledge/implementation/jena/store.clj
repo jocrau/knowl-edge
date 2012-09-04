@@ -112,3 +112,7 @@
     (.removeAll (.model default-store))
     (load-core-data)))
 
+(defn export-core-data []
+  (export-from default-store "resources/private/data/out.ttl" {}))
+
+
