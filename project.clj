@@ -9,7 +9,6 @@
                  [clj-time "0.4.1"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
-  :plugins [[lein-cljsbuild "0.2.7"]]
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
   :cljsbuild {
@@ -17,9 +16,9 @@
           :source-path "src/cljs"
           :compiler {
             :output-to "resources/public/js/application.js"
-            :optimizations :simple
-			:pretty-print true}}]}
+            :optimizations :whitespace
+            :pretty-print true}}]}
   :hooks [leiningen.cljsbuild]
   :main knowledge.server
-  :aot [knowledge.server]
-  :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"])
+  :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"]
+  :min-lein-version "2.0.0")

@@ -72,7 +72,7 @@
 (declare export-core-data)
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.ModelCom
-  knowledge.store/Store
+  Store
   (add-statements
     ([this statements]
       (add-statements this statements {}))
