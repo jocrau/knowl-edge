@@ -1,13 +1,13 @@
 (ns knowledge.rdfa
-  (:require [goog.dom :as dom]
-            [goog.structs :as structs]
-            [cljs.core :as cljs]
-            [clojure.browser.net :as net]))
+  (:require [cljs.core :as cljs]
+            [clojure.browser.net :as net]
+            [clojure.browser.event :as event]
+            [clojure.browser.dom :as dom]))
 
 (defn ^:export test-rdfa []
   (let [nodes (.getElementsByProperty js/document "http://www.w3.org/2011/content#rest")]
     (doseq [node nodes]
-      (dom/setTextContent node "foo"))))
+      (dom/set-value node "foo"))))
 
 (defn serialize-object [object]
   (let [value (object "value")
@@ -50,10 +50,51 @@
                    predicates ((second (first graph)) "predicates")]
              (str representation (serialize-predicates subject predicates)))))))
 
-(defn ^:export export-graph []
-  (do (RDFa/attach js/document true)
-    (let [connection (net/xhr-connection)
-          graph (cljs/js->clj js/document.data._data_.triplesGraph)
-          representation (serialize-triples graph)
-          headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
-      (net/transmit connection "http://localhost:8080/resource" "POST" representation headers))))
+(defn export-graph [graph]
+  (let [connection (net/xhr-connection)
+        representation (serialize-triples (cljs/js->clj graph))
+        headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
+    (net/transmit connection "http://localhost:8080/resource" "POST" representation headers)))
+
+(defn get-editables []
+  (.getElementsByProperty js/document "http://www.w3.org/2011/content#rest"))
+
+(defn attach-handler [handler]
+  (event/listen-once
+    (dom/get-element "edit-btn")
+    goog.events.EventType.CLICK
+    handler))
+
+(defn attach-editor []
+  (let [elements (get-editables)]
+    (.aloha (Aloha.jQuery elements))
+    true))
+
+(defn detach-editor []
+  (let [elements (get-editables)]
+    (.mahalo (Aloha.jQuery elements))
+    true))
+
+(declare edit->save)
+
+(def save->edit
+  (fn [e]
+    (let [target (.-target e)]
+      (dom/set-text target "Edit")
+      (RDFa/attach js/document true)
+      (export-graph (cljs/js->clj js/document.data._data_.triplesGraph))
+      (attach-handler edit->save)
+      (detach-editor)
+      true)))
+
+(def edit->save
+  (fn [e]
+    (let [target (.-target e)]
+      (dom/set-text target "Save")
+      (attach-handler save->edit)
+      (attach-editor)
+      true)))
+
+(defn init [] (attach-handler edit->save))
+
+(set! (.-onload js/window) init)

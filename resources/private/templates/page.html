@@ -28,39 +28,19 @@
 	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
 	
 	<!-- make all elements with class="editable" editable with Aloha Editor -->
-	<script type="text/javascript">
-	Aloha.ready(function() {
-		document.addEventListener(
-			"rdfa.loaded",
-			function() {
-				RDFa.attach(document);
-				var editableElements = document.getElementsByProperty("http://www.w3.org/2011/content#rest");
-				Aloha.jQuery(editableElements).aloha();
-			},
-			false
-		);
-	});
-	</script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
-					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</a>
 					<a class="brand" href="#">knowl:edge</a>
-					<div class="nav-collapse">
-						<ul class="nav">
-							<li class="active"><a href="blog">Blog</a></li>
-							<li><a href="people">People</a></li>
-							<li><a href="products">Products</a></li>
-							<li><a href="bostonians">Bostonians</a></li>
-						</ul>
-					</div><!--/.nav-collapse -->
-					<a href="javascript:void(0)" onclick="knowledge.rdfa.export_graph();" class="btn pull-right">Save</button>
+					<ul class="nav">
+						<li class="active"><a href="blog">Blog</a></li>
+						<li><a href="people">People</a></li>
+						<li><a href="products">Products</a></li>
+						<li><a href="bostonians">Bostonians</a></li>
+					</ul>
+					<a id="edit-btn" href="javascript:void(0)" class="btn pull-right">Edit</a>
 				</div>
 			</div>
 		</div>
