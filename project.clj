@@ -21,4 +21,5 @@
 			:pretty-print true}}]}
   :hooks [leiningen.cljsbuild]
   :main knowledge.server
+  :aot [knowledge.server]
   :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"])
