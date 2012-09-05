@@ -69,6 +69,8 @@
 
 ;; MemoryStore Implementation
 
+(declare export-core-data)
+
 (extend-type com.hp.hpl.jena.rdf.model.impl.ModelCom
   knowledge.store/Store
   (add-statements
