@@ -24,8 +24,14 @@
   knowledge.store
   (:use [clojure.contrib.core :only (-?>)]))
 
+(defn- serialization-format [options]
+  (name (or (:format options) "TTL")))
+
+(defn- base-iri []
+  (or (System/getenv "BASE_IRI") "http://localhost/"))
+
 (defprotocol Store
-  (add-statements [this statements])
+  (add-statements [this statements] [this statements options])
   (find-by-query [this query-string] [this query-string service])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))

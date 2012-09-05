@@ -8,8 +8,7 @@
                  [re-rand "0.1.0"]
                  [clj-time "0.4.1"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
-  :profiles {:dev {:dependencies [[midje "1.4.0"]
-                                  [lein-ring "0.7.0"]]}}
+  :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :plugins [[lein-cljsbuild "0.2.7"]]
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
@@ -21,7 +20,5 @@
             :optimizations :simple
 			:pretty-print true}}]}
   :hooks [leiningen.cljsbuild]
-  :ring {:handler example.routes/app}
-  :aot [knowledge.server]
   :main knowledge.server
   :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"])

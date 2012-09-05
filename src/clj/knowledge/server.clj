@@ -47,9 +47,9 @@
 
 (defroutes route
   (route/files "/static/" {:root "resources/public/"})
-  (POST "/resource" {body :body}
+  (POST "/resource" {body :body :as request}
         (do
-          (store/add-statements store/default-store body)
+          (store/add-statements store/default-store body {})
           "ok"))
   (GET "/resource" {{iri "iri"} :params :as request}
        (dereference (resource iri)))
@@ -68,5 +68,5 @@
 
 (defn -main []
   (do
-    (knowledge.store/load-core-data)
+    (knowledge.store/import-core-data)
     (.start server)))

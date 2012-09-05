@@ -1,5 +1,6 @@
 (ns knowledge.rdfa
   (:require [goog.dom :as dom]
+            [goog.structs :as structs]
             [cljs.core :as cljs]
             [clojure.browser.net :as net]))
 
@@ -50,8 +51,9 @@
              (str representation (serialize-predicates subject predicates)))))))
 
 (defn ^:export export-graph []
-  (let [connection (net/xhr-connection)
-        graph (cljs/js->clj js/document.data._data_.triplesGraph)
-        representation (serialize-triples graph)
-        headers {"Content-Type" "text/turtle;charset=UTF-8"}]
-    (net/transmit connection "http://localhost:8080/resource" "POST" representation)))
+  (do (RDFa/attach js/document true)
+    (let [connection (net/xhr-connection)
+          graph (cljs/js->clj js/document.data._data_.triplesGraph)
+          representation (serialize-triples graph)
+          headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
+      (net/transmit connection "http://localhost:8080/resource" "POST" representation headers))))

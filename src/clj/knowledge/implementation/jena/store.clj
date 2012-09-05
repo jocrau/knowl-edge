@@ -28,8 +28,9 @@
 (require '[knowledge.model :as model])
 (import '(com.hp.hpl.jena.query QueryExecutionFactory)
         '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
-        '(com.hp.hpl.jena.ontology OntModelSpec)
         '(knowledge.store Endpoint MemoryStore))
+
+(def default-store (ModelFactory/createDefaultModel))
 
 (defn- find-types-of* [this resource]
   (map #(model/object %)
@@ -68,23 +69,21 @@
 
 ;; MemoryStore Implementation
 
-(defn- serialization-format [options]
-  (name (or (:format options) "TTL")))
-
-(defn- base-iri []
-  (or (System/getenv "BASE_IRI") "http://localhost/"))
-
-(extend-type knowledge.store.MemoryStore
-  Store
-  (add-statements [this statements]
-       (.add (.model this) statements (base-iri) "TTL"))
+(extend-type com.hp.hpl.jena.rdf.model.impl.ModelCom
+  knowledge.store/Store
+  (add-statements
+    ([this statements]
+      (add-statements this statements {}))
+    ([this statements options]
+      (do
+        (.read this statements (base-iri) (serialization-format options))
+        (export-core-data))))
   (find-by-query
     ([this query-string]
-      (with-open [query-execution (QueryExecutionFactory/create query-string (.model this))]
-        (let [options (.options this)]
-          (try
-            (iterator-seq (.listStatements (.execConstruct query-execution)))
-            (catch Exception e nil))))))
+      (with-open [query-execution (QueryExecutionFactory/create query-string this)]
+        (try
+          (iterator-seq (.listStatements (.execConstruct query-execution)))
+          (catch Exception e nil)))))
   (find-types-of [this resource] (find-types-of* this resource))
   (find-matching
     ([this] (find-matching this nil nil nil))
@@ -95,22 +94,21 @@
   (import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]
-      (.read (.model this) stream (base-iri) (serialization-format options))))
+      (.read this stream (base-iri) (serialization-format options))))
   (export-from
     [this target options]
     (with-open [stream (clojure.java.io/output-stream target)]
-      (.write (.model this) stream (serialization-format options)))))
+      (.write this stream (serialization-format options)))))
 
-;; Load the default graph into the in-memory store
-(def default-store (MemoryStore. (ModelFactory/createOntologyModel (OntModelSpec/OWL_MEM)) {}))
+;; Helper functions
 
-(defn load-core-data []
+(defn import-core-data []
   (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
 
 (defn reload-core-data []
   (do
-    (.removeAll (.model default-store))
-    (load-core-data)))
+    (.removeAll default-store)
+    (import-core-data)))
 
 (defn export-core-data []
   (export-from default-store "resources/private/data/out.ttl" {}))
