@@ -1,1 +1,1 @@
-web: lein trampoline run -m knowledge.server
+web: lein trampoline with-profile production run -m knowledge.server
