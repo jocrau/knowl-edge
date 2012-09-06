@@ -95,6 +95,15 @@
       (attach-editor)
       true)))
 
-(defn init [] (attach-handler edit->save))
+(defn attach-content-change-handler []
+  (Aloha.bind
+    "aloha-smart-content-changed"
+    (fn [event info]
+      (dom/log (str "smart edit detected " (.-obj (.-editable info)))))))
+
+(defn init []
+  (attach-handler edit->save)
+  (attach-content-change-handler)
+  true)
 
 (set! (.-onload js/window) init)
