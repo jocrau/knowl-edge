@@ -78,8 +78,8 @@
 (declare edit->save)
 
 (def save->edit
-  (fn [e]
-    (let [target (.-target e)]
+  (fn [event]
+    (let [target (.-target event)]
       (dom/set-text target "Edit")
       (RDFa/attach js/document true)
       (export-graph (cljs/js->clj js/document.data._data_.triplesGraph))
@@ -88,8 +88,8 @@
       true)))
 
 (def edit->save
-  (fn [e]
-    (let [target (.-target e)]
+  (fn [event]
+    (let [target (.-target event)]
       (dom/set-text target "Save")
       (attach-handler save->edit)
       (attach-editor)
