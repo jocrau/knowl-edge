@@ -106,4 +106,5 @@
   (attach-content-change-handler)
   true)
 
-(set! (.-onload js/window) init)
+(.addEventListener js/document "DOMContentLoaded" init)
+
