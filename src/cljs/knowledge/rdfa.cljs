@@ -57,7 +57,7 @@
     (net/transmit connection "http://localhost:8080/resource" "POST" representation headers)))
 
 (defn get-editables []
-  (.getElementsByProperty js/document "http://www.w3.org/2011/content#rest"))
+  (.getElementsBySubject js/document "urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228"))
 
 (defn attach-handler [handler]
   (event/listen-once
