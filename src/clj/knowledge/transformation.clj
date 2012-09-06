@@ -126,9 +126,7 @@
                 (set-datatype datatype)
                 (set-content (value object)))
               identity)
-            (if-let [language (language object)]
-              (set-language language)
-              identity))
+            (set-language (language object)))
           identity)))))
 
 (defn transform-statements [statements resource types context]

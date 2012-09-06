@@ -28,7 +28,7 @@
 
 <urn:uuid:58bb82d3-8f34-4c69-8c8d-872edeb6cc51>
 	a void:Dataset ;
-	void:sparqlEndpoint <http://live.dbpedia.org/sparql> ;
+	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
 	void:uriSpace "http://dbpedia.org/resource/" .
 
 <urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>

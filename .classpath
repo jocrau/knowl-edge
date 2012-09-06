@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="resources">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" path="src/clj"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="src/cljs"/>
 	<classpathentry kind="con" path="ccw.LEININGEN_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
