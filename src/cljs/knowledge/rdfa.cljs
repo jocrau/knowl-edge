@@ -22,9 +22,9 @@
 (defn get-editables []
   (.getElementsByProperty rdfa "http://www.w3.org/2011/content#rest"))
 
-(defn attach-handler [handler]
-  (event/listen-once
-    (dom/get-element "edit-btn")
+(defn attach-handler [id handler]
+  (event/listen
+    (dom/get-element id)
     goog.events.EventType.CLICK
     handler))
 
@@ -42,16 +42,30 @@
   (fn [event]
     (let [target (.-target event)]
       (dom/set-text target "Edit")
-      (export-graph  (get-triples))
-      (attach-handler edit->save)
+      (export-graph (get-triples))
+      (attach-handler "edit-btn" edit->save)
       (detach-editor))))
 
 (def edit->save
   (fn [event]
     (let [target (.-target event)]
       (dom/set-text target "Save")
-      (attach-handler save->edit)
+      (attach-handler "edit-btn" save->edit)
       (attach-editor))))
+
+(def add-test-content
+  (fn [event]
+    (let [response (.-target event)
+          content (.getResponseText response)
+          parent (dom/get-element "test-content")]
+      (set! (.-innerHTML parent) content))))
+
+(def load-test-content
+  (fn [event]
+    (let [connection (net/xhr-connection)
+          iri (.-value (dom/get-element "iri-field"))]
+      (event/listen connection goog.net.EventType.COMPLETE add-test-content)
+      (net/transmit connection (str "http://localhost:8080/resource?iri=" iri) "GET"))))
 
 (defn attach-content-change-handler []
   (Aloha.bind
@@ -61,7 +75,8 @@
 
 (defn init []
   (def rdfa (.init js/RDFaDOM)) ; this is just a work-around
-  (attach-handler edit->save)
+  (attach-handler "edit-btn" edit->save)
+  (attach-handler "load-btn" load-test-content)
   (attach-content-change-handler))
 
 (.addEventListener js/document "DOMContentLoaded" init)
