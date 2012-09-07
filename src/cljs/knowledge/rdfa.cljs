@@ -13,6 +13,11 @@
         headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
     (net/transmit connection "http://localhost:8080/resource" "POST" representation headers)))
 
+(defn get-triples []
+  (let [document-element (.-documentElement js/document)
+        location (.-URL js/document)]
+    (:triples (core/extract-rdfa :html document-element location))))
+
 (declare rdfa)
 (defn get-editables []
   (.getElementsByProperty rdfa "http://www.w3.org/2011/content#rest"))
@@ -37,7 +42,7 @@
   (fn [event]
     (let [target (.-target event)]
       (dom/set-text target "Edit")
-      (export-graph  (:triples (core/extract-rdfa js/document js/document :html)))
+      (export-graph  (get-triples))
       (attach-handler edit->save)
       (detach-editor))))
 
