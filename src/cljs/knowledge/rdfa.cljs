@@ -7,18 +7,20 @@
             [knowledge.repr :as repr]
             [knowledge.dom :as kdom]))
 
+(declare rdfa)
+(declare base)
+
 (defn export-graph [graph]
   (let [connection (net/xhr-connection)
         representation (repr/print-triples graph)
         headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
-    (net/transmit connection "http://localhost:8080/resource" "POST" representation headers)))
+    (net/transmit connection (str base "/resource") "POST" representation headers)))
 
 (defn get-triples []
   (let [document-element (.-documentElement js/document)
         location (.-URL js/document)]
     (:triples (core/extract-rdfa :html document-element location))))
 
-(declare rdfa)
 (defn get-editables []
   (.getElementsByProperty rdfa "http://www.w3.org/2011/content#rest"))
 
@@ -65,7 +67,7 @@
     (let [connection (net/xhr-connection)
           iri (.-value (dom/get-element "iri-field"))]
       (event/listen connection goog.net.EventType.COMPLETE add-test-content)
-      (net/transmit connection (str "http://localhost:8080/resource?iri=" iri) "GET"))))
+      (net/transmit connection (str base "/resource?iri=" iri) "GET"))))
 
 (defn attach-content-change-handler []
   (Aloha.bind
@@ -74,7 +76,8 @@
       (dom/log (str "smart edit detected " (.-obj (.-editable info)))))))
 
 (defn init []
-  (def rdfa (.init js/RDFaDOM)) ; this is just a work-around
+  (def rdfa (.init js/RDFaDOM))
+  (def base (.-origin (.-location js/document)))
   (attach-handler "edit-btn" edit->save)
   (attach-handler "load-btn" load-test-content)
   (attach-content-change-handler))
