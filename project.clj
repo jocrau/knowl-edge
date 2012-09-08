@@ -11,6 +11,7 @@
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
+  :hooks [leiningen.cljsbuild]
   :cljsbuild {
       :builds [{
           :source-path "src/cljs"
@@ -18,7 +19,7 @@
             :output-to "resources/public/js/application.js"
             :optimizations :whitespace
             :pretty-print true}}]}
-  :hooks [leiningen.cljsbuild]
+  :aot [knowledge]
   :main knowledge.server
   :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"]
   :min-lein-version "2.0.0")

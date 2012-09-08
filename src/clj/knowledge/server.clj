@@ -26,14 +26,17 @@
   (:refer-clojure :exclude [namespace])
   (:use
     compojure.core
+    compojure.route
     ring.adapter.jetty
-    ring.middleware.stacktrace
-    ring.middleware.params
-    knowledge.model
-    [knowledge.store :as store]
-    knowledge.transformation)
+	  ring.middleware.stacktrace
+    ring.middleware.params)
   (:require
-    [compojure.route :as route]))
+    [knowledge.model :as model]
+    [knowledge.implementation.jena.model]
+    [knowledge.store :as store]
+    [knowledge.implementation.jena.store]
+    [knowledge.transformation :as transform]
+    [knowledge.implementation.jena.transformation]))
 
 (defn resource [thing]
   (cond
@@ -42,31 +45,27 @@
                                 (:uri thing)
                                 (if-let [query-string (:query-string thing)]
                                   (str "?" query-string)))]
-                   (create-resource uri))
-    (string? thing) (create-resource thing)))
+                   (model/create-resource uri))
+    (string? thing) (model/create-resource thing)))
 
 (defroutes route
-  (route/files "/static/" {:root "resources/public/"})
+  (files "/static/" {:root "resources/public/"})
   (POST "/resource" {body :body :as request}
         (do
           (store/add-statements store/default-store body {})
           "ok"))
   (GET "/resource" {{iri "iri"} :params :as request}
-       (dereference (resource iri)))
+       (transform/dereference (resource iri)))
   (GET "*" [:as request]
-       (dereference (resource request)))
-  (route/not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
+       (transform/dereference (resource request)))
+  (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 
 (def app
   (-> route
     (wrap-params)
     (wrap-stacktrace)))
 
-(defonce server
-  (let [port (Integer. (or (System/getenv "PORT") 8080))]
-    (run-jetty #'app {:port port :join? false})))
-
 (defn -main []
-  (do
-    (knowledge.store/import-core-data)
-    (.start server)))
+  (let [port (Integer. (or (System/getenv "PORT") 8080))]
+    (store/import-core-data)
+    (.start (run-jetty #'app {:port port :join? false}))))

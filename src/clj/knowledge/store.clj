@@ -43,7 +43,8 @@
 (deftype Endpoint [service options])
 (deftype MemoryStore [model options])
 
-(use 'knowledge.implementation.jena.store)
+(declare find-by-query)
+(declare default-store)
 
 (defn stores-for-memo [resource]
     (let [stores (find-by-query default-store (str "

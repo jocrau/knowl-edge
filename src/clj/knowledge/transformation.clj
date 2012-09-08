@@ -160,21 +160,20 @@
 
 (defn transform-query [query store context]
   (when-let [statements (find-by-query store query)]
-    (do (when (not= default-store store) (add-statements default-store statements))
-      (let [grouped-statements (group-by #(subject %) statements)]
-        (loop [grouped-statements grouped-statements
-               result []]
-          (if-not (seq grouped-statements)
-            result
-            (recur
-              (rest grouped-statements)
-              (into
-                result
-                (let [statement-group (first grouped-statements)
-                      resource (key statement-group)
-                      types (find-types-of store resource)
-                      statements (val statement-group)]
-                  (transform-statements statements resource types context))))))))))
+    (let [grouped-statements (group-by #(subject %) statements)]
+      (loop [grouped-statements grouped-statements
+             result []]
+        (if-not (seq grouped-statements)
+          result
+          (recur
+            (rest grouped-statements)
+            (into
+              result
+              (let [statement-group (first grouped-statements)
+                    resource (key statement-group)
+                    types (find-types-of store resource)
+                    statements (val statement-group)]
+                (transform-statements statements resource types context)))))))))
 
 (defn fetch-statements [resource context]
   (loop [stores (stores-for resource)
@@ -219,4 +218,3 @@
     (when-let [document (transform representation (Context. 0 []))]
       (enlive/emit* document))))
 
-(use 'knowledge.implementation.jena.transformation)

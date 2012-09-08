@@ -119,5 +119,3 @@
   (if (and (string? thing) (re-find iri-regex (name thing)))
     true
     false))
-
-(use 'knowledge.implementation.jena.model)

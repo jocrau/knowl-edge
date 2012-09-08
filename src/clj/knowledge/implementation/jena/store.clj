@@ -77,9 +77,7 @@
     ([this statements]
       (add-statements this statements {}))
     ([this statements options]
-      (do
-        (.read this statements (base-iri) (serialization-format options))
-        (export-core-data))))
+      (.read this statements (base-iri) (serialization-format options))))
   (find-by-query
     ([this query-string]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
