@@ -28,7 +28,7 @@
   (name (or (:format options) "TTL")))
 
 (defn- base-iri []
-  (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
+  (or (System/getenv "BASE_IRI") "http://localhost/"))
 
 (defprotocol Store
   (add-statements [this statements] [this statements options])
