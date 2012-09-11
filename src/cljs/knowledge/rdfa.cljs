@@ -3,9 +3,9 @@
             [clojure.browser.net :as net]
             [clojure.browser.event :as event]
             [clojure.browser.dom :as dom]
-            [knowledge.core :as core]
-            [knowledge.repr :as repr]
-            [knowledge.dom :as kdom]))
+            [rdfa.core :as core]
+            [rdfa.repr :as repr]
+            [rdfa.dom :as kdom]))
 
 (declare rdfa)
 (declare base)
