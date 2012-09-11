@@ -70,7 +70,7 @@
 
 <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>
       rdf:type cnt:ContentAsXML ;
-      cnt:rest """Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span typeof="http://xmlns.com/foaf/0.1/Person" property="http://xmlns.com/foaf/0.1/name">John Doe</span> dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""@en .
+      cnt:rest "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse <span about=\"urn:uuid:71ba651a-a854-42f6-9d2b-c0cfb30c3abc\" typeof=\"http://xmlns.com/foaf/0.1/Person\"><span property=\"http://xmlns.com/foaf/0.1/name\">John Doe</span></span> dolore eu fugiat nulla pariatur."@en .
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       rdf:type sioc:BlogPost ;
