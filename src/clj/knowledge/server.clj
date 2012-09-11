@@ -42,6 +42,7 @@
   (cond
     (map? thing) (let [uri (str (name (:scheme thing))
                                 "://" (:server-name thing)
+                                (if-let [port (:server-port thing)] (str ":" port))
                                 (:uri thing)
                                 (if-let [query-string (:query-string thing)]
                                   (str "?" query-string)))]
@@ -57,6 +58,7 @@
   (GET "/resource" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
   (GET "*" [:as request]
+       (println request)
        (transform/dereference (resource request)))
   (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 

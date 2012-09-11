@@ -81,6 +81,14 @@
                     (-> % :attrs :rel))
                (enlive/select snippet [(property?)]))))
 
+(defn link-external [target]
+  (let [url (identifier target)]
+    {:tag :a :attrs {:href url} :content url}))
+
+(defn link-button [target]
+  (let [url (str "/resource?iri=" (identifier target))]
+    {:tag :a :attrs {:href url :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
+
 ;; Context
 
 (defprotocol ContextHandling
@@ -113,10 +121,11 @@
 (defn transform-statement [statement context]
   (let [predicate (predicate statement)
         object (object statement)]
-    (if (= (identifier predicate) dbo:wikiPageExternalLink)
-      (enlive/do->
-        (set-reference object)
-        (enlive/content (value object)))
+    (condp = (identifier predicate)
+      dbo:wikiPageExternalLink
+      (enlive/content (link-external object))
+      know:InternalLink
+      (enlive/content (link-button object))
       (enlive/do->
         (enlive/content (transform object context))
         (if (satisfies? knowledge.model/Literal object)
