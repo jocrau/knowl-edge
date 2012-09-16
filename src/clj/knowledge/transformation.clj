@@ -30,6 +30,7 @@
   (:require
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
+    [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]))
 
 (def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
@@ -83,11 +84,11 @@
 
 (defn link-external [target]
   (let [url (identifier target)]
-    {:tag :a :attrs {:href url} :content url}))
+    {:tag :a :attrs {:href (codec/url-encode url)} :content url}))
 
 (defn link-button [target]
-  (let [url (str "/resource?iri=" (identifier target))]
-    {:tag :a :attrs {:href url :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
+  (let [url (identifier target)]
+    {:tag :a :attrs {:href (str "/resource/" (codec/url-encode url)) :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
 
 ;; Context
 

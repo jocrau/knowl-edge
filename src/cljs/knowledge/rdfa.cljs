@@ -67,7 +67,7 @@
     (let [connection (net/xhr-connection)
           iri (.-value (dom/get-element "iri-field"))]
       (event/listen connection goog.net.EventType.COMPLETE add-test-content)
-      (net/transmit connection (str base "/resource?iri=" iri) "GET"))))
+      (net/transmit connection (str base "/resource/" (js/encodeURIComponent iri)) "GET"))))
 
 (defn attach-content-change-handler []
   (Aloha.bind
