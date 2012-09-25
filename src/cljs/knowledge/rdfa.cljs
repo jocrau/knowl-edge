@@ -5,7 +5,8 @@
             [clojure.browser.dom :as dom]
             [rdfa.core :as core]
             [rdfa.repr :as repr]
-            [rdfa.dom :as kdom]))
+            [rdfa.dom :as rdfadom]
+            [rdfa.stddom :as stddom]))
 
 (declare rdfa)
 (declare base)
