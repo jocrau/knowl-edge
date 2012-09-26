@@ -13,7 +13,6 @@
                                   [rdfa "0.5.0-SNAPSHOT"]]}}
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
-  :hooks [leiningen.cljsbuild]
   :cljsbuild {:builds [{:id "dev"
                         :source-path "src/cljs"
                         :jar true
