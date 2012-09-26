@@ -134,7 +134,9 @@
             (if-let [datatype (datatype object)]
               (enlive/do->
                 (set-datatype datatype)
-                (set-content (value object)))
+                (if-not (= (value datatype) rdf:XMLLiteral)
+                  (set-content (value object))
+                  identity))
               identity)
             (set-language (language object)))
           identity)))))

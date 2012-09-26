@@ -56,6 +56,13 @@
         nil
         language))))
 
+(extend-type com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType
+  Value
+  (value [this] (.getURI this))
+  Literal
+  (datatype [this] (.getDatatype this))
+  (language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
+
 (extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
   Statement
   (subject [statement] (.getSubject statement))
