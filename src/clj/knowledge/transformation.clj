@@ -84,7 +84,7 @@
 
 (defn link-external [target]
   (let [url (identifier target)]
-    {:tag :a :attrs {:href (codec/url-encode url)} :content url}))
+    {:tag :a :attrs {:href url} :content url}))
 
 (defn link-button [target]
   (let [url (identifier target)]
