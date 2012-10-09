@@ -188,6 +188,6 @@
 		  FILTER (langMatches(lang(?abstract), "EN"))
 		}
 		ORDER BY ?birthDate
-		LIMIT 10
+		LIMIT 50
 	""" .
 
