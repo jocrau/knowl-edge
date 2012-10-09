@@ -127,6 +127,8 @@
   (let [predicate (predicate statement)
         object (object statement)]
     (condp = (identifier predicate)
+      know:externalLink
+      (enlive/content (link-external object))
       dbo:wikiPageExternalLink
       (enlive/content (link-external object))
       know:internalLink

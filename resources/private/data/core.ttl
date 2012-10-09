@@ -165,19 +165,25 @@
 		PREFIX dbr: <http://dbpedia.org/resource/>
 		PREFIX dbo: <http://dbpedia.org/ontology/>
 		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+		PREFIX knowl: <http://knowl-edge.org/ontology/core#>
 		CONSTRUCT {
-		  ?resource foaf:name ?name .
-		  ?resource dbo:birthDate ?birthDate .
-		  ?resource dbo:deathDate ?deathDate .
-		  ?resource dbo:abstract ?abstract .
+		  ?resource foaf:name ?name ;
+		  	dbo:birthDate ?birthDate ;
+		  	dbo:deathDate ?deathDate ;
+		  	dbo:abstract ?abstract ;
+		  	knowl:externalLink ?link .
 		}
 		WHERE {
-		  ?resource a foaf:Person .
-		  ?resource foaf:name ?name .
-		  ?resource dbo:birthPlace dbr:Boston .
-		  ?resource dbo:birthDate ?birthDate .
-		  ?resource dbo:deathDate ?deathDate .
-		  ?resource dbo:abstract ?abstract .
+		  ?resource a foaf:Person ;
+		  	foaf:name ?name ;
+		  	dbo:birthPlace dbr:Boston ;
+		  	dbo:birthDate ?birthDate ;
+		  	dbo:deathDate ?deathDate ;
+		  	dbo:abstract ?abstract .
+		  ?resource foaf:isPrimaryTopicOf ?link .
 		  FILTER (?birthDate < "1900-01-01"^^xsd:date)
+		  FILTER (langMatches(lang(?abstract), "EN"))
 		}
+		ORDER BY ?birthDate
+		LIMIT 10
 	""" .
