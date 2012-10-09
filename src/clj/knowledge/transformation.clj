@@ -213,13 +213,13 @@
   (if (< (count (:rootline context)) 6)
     (if-let [statements (fetch-statements resource context)]
       (let [types (extract-types-from statements)]
-        (if (some #(= (identifier %) spin:Construct) types)
+        (condp (fn [type types] (some #(= (identifier %) type) types)) types
+          spin:Construct
           (when-let [query (extract-query-from statements)]
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
-          (do
-            (transform-statements statements resource types context)))))))
+          (transform-statements statements resource types context))))))
 
 ;; Entry Point
 
