@@ -125,7 +125,7 @@
     (condp = (identifier predicate)
       dbo:wikiPageExternalLink
       (enlive/content (link-external object))
-      know:InternalLink
+      know:internalLink
       (enlive/content (link-button object))
       (enlive/do->
         (enlive/content (transform object context))

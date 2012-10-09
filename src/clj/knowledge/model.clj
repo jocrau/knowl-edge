@@ -70,7 +70,7 @@
 (def rdf:XMLLiteral "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral")
 (def know:query (str know "query"))
 (def know:sparqlEndpoint (str know "sparqlEndpoint"))
-(def know:InternalLink (str know "InternalLink"))
+(def know:internalLink (str know "internalLink"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 

@@ -58,7 +58,7 @@
 
 <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
       rdf:type sioc:BlogPost ;
-	  knowl:InternalLink <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> ;
+	  knowl:internalLink <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> ;
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
       dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
@@ -75,7 +75,7 @@
 
 <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
       rdf:type sioc:BlogPost ;
-      knowl:InternalLink <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> ;
+      knowl:internalLink <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> ;
       dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
       dc:title "My Second Blog Post" ;
