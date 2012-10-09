@@ -73,9 +73,11 @@
 (def know:sparqlEndpoint (str know "sparqlEndpoint"))
 (def know:internalLink (str know "internalLink"))
 (def know:externalLink (str know "externalLink"))
+(def know:template (str know "template"))
 (def foaf:depiction (str foaf "depiction"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
+(def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
 
 (def curies {"xml" "http://www.w3.org/XML/1998/namespace"
              "xmlns" "http://www.w3.org/2000/xmlns/"

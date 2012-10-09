@@ -34,6 +34,7 @@
 <urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>
 	knowl:represents </> ;
 	knowl:represents </blog> ;
+	knowl:template </static/templates/page.html> ;
 	rdf:type bibo:Webpage ;
 	rdfs:label "Blog"@en ;
 	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
@@ -189,3 +190,4 @@
 		ORDER BY ?birthDate
 		LIMIT 10
 	""" .
+

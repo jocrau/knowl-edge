@@ -33,7 +33,7 @@
     [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]))
 
-(def ^:dynamic *template* (enlive/html-resource (java.io.File. "resources/private/templates/page.html")))
+(def default-template-iri (str (base-iri) "static/templates/page.html"))
 
 ;; Predicates
 
@@ -151,7 +151,7 @@
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (enlive/select *template* (:rootline context))
+        snippet (enlive/select (:template context) (:rootline context))
         snippet-predicates (extract-predicates snippet)
         grouped-statements (group-by #(predicate %) statements)
         query-predicates (keys grouped-statements)]
@@ -210,6 +210,10 @@
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
     (into #{} (map #(-> % object value) type-statements))))
 
+(defn- extract-template-iri-from [statements]
+  (if-let [statement (seq (filter #(= (-> % predicate identifier) know:template) statements))]
+    (-> statement first object value)))
+
 (defn- extract-query-from [statements]
   (-> (filter #(= (-> % predicate identifier) know:query) statements) first object value))
 
@@ -227,6 +231,13 @@
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
+          bibo:Webpage
+          (let [template-iri (java.net.URL. (or 
+                                              (extract-template-iri-from statements)
+                                              default-template-iri))
+                template (enlive/html-resource template-iri)
+                context (assoc context :template template)]
+          (transform-statements statements resource types context))
           (transform-statements statements resource types context))))))
 
 ;; Entry Point

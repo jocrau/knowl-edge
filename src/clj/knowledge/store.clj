@@ -27,7 +27,7 @@
 (defn- serialization-format [options]
   (name (or (:format options) "TTL")))
 
-(defn- base-iri []
+(defn base-iri []
   (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
 
 (defprotocol Store
