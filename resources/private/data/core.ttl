@@ -67,7 +67,7 @@
 
 <urn:uuid:aa52ba93-e7ff-4bf5-a264-35d330a17b06>
       rdf:type foaf:Image ;
-      knowl:imageResource </static/img/leaves.jpg> .
+      foaf:depiction </static/img/leaves.jpg> .
 
 <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
       rdf:type cnt:ContentAsXML ;
@@ -171,6 +171,7 @@
 		  	dbo:birthDate ?birthDate ;
 		  	dbo:deathDate ?deathDate ;
 		  	dbo:abstract ?abstract ;
+		  	foaf:depiction ?depiction ;
 		  	knowl:externalLink ?link .
 		}
 		WHERE {
@@ -179,8 +180,9 @@
 		  	dbo:birthPlace dbr:Boston ;
 		  	dbo:birthDate ?birthDate ;
 		  	dbo:deathDate ?deathDate ;
-		  	dbo:abstract ?abstract .
-		  ?resource foaf:isPrimaryTopicOf ?link .
+		  	dbo:abstract ?abstract ;
+		  	dbo:thumbnail ?depiction ;
+		  	foaf:isPrimaryTopicOf ?link .
 		  FILTER (?birthDate < "1900-01-01"^^xsd:date)
 		  FILTER (langMatches(lang(?abstract), "EN"))
 		}

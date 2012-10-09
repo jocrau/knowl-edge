@@ -133,7 +133,7 @@
       (enlive/content (link-external object))
       know:internalLink
       (enlive/content (link-button object))
-      know:imageResource
+      foaf:depiction
       (enlive/content (link-image object))
       (enlive/do->
         (enlive/content (transform object context))

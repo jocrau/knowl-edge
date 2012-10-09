@@ -66,13 +66,14 @@
   
 
 (def know "http://knowl-edge.org/ontology/core#")
+(def foaf "http://xmlns.com/foaf/0.1/")
 (def rdf:type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 (def rdf:XMLLiteral "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral")
 (def know:query (str know "query"))
 (def know:sparqlEndpoint (str know "sparqlEndpoint"))
 (def know:internalLink (str know "internalLink"))
 (def know:externalLink (str know "externalLink"))
-(def know:imageResource (str know "imageResource"))
+(def foaf:depiction (str foaf "depiction"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 
