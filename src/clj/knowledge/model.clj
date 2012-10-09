@@ -71,6 +71,7 @@
 (def know:query (str know "query"))
 (def know:sparqlEndpoint (str know "sparqlEndpoint"))
 (def know:internalLink (str know "internalLink"))
+(def know:imageResource (str know "imageResource"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 

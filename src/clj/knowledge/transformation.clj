@@ -90,6 +90,10 @@
   (let [url (identifier target)]
     {:tag :a :attrs {:href (str "/resource/" (codec/url-encode url)) :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
 
+(defn link-image [target]
+  (let [url (identifier target)]
+    {:tag :img :attrs {:src url} :content ""}))
+
 ;; Context
 
 (defprotocol ContextHandling
@@ -127,6 +131,8 @@
       (enlive/content (link-external object))
       know:internalLink
       (enlive/content (link-button object))
+      know:imageResource
+      (enlive/content (link-image object))
       (enlive/do->
         (enlive/content (transform object context))
         (if (satisfies? knowledge.model/Literal object)
