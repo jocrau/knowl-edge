@@ -92,7 +92,7 @@
 
 (defn link-image [target]
   (let [url (identifier target)]
-    {:tag :img :attrs {:src url} :content ""}))
+    {:tag :img :attrs {:src url :class "img-polaroid pull-right"} :content ""}))
 
 ;; Context
 
