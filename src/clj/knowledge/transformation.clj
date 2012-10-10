@@ -206,6 +206,10 @@
             (let [new-statements (find-matching store resource)]
               (into statements new-statements)))))))
 
+(defn set-base [template]
+  (enlive/at template
+    [:base] (enlive/substitute "" #_{:tag :base :attrs {:href (base-iri)}})))
+
 (defn- extract-types-from [statements]
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
     (into #{} (map #(-> % object value) type-statements))))
@@ -231,14 +235,12 @@
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
-          bibo:Webpage
           (let [template-iri (java.net.URL. (or 
                                               (extract-template-iri-from statements)
                                               default-template-iri))
-                template (enlive/html-resource template-iri)
+                template (set-base (enlive/html-resource template-iri))
                 context (assoc context :template template)]
-          (transform-statements statements resource types context))
-          (transform-statements statements resource types context))))))
+            (transform-statements statements resource types context)))))))
 
 ;; Entry Point
 
