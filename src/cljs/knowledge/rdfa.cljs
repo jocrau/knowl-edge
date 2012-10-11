@@ -23,7 +23,7 @@
     (:triples (core/extract-rdfa :html document-element location))))
 
 (defn get-editables []
-  (.getElementsByProperty rdfa "http://www.w3.org/2011/content#rest"))
+  (.getElementsByType rdfa "http://rdfs.org/sioc/types#BlogPost"))
 
 (defn attach-handler [id handler]
   (event/listen
