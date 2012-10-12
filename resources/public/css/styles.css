@@ -18,3 +18,9 @@ h3 {
   margin-bottom: 0;
   color: #555;
 }
+
+*[rel*="http://xmlns.com/foaf/0.1/depiction"] img {
+	max-width: 40%;
+	max-height: 300px;
+	margin: 10px;
+}
