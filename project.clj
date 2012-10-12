@@ -9,6 +9,7 @@
                  [clj-time "0.4.4"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]
                  [org.knowl-edge/rdfa "0.5.0-SNAPSHOT"]]
+  :repositories [["clojars" "http://clojars.org/repo"]]
   :plugins [[lein-cljsbuild "0.2.7"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :source-paths ["src/clj"]
