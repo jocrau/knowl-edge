@@ -3,6 +3,7 @@
 	<name>knowledge</name>
 	<comment></comment>
 	<projects>
+		<project>clj-rdfa</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
