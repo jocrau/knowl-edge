@@ -195,16 +195,13 @@
                     statements (val statement-group)]
                 (transform-statements statements resource types context)))))))))
 
-(defn fetch-statements [resource context]
-  (loop [stores (stores-for resource)
-         statements '()]
-      (if-not (seq stores)
-        statements
-        (recur
-          (rest stores)
-          (let [store (first stores)]
-            (let [new-statements (find-matching store resource)]
-              (into statements new-statements)))))))
+(defn fetch-statements
+  "This function takes a resource and fetches statements with the given resource 
+   as subject in all stores."
+  [resource context]
+  (into #{} (apply concat (pmap 
+                            (fn [store] (find-matching store resource)) 
+                            (stores-for resource)))))
 
 (defn set-base [template]
   (enlive/at template
