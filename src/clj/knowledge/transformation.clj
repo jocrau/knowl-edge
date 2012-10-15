@@ -28,6 +28,7 @@
     knowledge.store
     knowledge.model)
   (:require
+    [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [ring.util.codec :as codec]
@@ -40,11 +41,8 @@
 (defn- type= [resource]
   #{(enlive/attr-has :typeof (identifier resource)) (enlive/attr-has :about (identifier resource))})
 
-(defn- property= [resource]
-  (enlive/attr-has :property (identifier resource)))
-
-(defn- relation= [resource]
-  (enlive/attr-has :rel (identifier resource)))
+(defn- predicate= [resource]
+  #{(enlive/attr-has :property (identifier resource)) (enlive/attr-has :rel (identifier resource))})
 
 (defn- property? []
   #{(enlive/attr? :property)
@@ -62,11 +60,17 @@
 (defn- set-resource [resource]
   (enlive/set-attr :about (identifier resource)))
 
-(defn- set-property [resource]
-  (enlive/set-attr :property (identifier resource)))
+(defn set-attr
+ "Assocs attributes on the selected element."
+ [& kvs]
+  #(assoc % :attrs (apply assoc (:attrs % {}) kvs)))
 
-(defn- set-relation [resource]
-  (enlive/set-attr :rel (identifier resource)))
+(defn- set-predicate [resource]
+  #(let [current-attrs (:attrs % {})
+         current-attr-names (-> current-attrs keys set)
+         attr-name (first (set/intersection current-attr-names #{:rel :property}))
+         new-attrs  (assoc current-attrs attr-name (identifier resource))]
+     (assoc % :attrs new-attrs)))
 
 (defn- set-reference [resource]
   (enlive/set-attr :href (identifier resource)))
@@ -86,7 +90,7 @@
   (let [url (identifier target)]
     {:tag :a :attrs {:href url} :content url}))
 
-(defn link-button [target]
+(defn link-internal [target]
   (let [url (identifier target)]
     {:tag :a :attrs {:href (str "/resource/" (codec/url-encode url)) :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
 
@@ -151,17 +155,11 @@
 
 (defn- transform-statements* [snippet grouped-statements context]
   (fn [snippet [predicate statements]]
-    (enlive/at snippet
-               [(property= predicate)] (enlive/do->
-                                         (set-property predicate)
-                                         (enlive/clone-for
-                                           [statement statements]
-                                           (transform-statement statement context)))
-               [(relation= predicate)] (enlive/do->
-                                         (set-relation predicate)
-                                         (enlive/clone-for
-                                           [statement statements]
-                                           (transform-statement statement context))))))
+    (enlive/at snippet [(predicate= predicate)] (enlive/do->
+                                                  (set-predicate predicate)
+                                                  (enlive/clone-for
+                                                    [statement statements]
+                                                    (transform-statement statement context))))))
 
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
