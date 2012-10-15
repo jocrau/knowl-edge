@@ -106,8 +106,28 @@
 
 <http://example.com/ACMECorp>
       rdf:type gr:BusinessEntity ;
-      gr:offers <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8> ;
+      gr:offers <urn:uuid:27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8> ;
       gr:legalName "ACME Corp" .
+
+<urn:uuid:27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>
+      a       gr:Offering ;
+      gr:acceptedPaymentMethods
+              gr:PayPal , gr:MasterCard ;
+      gr:description """
+      The Canon Rebel T2i (EOS 550D) is Cannon's top-of-the-line consumer digital SLR camera.
+	  It can shoot up to 18 megapixel resolution photos and features an ISO range of 100-6400.
+    """@en ;
+      gr:hasBusinessFunction
+              gr:Sell ;
+      gr:hasEAN_UCC-13 "013803123784"@en ;
+      gr:hasPriceSpecification
+              [ a       gr:UnitPriceSpecification ;
+                gr:hasCurrency "USD"@en ;
+                gr:hasCurrencyValue "899"^^xsd:float
+              ] ;
+      gr:name "Canon Rebel T2i (EOS 550D)"@en ;
+      foaf:depiction <http://shop.usa.canon.com/wcsstore/eStore/images/t2ikit_1_l.jpg> ;
+      foaf:page <http://shop.usa.canon.com/> .
 
 <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>
       rdf:type gr:Offering ;
