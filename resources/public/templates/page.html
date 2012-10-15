@@ -67,29 +67,31 @@
 						<div rel="http://knowl-edge.org/ontology/core#contains">
 							<div about="urn:uuid:foob3866-7cf0-4d4a-ad58-56c3d90c5bar" typeof="http://xmlns.com/foaf/0.1/Image" rel="http://xmlns.com/foaf/0.1/depiction"><img src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right" /></div>
 							<div about="urn:uuid:aebb3866-7cf0-4d4a-ad58-56c3d90c5bb5" typeof="http://www.w3.org/2011/content#ContentAsXML">
-								<div property="http://www.w3.org/2011/content#rest">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</div>
+								<p property="http://www.w3.org/2011/content#rest">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec molestie. Sed aliquam sem ut arcu. Phasellus sollicitudin. Vestibulum condimentum  facilisis nulla. In hac habitasse platea dictumst. Nulla nonummy.</p>
 							</div>
 						</div>
 						<div rel="http://knowl-edge.org/ontology/core#internalLink"><a href="blog">Read More</a></div>
 					</div>
 
-					<div class="span6" about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
+					<div class="span12" about="http://example.com/121321341252345" typeof="http://purl.org/goodrelations/v1#BusinessEntity">
 						<h1 property="http://purl.org/goodrelations/v1#legalName">Company Ltd.</h1>
 						<h2>Our Offers</h2>
-						<ul rel="http://purl.org/goodrelations/v1#offers">
-							<li about="http://example.com/resources/offering65523" typeof="http://purl.org/goodrelations/v1#Offering">
-								<div rel="http://purl.org/goodrelations/v1#includes">
-									<div typeof="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance">
-										<div>
-											<strong><span property="http://purl.org/goodrelations/v1#name">Product A</span></strong>
+						<div class="container">
+							<div class="row">
+								<div rel="http://purl.org/goodrelations/v1#offers">
+									<div class="span6" about="http://example.com/resources/offering65523" typeof="http://purl.org/goodrelations/v1#Offering">
+										<div rel="http://xmlns.com/foaf/0.1/depiction"><img src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right" /></div>								
+										<div rel="http://purl.org/goodrelations/v1#includes">
+											<div typeof="http://purl.org/goodrelations/v1#ActualProductOrServiceInstance">
+												<h3 property="http://purl.org/goodrelations/v1#name">Product A</h3>
+												<div property="http://purl.org/goodrelations/v1#description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+											</div>
 										</div>
-										<div property="http://purl.org/goodrelations/v1#description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-										<div>Creator:&nbsp;<span rel="http://purl.org/dc/elements/1.1/creator"><span about="http://example.com/person2" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/firstName">John</span>&nbsp;<span property="http://xmlns.com/foaf/0.1/lastName">Doe</span> (<span property="http://xmlns.com/foaf/0.1/age">60</span> years old)</span></span></div>
+										<div>(Valid from&nbsp;<span property="http://purl.org/goodrelations/v1#validFrom">1.1.2010</span>&nbsp;through&nbsp;<span property="http://purl.org/goodrelations/v1#validThrough">10.10.2010</span>)</div>
 									</div>
-								</div>
-								<div>(Valid from&nbsp;<span property="http://purl.org/goodrelations/v1#validFrom">1.1.2010</span>&nbsp;through&nbsp;<span property="http://purl.org/goodrelations/v1#validThrough">10.10.2010</span>)</div>
-							</li>
-						</ul>
+								</div>								
+							</div>
+						</div>
 					</div>
 					
 					<div class="span12" about="urn:uuid:61ba651a-a854-42f6-9d2b-c0cfb30c3cbf" typeof="http://dbpedia.org/ontology/Software">
