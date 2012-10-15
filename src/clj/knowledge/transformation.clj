@@ -149,34 +149,32 @@
             (set-language (language object)))
           identity)))))
 
+(defn- transform-statements* [snippet grouped-statements context]
+  (fn [snippet [predicate statements]]
+    (enlive/at snippet
+               [(property= predicate)] (enlive/do->
+                                         (set-property predicate)
+                                         (enlive/clone-for
+                                           [statement statements]
+                                           (transform-statement statement context)))
+               [(relation= predicate)] (enlive/do->
+                                         (set-relation predicate)
+                                         (enlive/clone-for
+                                           [statement statements]
+                                           (transform-statement statement context))))))
+
 (defn transform-statements [statements resource types context]
   (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (enlive/select (:template context) (:rootline context))
-        snippet-predicates (extract-predicates snippet)
-        grouped-statements (group-by #(predicate %) statements)
-        query-predicates (keys grouped-statements)]
-    (loop [snippet (enlive/transform snippet [enlive/root]
-                                       (enlive/do->
-                                         (set-types types)
-                                         (set-resource resource)))
-           grouped-statements grouped-statements]
-      (if-not (seq grouped-statements)
-        snippet
-        (recur
-          (let [predicate (ffirst grouped-statements)]
-            (enlive/at
-              snippet
-              [(property= predicate)] (enlive/do->
-                                        (set-property predicate)
-                                        (enlive/clone-for
-                                          [statement (second (first grouped-statements))]
-                                          (transform-statement statement context)))
-              [(relation= predicate)] (enlive/do->
-                                        (set-relation predicate)
-                                        (enlive/clone-for
-                                          [statement (second (first grouped-statements))]
-                                          (transform-statement statement context)))))
-          (rest grouped-statements))))))
+        snippet (enlive/transform (enlive/select (:template context) (:rootline context))
+                                  [enlive/root]
+                                  (enlive/do->
+                                    (set-types types)
+                                    (set-resource resource)))
+        grouped-statements (group-by #(predicate %) statements)]
+    (reduce
+      (transform-statements* snippet grouped-statements context)
+      snippet grouped-statements)))
+
 (defn pmap-set
   "This function takes the same arguments as clojures (p)map and flattens the first level 
    of the resulting lists of lists into a set."
