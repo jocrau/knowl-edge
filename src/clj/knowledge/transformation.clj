@@ -177,31 +177,29 @@
                                           [statement (second (first grouped-statements))]
                                           (transform-statement statement context)))))
           (rest grouped-statements))))))
+(defn pmap-set
+  "This function takes the same arguments as clojures (p)map and flattens the first level 
+   of the resulting lists of lists into a set."
+  [f & colls]
+  (into #{} (apply concat (apply pmap f colls))))
 
 (defn transform-query [query store context]
   (when-let [statements (find-by-query store query)]
-    (let [grouped-statements (group-by #(subject %) statements)]
-      (loop [grouped-statements grouped-statements
-             result []]
-        (if-not (seq grouped-statements)
-          result
-          (recur
-            (rest grouped-statements)
-            (into
-              result
-              (let [statement-group (first grouped-statements)
-                    resource (key statement-group)
-                    types (find-types-of store resource)
-                    statements (val statement-group)]
-                (transform-statements statements resource types context)))))))))
+    (pmap-set 
+      #(let [statement-group %
+             resource (key statement-group)
+             types (find-types-of store resource)
+             statements (val statement-group)]
+         (transform-statements statements resource types context))
+      (group-by #(subject %) statements))))
 
 (defn fetch-statements
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-  (into #{} (apply concat (pmap 
-                            (fn [store] (find-matching store resource)) 
-                            (stores-for resource)))))
+    (pmap-set 
+      (fn [store] (find-matching store resource)) 
+      (stores-for resource)))
 
 (defn set-base [template]
   (enlive/at template
