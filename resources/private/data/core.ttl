@@ -31,28 +31,34 @@
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
 	void:uriSpace "http://dbpedia.org/resource/" .
 
-<urn:uuid:75889010-c99a-46b5-a5cb-8300adb75b31>
-	knowl:represents </> ;
-	knowl:represents </blog> ;
+</blog>
 	knowl:template </static/templates/page.html> ;
-	rdf:type bibo:Webpage ;
+	rdf:type foaf:Document ;
 	rdfs:label "Blog"@en ;
 	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
 
-<urn:uuid:b092baa8-9f16-4bba-aaf5-d48d3b447474>
+</people>
 	knowl:represents </people> ;
-	rdf:type bibo:Webpage ;
+	rdf:type foaf:Document ;
 	rdfs:label "People"@en ;
 	knowl:contains <http://dbpedia.org/resource/Ted_Williams> .
 
-<urn:uuid:fe54a438-b924-447a-875c-2db010a8015f>
-	knowl:represents </products> ;
-	rdf:type bibo:Webpage ;
+</people/Ted_Williams>
+	knowl:template </static/templates/page.html> ;
+	rdf:type foaf:Document ;
+	rdfs:label "A Page about Ted"@en ;
+	knowl:contains </people/Ted_Williams#me> .	
+
+</people/Ted_Williams#me>
+	rdf:type foaf:Person ;
+	foaf:name "Ted Williams" .
+	
+</products>
+	rdf:type foaf:Document ;
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains <http://example.com/ACMECorp> .
 
-<urn:uuid:3289d35a-db8e-49a1-bc9b-9d2c4733a352>
-	knowl:represents </bostonians> ;
+</bostonians>
 	rdf:type bibo:Webpage ;
 	rdfs:label "Early Bostonians"@en ;
 	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .

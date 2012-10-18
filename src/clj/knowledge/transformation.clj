@@ -136,7 +136,7 @@
       dbo:wikiPageExternalLink
       (enlive/content (link-external object))
       know:internalLink
-      (enlive/content (link-button object))
+      (enlive/content (link-internal object))
       foaf:depiction
       (enlive/content (link-image object))
       (enlive/do->
@@ -199,7 +199,7 @@
 
 (defn set-base [template]
   (enlive/at template
-    [:base] (enlive/substitute "" #_{:tag :base :attrs {:href (base-iri)}})))
+    [:base] (enlive/substitute {:tag :base :attrs {:href (base-iri)}})))
 
 (defn- extract-types-from [statements]
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
@@ -236,11 +236,8 @@
 ;; Entry Point
 
 (defn dereference [resource]
-  (let [representation (or
-                         (-?> (find-matching default-store nil (create-resource [know "represents"]) resource) first subject)
-                         resource)]
-    (when-let [document (transform representation (Context. 0 []))]
-      (enlive/emit* document))))
+  (when-let [document (transform resource (Context. 0 []))]
+    (enlive/emit* document)))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
