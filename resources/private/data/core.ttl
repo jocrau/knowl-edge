@@ -4,6 +4,7 @@
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ex:      <http://example.com/> .
+@prefix dbo:      <http://dbpedia.org/ontology/> .
 @prefix sp:      <http://spinrdf.org/sp#> .
 @prefix spin:    <http://spinrdf.org/sp#> .
 @prefix dam:     <http://typo3.org/ontology/dam#> .
@@ -31,91 +32,103 @@
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
 	void:uriSpace "http://dbpedia.org/resource/" .
 
-</blog>
+</posts>
 	knowl:template </static/templates/page.html> ;
-	rdf:type foaf:Document ;
+	a foaf:Document ;
 	rdfs:label "Blog"@en ;
-	knowl:contains <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>, <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> .
+	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>, </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
 </people>
 	knowl:represents </people> ;
-	rdf:type foaf:Document ;
+	a foaf:Document ;
 	rdfs:label "People"@en ;
 	knowl:contains <http://dbpedia.org/resource/Ted_Williams> .
 
 </people/Ted_Williams>
 	knowl:template </static/templates/page.html> ;
-	rdf:type foaf:Document ;
+	a foaf:Document ;
 	rdfs:label "A Page about Ted"@en ;
-	knowl:contains </people/Ted_Williams#me> .	
+	knowl:contains </people/Ted_Williams#this> .	
 
-</people/Ted_Williams#me>
-	rdf:type foaf:Person ;
-	foaf:name "Ted Williams" .
+</people/Ted_Williams#this>
+	a foaf:Person ;
+	foaf:name "Ted Williams" ;
+	dbo:abstract "My description of Ted. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
 	
 </products>
-	rdf:type foaf:Document ;
+	a foaf:Document ;
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains <http://example.com/ACMECorp> .
 
 </bostonians>
-	rdf:type bibo:Webpage ;
+	a foaf:Document ;
 	rdfs:label "Early Bostonians"@en ;
 	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
 
-<urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5>
-      rdf:type sioc:BlogPost ;
-	  knowl:internalLink <urn:uuid:748fc789-6b8e-4628-a248-f563ec0482f5> ;
-      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
-      dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
+</posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>
+      a sioc:BlogPost ;
+	  knowl:internalLink </posts/748fc789-6b8e-4628-a248-f563ec0482f5> ;
+      dc:creator </people/Jochen_Rau> ;
+      dc:creator </people/Jennifer_Rau> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post"@en ;
-      knowl:contains <urn:uuid:aa52ba93-e7ff-4bf5-a264-35d330a17b06>, <urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>, <urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>, </products>.
+      knowl:contains
+      	[ 
+			a foaf:Image ;
+			foaf:depiction </static/img/leaves.jpg>
+	    ], [
+			a cnt:ContentAsXML ;
+			cnt:rest "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en
+	    ], [
+			a cnt:ContentAsXML ;
+			cnt:rest "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en
+	    ] .
 
-<urn:uuid:aa52ba93-e7ff-4bf5-a264-35d330a17b06>
-      rdf:type foaf:Image ;
-      foaf:depiction </static/img/leaves.jpg> .
+</posts/748fc789-6b8e-4628-a248-f563ec0482f5>
+	a foaf:Document ;
+	rdfs:label "Single View -- My First Blog Post"@en ;
+	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this> .
 
-<urn:uuid:7e917a21-0c59-40d6-80cb-884e3879f274>
-      rdf:type cnt:ContentAsXML ;
-      cnt:rest "Tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
-
-<urn:uuid:3e37bb3e-6699-463e-999c-9376318c360a>
-      rdf:type cnt:ContentAsXML ;
-      cnt:rest "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en .
-
-<urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3>
-      rdf:type sioc:BlogPost ;
-      knowl:internalLink <urn:uuid:01da6567-6b5b-4596-a541-10db9459dda3> ;
-      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
+</posts/01da6567-6b5b-4596-a541-10db9459dda3#this>
+      a sioc:BlogPost ;
+      knowl:internalLink </posts/01da6567-6b5b-4596-a541-10db9459dda3> ;
+      dc:creator </people/Jochen_Rau> ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
-      dc:title "My Second Blog Post" ;
-      knowl:contains <urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>.
+      dc:title "My Second Blog Post"@en ;
+      knowl:contains 
+      	[
+	      a cnt:ContentAsXML ;
+	      cnt:rest "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"@en 
+      	], [
+			a cnt:ContentAsXML ;
+			cnt:rest "French text ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@fr
+	    ] .
 
-<urn:uuid:67fa60f4-96ee-4ce1-9abf-5108ec308228>
-      rdf:type cnt:ContentAsXML ;
-      cnt:rest "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"@en .
+</posts/01da6567-6b5b-4596-a541-10db9459dda3>
+	a foaf:Document ;
+	rdfs:label "Single View -- My Second Blog Post"@en ;
+	knowl:contains </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
-<http://typoplanet.de/resources/Jochen_Rau>
-      rdf:type foaf:Person ;
+</people/Jochen_Rau>
+      a foaf:Person ;
       foaf:name "Jochen Rau" ;
       foaf:firstName "Jochen" ;
       foaf:lastName "Rau" ;
       foaf:age 41 .
 
-<http://typoplanet.de/resources/Jennifer_Rau>
-      rdf:type foaf:Person ;
+</people/Jennifer_Rau>
+      a foaf:Person ;
       foaf:name "Jennifer Rau" ;
       foaf:firstName "Jennifer" ;
       foaf:lastName "Rau" ;
       foaf:age 32 .
 
 <http://example.com/ACMECorp>
-      rdf:type gr:BusinessEntity ;
-      gr:offers <urn:uuid:27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>, <urn:uuid:814d0702-fca5-4539-b262-57919b9322e8> ;
+      a gr:BusinessEntity ;
+      gr:offers </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> ;
       gr:legalName "ACME Corp" .
 
-<urn:uuid:27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>
+</offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>
       a       gr:Offering ;
       gr:acceptedPaymentMethods
               gr:PayPal , gr:MasterCard ;
@@ -135,57 +148,46 @@
       foaf:depiction <http://shop.usa.canon.com/wcsstore/eStore/images/t2ikit_1_l.jpg> ;
       foaf:page <http://shop.usa.canon.com/> .
 
-<urn:uuid:814d0702-fca5-4539-b262-57919b9322e7>
-      rdf:type gr:Offering ;
+</offers/814d0702-fca5-4539-b262-57919b9322e7#this>
+      a gr:Offering ;
       gr:hasBusinessFunction gr:Sell ;
       gr:hasPriceSpecification
-             [ rdf:type gr:UnitPriceSpecification ;
+             [ a gr:UnitPriceSpecification ;
                 gr:hasCurrency "USD" ;
-                gr:hasCurrencyValue "19.99"^^xsd:float ;
+                gr:hasCurrencyValue "199.99"^^xsd:float ;
                 gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime
               ] ;
-      gr:includes 
-      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0> ,
-      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1>  ;
+      gr:includes [
+			a gr:ActualProductOrServiceInstance ;
+			dc:creator </people/Jochen_Rau> ;
+			gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
+			gr:name "A Tipi"@en
+		] ;
       foaf:page <http://typo3.org/Tipis/foo.html> ;
       gr:validFrom "2011-03-12T00:00:00+01:00"^^xsd:dateTime ;
       gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime .
 
-<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad0>
-      rdf:type gr:ActualProductOrServiceInstance ;
-      dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
-      gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
-      gr:name "A Tipi"@en .
-
-<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad1>
-      rdf:type gr:ActualProductOrServiceInstance ;
-	  dc:creator <http://typoplanet.de/resources/Jennifer_Rau> ;
-      gr:description "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
-      gr:name "Another Tipi"@en .
-
-<urn:uuid:814d0702-fca5-4539-b262-57919b9322e8>
-      rdf:type gr:Offering ;
+</offers/814d0702-fca5-4539-b262-57919b9322e8#this>
+      a gr:Offering ;
       gr:hasBusinessFunction gr:Sell ;
       gr:hasPriceSpecification
-             [ rdf:type gr:UnitPriceSpecification ;
+             [ a gr:UnitPriceSpecification ;
                 gr:hasCurrency "USD" ;
-                gr:hasCurrencyValue "19.99"^^xsd:float ;
+                gr:hasCurrencyValue "2399.99"^^xsd:float ;
                 gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime
               ] ;
-      gr:includes 
-      		<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>  ;
+      gr:includes [
+			a gr:ActualProductOrServiceInstance ;
+			dc:creator </people/Jochen_Rau> ;
+			gr:description "Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds."@en ;
+			gr:name "Apple MacBook Pro MC700LL/A 13.3-Inch Laptop"@en 
+		] ;
       foaf:page <http://localhost:8080/foo/bar> ;
       gr:validFrom "2011-04-01T00:00:00+01:00"^^xsd:dateTime ;
       gr:validThrough "2011-08-12T00:00:00+01:00"^^xsd:dateTime .
 
-<urn:uuid:dbb91474-3dfa-4f19-95cd-4f6b13fcdad2>
-      rdf:type gr:ActualProductOrServiceInstance ;
-	  dc:creator <http://typoplanet.de/resources/Jochen_Rau> ;
-      gr:description "Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds."@en ;
-      gr:name "Apple MacBook Pro MC700LL/A 13.3-Inch Laptop"@en .
-
 <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
-    rdf:type sp:Construct ;
+    a sp:Construct ;
 	knowl:sparqlEndpoint <http://live.dbpedia.org/sparql> ;
 	knowl:query """
 		PREFIX foaf: <http://xmlns.com/foaf/0.1/>

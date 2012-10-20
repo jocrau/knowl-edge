@@ -57,10 +57,6 @@
           "ok"))
   (GET "/resource" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
-  (GET ["/resource/:uuid" :uuid #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"] [uuid]
-       (transform/dereference (resource (str "urn:uuid:" uuid))))
-  (GET "/resource/:iri" [iri]
-       (transform/dereference (resource iri)))
   (GET "*" [:as request]
        (transform/dereference (resource request)))
   (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))

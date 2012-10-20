@@ -32,20 +32,6 @@
 
 (def default-store (ModelFactory/createDefaultModel))
 
-(defn- find-types-of* [this resource]
-  (map #(model/object %)
-       (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))))
-
-(defn- find-matching* [this subject predicate object]
-  (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
-        predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
-        language-filter (if (nil? object)
-                          " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
-        object (or (-?> object (string/join ["<" ">"])) "?o")
-        pattern (string/join " " [subject predicate object])
-        statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
-    (find-by-query this statement)))
-
 ;; Endpoint Implementation
 
 (extend-type knowledge.store.Endpoint
@@ -60,12 +46,20 @@
           (try
             (iterator-seq (.listStatements (.execConstruct query-execution)))
             (catch Exception e nil))))))
-  (find-types-of [this resource] (find-types-of* this resource))
+  (find-types-of [this resource]  (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
+                                    (map #(model/object %) statements)))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this subject predicate object] (find-matching* this subject predicate object))))
+    ([this subject predicate object] (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
+                                           predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+                                           language-filter (if (nil? object)
+                                                             " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
+                                           object (or (-?> object (string/join ["<" ">"])) "?o")
+                                           pattern (string/join " " [subject predicate object])
+                                           statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
+                                       (find-by-query this statement)))))
 
 ;; MemoryStore Implementation
 
@@ -84,12 +78,14 @@
         (try
           (iterator-seq (.listStatements (.execConstruct query-execution)))
           (catch Exception e nil)))))
-  (find-types-of [this resource] (find-types-of* this resource))
+  (find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
+                                       statements (find-matching this resource predicate)]
+                                   (map #(model/object %) statements)))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this subject predicate object] (find-matching* this subject predicate object)))
+    ([this subject predicate object] (iterator-seq (.listStatements this subject predicate object))))
   Exporter
   (import-into
     [this source options]

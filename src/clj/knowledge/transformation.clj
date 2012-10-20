@@ -92,7 +92,7 @@
 
 (defn link-internal [target]
   (let [url (identifier target)]
-    {:tag :a :attrs {:href (str "/resource/" (codec/url-encode url)) :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
+    {:tag :a :attrs {:href url :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
 
 (defn link-image [target]
   (let [url (identifier target)]
@@ -193,9 +193,8 @@
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-    (pmap-set 
-      (fn [store] (find-matching store resource)) 
-      (stores-for resource)))
+  (let [stores (stores-for resource)]
+    (pmap-set #(find-matching % resource) stores)))
 
 (defn set-base [template]
   (enlive/at template
