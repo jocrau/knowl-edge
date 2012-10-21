@@ -13,9 +13,11 @@
 
 (defn export-graph [graph]
   (let [connection (net/xhr-connection)
+        location (.-URL js/document)
+        method "POST"
         representation (repr/print-triples graph)
         headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
-    (net/transmit connection (str base "/resource") "POST" representation headers)))
+    (net/transmit connection location method representation headers)))
 
 (defn get-triples []
   (let [document-element (.-documentElement js/document)
@@ -68,7 +70,7 @@
     (let [connection (net/xhr-connection)
           iri (.-value (dom/get-element "iri-field"))]
       (event/listen connection goog.net.EventType.COMPLETE add-test-content)
-      (net/transmit connection (str base "/resource/" (js/encodeURIComponent iri)) "GET"))))
+      (net/transmit connection (str base "?iri=" (js/encodeURIComponent iri)) "GET"))))
 
 (defn attach-content-change-handler []
   (Aloha.bind
