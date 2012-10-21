@@ -58,7 +58,9 @@
   (enlive/set-attr :content (value resource)))
 
 (defn- set-resource [resource]
-  (enlive/set-attr :about (identifier resource)))
+  (if-let [iri (identifier resource)]
+    (enlive/set-attr :about iri)
+    (enlive/remove-attr :about)))
 
 (defn set-attr
  "Assocs attributes on the selected element."
