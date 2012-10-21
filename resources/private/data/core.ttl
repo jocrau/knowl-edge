@@ -58,7 +58,7 @@
 </products>
 	a foaf:Document ;
 	rdfs:label "Product Catalog"@en ;
-	knowl:contains <http://example.com/ACMECorp> .
+	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
 </bostonians>
 	a foaf:Document ;
