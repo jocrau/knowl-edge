@@ -52,8 +52,8 @@
 (defroutes route
   (files "/static/" {:root "resources/public/"})
   (POST "*" {body :body :as request}
-        (do
-          (store/add-statements store/default-store body {})))
+        (store/add-statements store/default-store body {})
+        {:status 200 :headers {}})
   (GET "/" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
   (GET "*" [:as request]
