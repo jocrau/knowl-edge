@@ -26,11 +26,10 @@
   (:require
     [knowledge.model :as model]))
 
+(def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
+
 (defn- serialization-format [options]
   (name (or (:format options) "TTL")))
-
-(defn base-iri []
-  (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
 
 (defprotocol Store
   (add-statements [this statements] [this statements options])

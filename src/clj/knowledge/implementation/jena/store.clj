@@ -71,7 +71,7 @@
     ([this statements]
       (add-statements this statements {}))
     ([this statements options]
-      (.read this statements (base-iri) (serialization-format options))))
+      (.read this statements base-iri (serialization-format options))))
   (find-by-query
     ([this query-string]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
@@ -90,7 +90,7 @@
   (import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]
-      (.read this stream (base-iri) (serialization-format options))))
+      (.read this stream base-iri (serialization-format options))))
   (export-from
     [this target options]
     (with-open [stream (clojure.java.io/output-stream target)]

@@ -25,16 +25,33 @@
   (:refer-clojure :exclude [namespace])
   (:use 
     [clojure.contrib.core :only (-?>)]
-    knowledge.store
     knowledge.model)
   (:require
+    [knowledge.store :as store]
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]))
 
-(def default-template-iri (str (base-iri) "static/templates/page.html"))
+;; Context
+
+(defprotocol ContextHandling
+  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
+  (conj-selector [this selector] "Appends a selector to the selector-chain"))
+
+(defrecord Context [depth rootline]
+  ContextHandling
+  (conj-selector
+    [this selector]
+    (update-in this [:rootline] #(into % selector))))
+(def ^:dynamic context (Context. 0 []))
+
+(def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
+(defn set-base [template]
+  (enlive/at template
+    [:base] (enlive/substitute {:tag :base :attrs {:href base-iri}})))
+(def ^:dynamic template (set-base (enlive/html-resource (java.io.File. "resources/public/templates/page.html"))))
 
 ;; Predicates
 
@@ -99,18 +116,6 @@
 (defn link-image [target]
   (let [url (identifier target)]
     {:tag :img :attrs {:src url :class "img-polaroid pull-right"} :content ""}))
-
-;; Context
-
-(defprotocol ContextHandling
-  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
-  (conj-selector [this selector] "Appends a selector to the selector-chain"))
-
-(defrecord Context [depth rootline]
-  ContextHandling
-  (conj-selector
-    [this selector]
-    (update-in this [:rootline] #(into % selector))))
 
 ;; Transformations
 
@@ -182,25 +187,21 @@
   (into #{} (apply concat (apply pmap f colls))))
 
 (defn transform-query [query store context]
-  (when-let [statements (find-by-query store query)]
+  (when-let [statements (store/find-by-query store query)]
     (pmap-set 
       #(let [statement-group %
              resource (key statement-group)
-             types (find-types-of store resource)
+             types (store/find-types-of store resource)
              statements (val statement-group)]
-         (transform-statements statements resource types context))
+         (transform-statements statements resource types))
       (group-by #(subject %) statements))))
 
 (defn fetch-statements
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-  (let [stores (stores-for resource)]
-    (pmap-set #(find-matching % resource) stores)))
-
-(defn set-base [template]
-  (enlive/at template
-    [:base] (enlive/substitute {:tag :base :attrs {:href (base-iri)}})))
+  (let [stores (store/stores-for resource)]
+    (pmap-set #(store/find-matching % resource) stores)))
 
 (defn- extract-types-from [statements]
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
@@ -227,11 +228,10 @@
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
-          (let [template-iri (java.net.URL. (or 
-                                              (extract-template-iri-from statements)
-                                              default-template-iri))
-                template (set-base (enlive/html-resource template-iri))
-                context (assoc context :template template)]
+          (if-let [template-iri (extract-template-iri-from statements)]
+            (let [template (set-base (enlive/html-resource (java.net.URL. template-iri)))
+                  context (assoc context :template template)]
+              (transform-statements statements resource types context))
             (transform-statements statements resource types context)))))))
 
 ;; Entry Point

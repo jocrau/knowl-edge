@@ -33,20 +33,20 @@
 	void:uriSpace "http://dbpedia.org/resource/" .
 
 </posts>
-	knowl:template </static/templates/page.html> ;
 	a foaf:Document ;
+	knowl:template </static/templates/blog.html> ;
 	rdfs:label "Blog"@en ;
 	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>, </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
 </people>
-	knowl:represents </people> ;
 	a foaf:Document ;
+	knowl:template </static/templates/page.html> ;
 	rdfs:label "People"@en ;
 	knowl:contains <http://dbpedia.org/resource/Ted_Williams> .
 
 </people/Ted_Williams>
-	knowl:template </static/templates/page.html> ;
 	a foaf:Document ;
+	knowl:template </static/templates/people.html> ;
 	rdfs:label "A Page about Ted"@en ;
 	knowl:contains </people/Ted_Williams#this> .	
 
@@ -57,19 +57,21 @@
 	
 </products>
 	a foaf:Document ;
+	knowl:template </static/templates/page.html> ;
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
 </bostonians>
 	a foaf:Document ;
+	knowl:template </static/templates/people.html> ;
 	rdfs:label "Early Bostonians"@en ;
 	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
 
 </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>
       a sioc:BlogPost ;
 	  knowl:internalLink </posts/748fc789-6b8e-4628-a248-f563ec0482f5> ;
-      dc:creator </people/Jochen_Rau> ;
-      dc:creator </people/Jennifer_Rau> ;
+      dc:creator </people/Jochen_Rau#this> ;
+      dc:creator </people/Jennifer_Rau#this> ;
       dcterms:created "2012-04-24T10:12:23+01:00"^^xsd:dateTime ;
       dc:title "My First Blog Post"@en ;
       knowl:contains
@@ -86,13 +88,14 @@
 
 </posts/748fc789-6b8e-4628-a248-f563ec0482f5>
 	a foaf:Document ;
+	knowl:template </static/templates/single-view.html> ;
 	rdfs:label "Single View -- My First Blog Post"@en ;
 	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this> .
 
 </posts/01da6567-6b5b-4596-a541-10db9459dda3#this>
       a sioc:BlogPost ;
       knowl:internalLink </posts/01da6567-6b5b-4596-a541-10db9459dda3> ;
-      dc:creator </people/Jochen_Rau> ;
+      dc:creator </people/Jochen_Rau#this> ;
       dcterms:created "2012-04-24T12:21:23+01:00"^^xsd:dateTime ;
       dc:title "My Second Blog Post"@en ;
       knowl:contains 
@@ -106,24 +109,25 @@
 
 </posts/01da6567-6b5b-4596-a541-10db9459dda3>
 	a foaf:Document ;
+	knowl:template </static/templates/single-view.html> ;
 	rdfs:label "Single View -- My Second Blog Post"@en ;
 	knowl:contains </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
-</people/Jochen_Rau>
+</people/Jochen_Rau#this>
       a foaf:Person ;
       foaf:name "Jochen Rau" ;
       foaf:firstName "Jochen" ;
       foaf:lastName "Rau" ;
       foaf:age 41 .
 
-</people/Jennifer_Rau>
+</people/Jennifer_Rau#this>
       a foaf:Person ;
       foaf:name "Jennifer Rau" ;
       foaf:firstName "Jennifer" ;
       foaf:lastName "Rau" ;
       foaf:age 32 .
 
-<http://example.com/ACMECorp>
+<http://example.com/ACMECorp#this>
       a gr:BusinessEntity ;
       gr:offers </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> ;
       gr:legalName "ACME Corp" .
