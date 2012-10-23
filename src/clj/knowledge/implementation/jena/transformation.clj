@@ -29,6 +29,4 @@
   com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   (transform [this context] (transform-literal this context))
   com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  (transform
-    [this context]
-    (transform-resource this context)))
+  (transform [this context] (transform-resource this context)))
