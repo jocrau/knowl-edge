@@ -58,20 +58,6 @@
       (attach-handler "edit-btn" save->edit)
       (attach-editor))))
 
-(def add-test-content
-  (fn [event]
-    (let [response (.-target event)
-          content (.getResponseText response)
-          parent (dom/get-element "test-content")]
-      (set! (.-innerHTML parent) content))))
-
-(def load-test-content
-  (fn [event]
-    (let [connection (net/xhr-connection)
-          iri (.-value (dom/get-element "iri-field"))]
-      (event/listen connection goog.net.EventType.COMPLETE add-test-content)
-      (net/transmit connection (str base "?iri=" (js/encodeURIComponent iri)) "GET"))))
-
 (defn attach-content-change-handler []
   (Aloha.bind
     "aloha-smart-content-changed"
@@ -82,7 +68,6 @@
   (def rdfa (.init js/RDFaDOM))
   (def base (.-origin (.-location js/document)))
   (attach-handler "edit-btn" edit->save)
-  (attach-handler "load-btn" load-test-content)
   (attach-content-change-handler))
 
 (.addEventListener js/document "DOMContentLoaded" init)
