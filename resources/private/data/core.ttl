@@ -192,6 +192,7 @@
 		  	dbo:deathDate ?deathDate ;
 		  	dbo:abstract ?abstract ;
 		  	foaf:depiction ?depiction ;
+		  	dbo:successor ?successor ;
 		  	knowl:externalLink ?link .
 		}
 		WHERE {
@@ -205,6 +206,9 @@
 		  	foaf:isPrimaryTopicOf ?link .
 		  FILTER (?birthDate < "1900-01-01"^^xsd:date)
 		  FILTER (langMatches(lang(?abstract), "EN"))
+		  OPTIONAL { 
+		  	?resource dbo:successor ?successor
+		  }
 		}
 		ORDER BY ?birthDate
 		LIMIT 50

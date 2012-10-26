@@ -48,6 +48,10 @@
   Value
   (value [this] (.getURI this)))
 
+(extend-type com.hp.hpl.jena.datatypes.BaseDatatype
+  Value
+  (value [this] (.getURI this)))
+
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   Value
   (value [this] (.getLexicalForm this))
