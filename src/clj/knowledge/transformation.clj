@@ -193,7 +193,7 @@
              resource (key statement-group)
              types (store/find-types-of store resource)
              statements (val statement-group)]
-         (transform-statements statements resource types))
+         (transform-statements statements resource types context))
       (group-by #(subject %) statements))))
 
 (defn fetch-statements
