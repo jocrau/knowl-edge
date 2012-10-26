@@ -44,6 +44,10 @@
   Value
   (value [this] (.getURI this)))
 
+(extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDFloat
+  Value
+  (value [this] (.getURI this)))
+
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
   Value
   (value [this] (.getLexicalForm this))
