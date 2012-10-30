@@ -61,6 +61,25 @@
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
+</offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>
+	a foaf:Document ;
+	knowl:template </static/templates/products.html> ;
+	rdfs:label "Single Product"@en ;
+	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this> .
+
+</offers/814d0702-fca5-4539-b262-57919b9322e7>
+	a foaf:Document ;
+	knowl:template </static/templates/products.html> ;
+	rdfs:label "Single Product"@en ;
+	knowl:contains </offers/814d0702-fca5-4539-b262-57919b9322e7#this> .
+
+</offers/814d0702-fca5-4539-b262-57919b9322e8>
+	a foaf:Document ;
+	knowl:template </static/templates/products.html> ;
+	rdfs:label "Single Product"@en ;
+	knowl:contains </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
+
+
 </bostonians>
 	a foaf:Document ;
 	knowl:template </static/templates/people.html> ;
@@ -148,7 +167,8 @@
               ] ;
       gr:name "Canon Rebel T2i (EOS 550D)"@en ;
       foaf:depiction <http://shop.usa.canon.com/wcsstore/eStore/images/t2ikit_1_l.jpg> ;
-      foaf:page <http://shop.usa.canon.com/> .
+      foaf:page <http://shop.usa.canon.com/> ;
+      knowl:internalLink </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95> .
 
 </offers/814d0702-fca5-4539-b262-57919b9322e7#this>
       a gr:Offering ;
@@ -161,7 +181,8 @@
               ] ;
 		gr:description "Lorem ipsum dolor sit amet, consectetur adipisicing, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."@en ;
 		gr:name "A Tipi"@en ;
-      foaf:page <http://typo3.org/Tipis/foo.html> .
+      foaf:page <http://typo3.org/Tipis/foo.html> ;
+      knowl:internalLink </offers/814d0702-fca5-4539-b262-57919b9322e7> .
 
 </offers/814d0702-fca5-4539-b262-57919b9322e8#this>
 	a gr:Offering ;
@@ -169,7 +190,8 @@
 	gr:hasPriceSpecification <urn:uuid:dcc4764e-022d-46fa-8838-8ed685128896> ;
 	gr:description "Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds."@en ;
 	gr:name "Apple MacBook Pro MC700LL/A 13.3-Inch Laptop"@en ;
-	foaf:page <http://localhost:8080/foo/bar> .
+	foaf:page <http://localhost:8080/foo/bar> ;
+	knowl:internalLink </offers/814d0702-fca5-4539-b262-57919b9322e8> .
 
 <urn:uuid:dcc4764e-022d-46fa-8838-8ed685128896>
 	a gr:UnitPriceSpecification ;
