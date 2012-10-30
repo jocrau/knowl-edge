@@ -3,6 +3,7 @@
             [clojure.browser.net :as net]
             [clojure.browser.event :as event]
             [clojure.browser.dom :as dom]
+            [goog.dom :as gdom]
             [rdfa.core :as core]
             [rdfa.repr :as repr]
             [rdfa.dom :as rdfadom]
@@ -41,22 +42,17 @@
   (let [elements (get-editables)]
     (.mahalo (Aloha.jQuery elements))))
 
-(declare edit->save)
-
-(def save->edit
+(def edit
   (fn [event]
     (let [target (.-target event)]
-      (dom/set-text target "Edit")
-      (export-graph (get-triples))
-      (attach-handler "edit-btn" edit->save)
-      (detach-editor))))
-
-(def edit->save
-  (fn [event]
-    (let [target (.-target event)]
-      (dom/set-text target "Save")
-      (attach-handler "edit-btn" save->edit)
-      (attach-editor))))
+      (if (= (gdom/getTextContent target) "Edit")
+        (do
+          (gdom/setTextContent target "Save")
+          (attach-editor))
+        (do
+          (gdom/setTextContent target "Edit")
+          (export-graph (get-triples))
+          (detach-editor))))))
 
 (defn attach-content-change-handler []
   (Aloha.bind
@@ -67,9 +63,7 @@
 (defn init []
   (def rdfa (.init js/RDFaDOM))
   (def base (.-origin (.-location js/document)))
-  (attach-handler "edit-btn" edit->save)
+  (attach-handler "edit-btn" edit)
   (attach-content-change-handler))
 
 (.addEventListener js/document "DOMContentLoaded" init)
-
-
