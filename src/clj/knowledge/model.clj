@@ -67,6 +67,7 @@
 
 (def know "http://knowl-edge.org/ontology/core#")
 (def foaf "http://xmlns.com/foaf/0.1/")
+(def foaf:depiction (str foaf "depiction"))
 (def rdf:type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 (def rdf:XMLLiteral "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral")
 (def know:query (str know "query"))
@@ -74,7 +75,8 @@
 (def know:internalLink (str know "internalLink"))
 (def know:externalLink (str know "externalLink"))
 (def know:template (str know "template"))
-(def foaf:depiction (str foaf "depiction"))
+(def schema "http://schema.org/")
+(def schema:contentUrl (str schema "contentUrl"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 (def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")

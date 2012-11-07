@@ -39,7 +39,14 @@
 								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
 							</span>, 
 						<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span></p>
-						<div typeof="http://xmlns.com/foaf/0.1/Image" rel="http://xmlns.com/foaf/0.1/depiction">
+						
+						<div rel="http://schema.org/video">
+							<div typeof="http://schema.org/VideoObject" rel="http://schema.org/contentUrl">
+								<iframe width="560" height="315" src="http://www.youtube.com/embed/xyz" frameborder="0" allowfullscreen class="pull-right"></iframe>
+							</div>							
+						</div>
+
+						<div rel="http://xmlns.com/foaf/0.1/depiction">
 							<img src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right" />
 						</div>
 
@@ -56,16 +63,16 @@
 						</p>
 
 						<h3>Nutrition facts:</h3>
-						<ul rel="http://schema.org/nutrition" typeof="http://schema.org/NutritionInformation" >
-							<li property="http://schema.org/calories">240 calories</li>
-							<li property="http://schema.org/fatContent">9 grams fat</li>
-						</ul>
-					
+						<div rel="http://schema.org/nutrition" >
+							<ul typeof="http://schema.org/NutritionInformation" >
+								<li property="http://schema.org/calories">240 calories</li>
+								<li property="http://schema.org/fatContent">9 grams fat</li>
+							</ul>
+						</div>
+						
 						<h3>Ingredients:</h3>
 						<ul>
 							<li property="http://schema.org/ingredients">3 or 4 ripe bananas, smashed</li>
-							<li property="http://schema.org/ingredients">1 egg</li>
-							<li property="http://schema.org/ingredients">3/4 cup of sugar</li>
 						</ul>
 
 						<h3>Instructions:</h3>

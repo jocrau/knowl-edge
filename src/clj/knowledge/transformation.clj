@@ -118,6 +118,10 @@
   (let [url (identifier target)]
     {:tag :img :attrs {:src url :class "img-polaroid pull-right"} :content ""}))
 
+(defn link-video [target]
+  (let [url (identifier target)]
+    {:tag :iframe :attrs {:src url :class "pull-right" :frameborder 0 :width 560 :height 315} :content ""}))
+
 ;; Transformations
 
 (defprotocol Transformer
@@ -152,6 +156,8 @@
       (enlive/content (link-internal object))
       foaf:depiction
       (enlive/content (link-image object))
+      schema:contentUrl
+      (enlive/content (link-video object))
       (enlive/do->
         (enlive/content (transform object context))
         (if (satisfies? knowledge.model/Literal object)
