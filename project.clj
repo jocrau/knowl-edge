@@ -1,5 +1,8 @@
 (defproject org.knowl-edge/knowledge "0.0.1-SNAPSHOT"
   :description "This is a knowl:edge Management System"
+  :license {:name "MIT License"
+            :url "http://www.opensource.org/licenses/mit-license.php"
+            :distribution :repo}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [ring "1.1.5"]
