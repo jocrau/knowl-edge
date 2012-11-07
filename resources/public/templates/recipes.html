@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" typeof="http://xmlns.com/foaf/0.1/Document">
+<head>
+	<meta charset="UTF-8">
+	<base href="http://localhost:8080/" />
+	<title property="http://www.w3.org/2000/01/rdf-schema#label">knowl:edge - Products</title>
+	<link rel="shortcut icon" href="static/img/favicon.ico" />
+
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+	
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="#">knowl:edge</a>
+					<ul class="nav">
+						<li><a href="posts">Blog</a></li>
+						<li><a href="people">People</a></li>
+						<li><a href="products">Products</a></li>
+						<li><a href="bostonians">Bostonians</a></li>
+						<li><a href="recipes">Recipes</a></li>
+					</ul>
+					<a id="edit-btn" href="javascript:void(0)" class="btn pull-right">Edit</a>
+				</div>
+			</div>
+		</div>
+				
+		<div class="container">
+			<div class="row">
+				<div id="test-content" rel="http://knowl-edge.org/ontology/core#contains">
+
+					<div class="span12" about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
+						<h2 property="http://schema.org/name">Mom's World Famous Banana Bread</h2>
+						<p>By <span rel="http://schema.org/creator">
+								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
+							</span>, 
+						<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span></p>
+						<div typeof="http://xmlns.com/foaf/0.1/Image" rel="http://xmlns.com/foaf/0.1/depiction">
+							<img src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right" />
+						</div>
+
+						<p property="http://schema.org/description">
+							This classic banana bread recipe comes
+							from my mom -- the walnuts add a nice texture and flavor to the banana
+							bread.
+						</p>
+
+						<p>
+							Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span><br />
+							Cook time: <span property="http://schema.org/cookTime" content="PT1H">1 hour</span><br/>
+							Yield: <span property="http://schema.org/recipeYield">1 loaf</span>
+						</p>
+
+						<h3>Nutrition facts:</h3>
+						<ul rel="http://schema.org/nutrition" typeof="http://schema.org/NutritionInformation" >
+							<li property="http://schema.org/calories">240 calories</li>
+							<li property="http://schema.org/fatContent">9 grams fat</li>
+						</ul>
+					
+						<h3>Ingredients:</h3>
+						<ul>
+							<li property="http://schema.org/ingredients">3 or 4 ripe bananas, smashed</li>
+							<li property="http://schema.org/ingredients">1 egg</li>
+							<li property="http://schema.org/ingredients">3/4 cup of sugar</li>
+						</ul>
+
+						<h3>Instructions:</h3>
+						<span property="http://schema.org/recipeInstructions">
+							Preheat the oven to 350 degrees. Mix in the ingredients in a bowl. Add
+							the flour last. Pour the mixture into a loaf pan and bake for one hour.
+						</span>
+						
+						<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+							<span itemprop="ratingValue">4</span> stars -
+							based on <span itemprop="reviewCount">250</span> reviews
+						</div>
+
+					</div>
+					
+
+			</div>
+			</div>
+		</div>
+				
+		<footer class="container footer">
+			<div class="row">
+				<div class="span12"> © 2012 Jochen Rau </div>				
+			</div>
+		</footer>
+	</div>
+	    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<script src="static/js/parser.js"></script>
+    <script src="static/js/dom.js"></script>
+	<script src="static/js/app.js"></script>
+ 
+	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/vendor/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
+	<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/aloha.js" data-aloha-plugins="common/format,common/list,common/link"></script>	 
+	
+</body>
+</html>
