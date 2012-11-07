@@ -32,7 +32,8 @@
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [ring.util.codec :as codec]
-    [net.cgrand.enlive-html :as enlive]))
+    [net.cgrand.enlive-html :as enlive])
+  (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
 
 ;; Context
 
@@ -132,7 +133,12 @@
 (defmulti transform-literal (fn [literal context] (-> literal datatype value)))
 (defmethod transform-literal :default [literal context] (value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatter "EEEE dd MMMM, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
+  (time/unparse (time/formatter "MMMM d, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
+(defmethod transform-literal "http://www.w3.org/2001/XMLSchema#duration" [literal context]
+  (let [parser (ISOPeriodFormat/standard)
+        unparser (PeriodFormat/getDefault)
+        duration (.parsePeriod parser (value literal))]
+    (.print unparser (.normalizedStandard duration))))
 
 (defn transform-statement [statement context]
   (let [predicate (predicate statement)
