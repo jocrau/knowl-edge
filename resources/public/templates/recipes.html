@@ -32,60 +32,88 @@
 		<div class="container">
 			<div class="row">
 				<div id="test-content" rel="http://knowl-edge.org/ontology/core#contains">
-
 					<div class="span12" about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
 						<h2 property="http://schema.org/name">Mom's World Famous Banana Bread</h2>
-						<p>By <span rel="http://schema.org/creator">
-								<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
-							</span>, 
-						<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span></p>
-						
-						<div rel="http://schema.org/video">
-							<div typeof="http://schema.org/VideoObject" rel="http://schema.org/contentUrl">
-								<iframe width="560" height="315" src="http://www.youtube.com/embed/xyz" frameborder="0" allowfullscreen class="pull-right"></iframe>
-							</div>							
+													
+						<div class="row">
+							<div class="span6">
+								<h4>Ingredients</h4>
+								<ul>
+									<li property="http://schema.org/ingredients">3 or 4 ripe bananas, smashed</li>
+								</ul>
+		
+								<h4>Preparation</h4>
+								
+								<p property="http://schema.org/recipeInstructions">
+									Preheat the oven to 350 degrees. Mix in the ingredients in a bowl. Add
+									the flour last. Pour the mixture into a loaf pan and bake for one hour.
+								</p>
+								
+								<h4>Nutritional Information</h4>
+								
+								<p>1 serving contains</p>
+							
+								<div rel="http://schema.org/nutrition">
+									<div typeof="http://schema.org/NutritionInformation">
+										<div>Calories (kcal) <span property="http://schema.org/calories">42</span></div>
+										<div>Fat (g) <span property="http://schema.org/fatContent">42</span></div>
+										<div>Saturated Fat (g) <span property="http://schema.org/saturatedFatContent">42</span></div>
+										<div>Cholesterol (mg) <span property="http://schema.org/cholesterolContent">42</span></div>
+										<div>Carbohydrates (g) <span property="http://schema.org/carbohydrateContent">42</span></div>
+										<div>Dietary Fiber (g) <span property="http://schema.org/fiberContent">42</span></div>
+										<div>Total Sugars (g) <span property="http://schema.org/sugarContent">42</span></div>
+										<div>Protein (g) <span property="http://schema.org/proteinContent">42</span></div>
+										<div>Sodium (mg) <span property="http://schema.org/sodiumContent">42</span></div>
+									</div>
+								</div>
+								
+								<h4>Ratings</h4>						
+								
+								<p property="http://schema.org/aggregateRating" typeof="http://schema.org/AggregateRating">
+									<span property="http://schema.org/ratingValue">4</span> stars - based on <span property="http://schema.org/reviewCount">250</span> reviews
+								</p>
+								
+							</div>
+							
+							<div class="span6">
+								<div class="well well-small">
+									<p>By <span rel="http://schema.org/creator">
+											<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
+										</span>, 
+										<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span>
+									</p>
+									
+									<p property="http://schema.org/description">
+										This classic banana bread recipe comes
+										from my mom -- the walnuts add a nice texture and flavor to the banana
+										bread.
+									</p>
+									
+									<p>
+										Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span><br />
+										Cook time: <span property="http://schema.org/cookTime" content="PT3H">3 hour</span><br/>
+										Yield: <span property="http://schema.org/recipeYield">1 loaf</span>
+									</p>
+									
+									<p>Read more: <span rel="http://knowl-edge.org/ontology/core#externalLink"><a href="#">Read More</a></span></p>
+								</div>
+									
+								<div property="http://xmlns.com/foaf/0.1/depiction" class="img-polaroid">
+									<div about="static/img/placeholder/300x200.gif#this" rel="http://schema.org/url">
+										<img src="static/img/placeholder/300x200.gif" />
+									</div>
+								</div>
+								
+								<h4>Video</h4>
+																
+								<div rel="http://schema.org/video" class="img-polaroid">
+									<p typeof="http://schema.org/VideoObject" rel="http://schema.org/contentUrl">
+										<iframe width="100%" src="http://www.youtube.com/embed/xyz" frameborder="0" allowfullscreen></iframe>
+									</p>
+								</div>
+								
+							</div>
 						</div>
-
-						<div rel="http://xmlns.com/foaf/0.1/depiction">
-							<img src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right" />
-						</div>
-
-						<p property="http://schema.org/description">
-							This classic banana bread recipe comes
-							from my mom -- the walnuts add a nice texture and flavor to the banana
-							bread.
-						</p>
-
-						<p>
-							Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span><br />
-							Cook time: <span property="http://schema.org/cookTime" content="PT1H">1 hour</span><br/>
-							Yield: <span property="http://schema.org/recipeYield">1 loaf</span>
-						</p>
-
-						<h3>Nutrition facts:</h3>
-						<div rel="http://schema.org/nutrition" >
-							<ul typeof="http://schema.org/NutritionInformation" >
-								<li property="http://schema.org/calories">240 calories</li>
-								<li property="http://schema.org/fatContent">9 grams fat</li>
-							</ul>
-						</div>
-						
-						<h3>Ingredients:</h3>
-						<ul>
-							<li property="http://schema.org/ingredients">3 or 4 ripe bananas, smashed</li>
-						</ul>
-
-						<h3>Instructions:</h3>
-						<span property="http://schema.org/recipeInstructions">
-							Preheat the oven to 350 degrees. Mix in the ingredients in a bowl. Add
-							the flour last. Pour the mixture into a loaf pan and bake for one hour.
-						</span>
-						
-						<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-							<span itemprop="ratingValue">4</span> stars -
-							based on <span itemprop="reviewCount">250</span> reviews
-						</div>
-
 					</div>
 					
 

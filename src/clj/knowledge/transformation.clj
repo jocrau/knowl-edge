@@ -116,11 +116,11 @@
 
 (defn link-image [target]
   (let [url (identifier target)]
-    {:tag :img :attrs {:src url :class "img-polaroid pull-right"} :content ""}))
+    {:tag :img :attrs {:src url} :content ""}))
 
 (defn link-video [target]
   (let [url (identifier target)]
-    {:tag :iframe :attrs {:src url :class "pull-right" :frameborder 0 :width 560 :height 315} :content ""}))
+    {:tag :iframe :attrs {:src url :frameborder 0 :width "100%" :height "315"} :content ""}))
 
 ;; Transformations
 
