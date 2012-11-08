@@ -162,7 +162,7 @@
 		foaf:page <http://www.romuloyanes.com/>
 	] .
 
-<http://www.youtube.com/embed/m-u6XkNpSAI>
+<https://www.youtube.com/embed/m-u6XkNpSAI>
 	a schema:VideoObject .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
@@ -170,7 +170,7 @@
 	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
 	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
 	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
-	schema:video <http://www.youtube.com/embed/m-u6XkNpSAI> ;
+	schema:video <https://www.youtube.com/embed/m-u6XkNpSAI> ;
 	schema:creator </people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
 	schema:prepTime "PT20M"^^xsd:duration ;
