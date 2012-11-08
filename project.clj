@@ -17,7 +17,8 @@
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
   :cljsbuild {:builds [{:source-path "src/cljs"
-                        :compiler {:output-to "resources/public/js/app.js"}}]}
+                        :compiler {:optimization :whitespace
+                                   :output-to "resources/public/js/app.js"}}]}
   :aot [knowledge]
   :main knowledge.server
   :uberjar-exclusions [#"META-INF/ECLIPSEF.SF"]
