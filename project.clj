@@ -12,7 +12,7 @@
                  [clj-time "0.4.4"]
                  [joda-time "2.1"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
-  :plugins [[lein-cljsbuild "0.2.7"]]
+  :plugins [[lein-cljsbuild "0.2.9"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :source-paths ["src/clj"]
   :resource-paths ["resources"]
