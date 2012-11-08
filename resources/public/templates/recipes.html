@@ -1,5 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" typeof="http://xmlns.com/foaf/0.1/Document">
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    version="XHTML+RDFa 1.1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.w3.org/1999/xhtml
+                        http://www.w3.org/MarkUp/SCHEMA/xhtml-rdfa-2.xsd"
+    lang="en"
+    xml:lang="en"
+    typeof="http://xmlns.com/foaf/0.1/Document">
 <head>
 	<meta charset="UTF-8">
 	<base href="http://localhost:8080/" />
@@ -91,31 +98,24 @@
 									
 									<p>
 										Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span><br />
-										Cook time: <span property="http://schema.org/cookTime" content="PT3H">3 hour</span><br/>
+										Total time: <span property="http://schema.org/totalTime" content="PT3H">3 hour</span><br/>
 										Yield: <span property="http://schema.org/recipeYield">1 loaf</span>
 									</p>
 									
 									<p>Read more: <span rel="http://knowl-edge.org/ontology/core#externalLink"><a href="#">Read More</a></span></p>
 								</div>
-									
-								<div property="http://xmlns.com/foaf/0.1/depiction" class="img-polaroid">
-									<div about="static/img/placeholder/300x200.gif#this" rel="http://schema.org/url">
-										<img src="static/img/placeholder/300x200.gif" />
-									</div>
-								</div>
 								
-								<h4>Video</h4>
-																
-								<div rel="http://schema.org/video" class="img-polaroid">
-									<p typeof="http://schema.org/VideoObject" rel="http://schema.org/contentUrl">
-										<iframe width="100%" src="http://www.youtube.com/embed/xyz" frameborder="0" allowfullscreen></iframe>
-									</p>
-								</div>
+								<p rel="http://schema.org/image" resource="static/img/placeholder/300x200.gif" class="img-polaroid">
+									<img src="static/img/placeholder/300x200.gif" />
+								</p>
+												
+								<p rel="http://schema.org/video" class="img-polaroid">
+									<iframe src="http://www.youtube.com/embed/xyz?enablejsapi=1&origin=http://localhost:8080" width="100%" frameborder="0" allowfullscreen></iframe>
+								</p>
 								
 							</div>
 						</div>
 					</div>
-					
 
 			</div>
 			</div>

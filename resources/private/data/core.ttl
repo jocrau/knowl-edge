@@ -154,28 +154,27 @@
 	rdfs:label "Almond-Oat Strawberry Shortcakes"@en ;
 	knowl:contains </recipes/almond-oat-strawberry-shortcakes#this> .
 
-</static/img/almond-oat-strawberry-shortcakes.jpg#this>
-	a foaf:Image ;
-	schema:url </static/img/almond-oat-strawberry-shortcakes.jpg> ;
+</static/img/almond-oat-strawberry-shortcakes.jpg>
+	a schema:Photograph ;
 	schema:creator [
 		a foaf:Person ;
 		foaf:name "Romulo Yanes" ;
 		foaf:page <http://www.romuloyanes.com/>
 	] .
 
+<http://www.youtube.com/embed/m-u6XkNpSAI>
+	a schema:VideoObject .
+
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
 	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
 	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
-	foaf:depiction </static/img/almond-oat-strawberry-shortcakes.jpg#this> ;
-	schema:video [
-		a schema:VideoObject ;
-		schema:contentUrl <http://www.youtube.com/embed/m-u6XkNpSAI>
-	] ;
+	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
+	schema:video <http://www.youtube.com/embed/m-u6XkNpSAI> ;
 	schema:creator </people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
 	schema:prepTime "PT20M"^^xsd:duration ;
-	schema:cookTime "PT1H"^^xsd:duration ;
+	schema:totalTime "PT1H"^^xsd:duration ;
 	schema:nutrition [
 		a schema:NutritionInformation ;
 		schema:calories "440" ;

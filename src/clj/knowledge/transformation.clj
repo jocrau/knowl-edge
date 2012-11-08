@@ -120,7 +120,7 @@
 
 (defn link-video [target]
   (let [url (identifier target)]
-    {:tag :iframe :attrs {:src url :frameborder 0 :width "100%" :height "315"} :content ""}))
+    {:tag :iframe :attrs {:src (str url "?enablejsapi=1&origin=http://localhost:8080/recipes") :type "text/html" :frameborder 0 :width "100%" :height "315"} :content ""}))
 
 ;; Transformations
 
@@ -156,7 +156,9 @@
       (enlive/content (link-internal object))
       foaf:depiction
       (enlive/content (link-image object))
-      schema:contentUrl
+      schema:image
+      (enlive/content (link-image object))
+      schema:video
       (enlive/content (link-video object))
       (enlive/do->
         (enlive/content (transform object context))
