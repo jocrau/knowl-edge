@@ -52,7 +52,7 @@
 (defn set-base [template]
   (enlive/at template
     [:base] (enlive/substitute {:tag :base :attrs {:href base-iri}})))
-(def ^:dynamic template (set-base (enlive/html-resource (java.io.File. "resources/public/templates/page.html"))))
+(def ^:dynamic template (set-base (enlive/html-resource (java.io.File. "resources/private/templates/page.html"))))
 
 ;; Predicates
 

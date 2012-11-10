@@ -37,19 +37,19 @@
 
 </posts>
 	a foaf:Document ;
-	knowl:template </static/templates/blog.html> ;
+	knowl:template </templates/blog.html> ;
 	rdfs:label "Blog"@en ;
 	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>, </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
 </people>
 	a foaf:Document ;
-	knowl:template </static/templates/page.html> ;
+	knowl:template </templates/page.html> ;
 	rdfs:label "People"@en ;
 	knowl:contains dbp:Ted_Williams .
 
 </people/Ted_Williams>
 	a foaf:Document ;
-	knowl:template </static/templates/people.html> ;
+	knowl:template </templates/people.html> ;
 	rdfs:label "A Page about Ted"@en ;
 	knowl:contains </people/Ted_Williams#this> .	
 
@@ -60,32 +60,32 @@
 	
 </products>
 	a foaf:Document ;
-	knowl:template </static/templates/products.html> ;
+	knowl:template </templates/products.html> ;
 	rdfs:label "Product Catalog"@en ;
 	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this>, </offers/814d0702-fca5-4539-b262-57919b9322e7#this>, </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
 </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95>
 	a foaf:Document ;
-	knowl:template </static/templates/products.html> ;
+	knowl:template </templates/products.html> ;
 	rdfs:label "Single Product"@en ;
 	knowl:contains </offers/27c2b31d-b9c2-4904-8bd2-1d4dffdd9c95#this> .
 
 </offers/814d0702-fca5-4539-b262-57919b9322e7>
 	a foaf:Document ;
-	knowl:template </static/templates/products.html> ;
+	knowl:template </templates/products.html> ;
 	rdfs:label "Single Product"@en ;
 	knowl:contains </offers/814d0702-fca5-4539-b262-57919b9322e7#this> .
 
 </offers/814d0702-fca5-4539-b262-57919b9322e8>
 	a foaf:Document ;
-	knowl:template </static/templates/products.html> ;
+	knowl:template </templates/products.html> ;
 	rdfs:label "Single Product"@en ;
 	knowl:contains </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
 
 </bostonians>
 	a foaf:Document ;
-	knowl:template </static/templates/people.html> ;
+	knowl:template </templates/people.html> ;
 	rdfs:label "Early Bostonians"@en ;
 	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
 
@@ -110,7 +110,7 @@
 
 </posts/748fc789-6b8e-4628-a248-f563ec0482f5>
 	a foaf:Document ;
-	knowl:template </static/templates/single-view.html> ;
+	knowl:template </templates/single-view.html> ;
 	rdfs:label "Single View -- My First Blog Post"@en ;
 	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this> .
 
@@ -131,26 +131,26 @@
 
 </posts/01da6567-6b5b-4596-a541-10db9459dda3>
 	a foaf:Document ;
-	knowl:template </static/templates/single-view.html> ;
+	knowl:template </templates/single-view.html> ;
 	rdfs:label "Single View -- My Second Blog Post"@en ;
 	knowl:contains </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
 </posts>
 	a foaf:Document ;
-	knowl:template </static/templates/blog.html> ;
+	knowl:template </templates/blog.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
 	knowl:contains </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>, </posts/01da6567-6b5b-4596-a541-10db9459dda3#this> .
 
 </recipes>
 	a foaf:Document ;
-	knowl:template </static/templates/recipes.html> ;
+	knowl:template </templates/recipes.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
 	knowl:contains </recipes/almond-oat-strawberry-shortcakes#this> ;
 	knowl:externalLink <http://www.bonappetit.com/recipes/quick-recipes/2012/04/almond-oat-strawberry-shortcakes> .
 
 </recipes/almond-oat-strawberry-shortcakes>
 	a foaf:Document ;
-	knowl:template </static/templates/recipes.html> ;
+	knowl:template </templates/recipes.html> ;
 	rdfs:label "Almond-Oat Strawberry Shortcakes"@en ;
 	knowl:contains </recipes/almond-oat-strawberry-shortcakes#this> .
 
