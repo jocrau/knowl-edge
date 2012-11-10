@@ -26,7 +26,7 @@
   (.getCurrentTime player))
 
 (defn ^:export on-player-ready [event]
-  (.playVideo (.-target event)))
+  #_(.playVideo (.-target event)))
 
 (defn ^:export on_player_state_change [event]
   (let [player (.-target event)]
