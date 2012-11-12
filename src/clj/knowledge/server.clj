@@ -58,7 +58,9 @@
   (GET "/" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
   (GET "*" [:as request]
-       (transform/dereference (resource request)))
+       (if-let [response (seq (transform/dereference (resource request)))]
+         response
+         (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>")))
   (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
 
 (def app
