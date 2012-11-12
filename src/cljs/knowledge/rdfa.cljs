@@ -12,18 +12,21 @@
 (declare rdfa)
 (declare base)
 
-(defn export-graph [graph]
-  (let [connection (net/xhr-connection)
-        location (.-URL js/document)
-        method "POST"
-        representation (repr/print-triples graph)
-        headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
-    (net/transmit connection location method representation headers)))
-
-(defn get-triples []
+(defn ^:export get-triples []
   (let [document-element (.-documentElement js/document)
         location (.-URL js/document)]
     (:triples (core/extract-rdfa :html document-element location))))
+
+(defn ^:export serialize [triples _]
+  (repr/print-triples triples))
+
+(defn export-graph []
+  (let [connection (net/xhr-connection)
+        location (.-URL js/document)
+        method "POST"
+        representation (serialize (get-triples) :n3)
+        headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
+    (net/transmit connection location method representation headers)))
 
 (defn get-editables []
   (.getElementsByType rdfa "http://rdfs.org/sioc/types#BlogPost"))
@@ -51,7 +54,7 @@
           (attach-editor))
         (do
           (gdom/setTextContent target "Edit")
-          (export-graph (get-triples))
+          (export-graph)
           (detach-editor))))))
 
 (defn attach-content-change-handler []
