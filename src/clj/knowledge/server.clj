@@ -51,6 +51,7 @@
 
 (defroutes route
   (files "/static/" {:root "resources/public/"})
+  (files "/data/" {:root "resources/private/data/" :mime-types {"ttl" "text/turtle"}})
   (files "/templates/" {:root "resources/private/templates/"})
   (POST "*" {body :body :as request}
         (store/add-statements store/default-store body {})
