@@ -23,7 +23,6 @@
     :author "Jochen Rau"}
   knowledge.server
   (:gen-class)
-  (:refer-clojure :exclude [namespace])
   (:use
     compojure.core
     compojure.route
@@ -32,11 +31,24 @@
     ring.middleware.params)
   (:require
     [knowledge.model :as model]
-    [knowledge.implementation.jena.model]
     [knowledge.store :as store]
-    [knowledge.implementation.jena.store]
-    [knowledge.transformation :as transform]
-    [knowledge.implementation.jena.transformation]))
+    [knowledge.transformation :as transform])
+  (:import (com.hp.hpl.jena.rdf.model ModelFactory)))
+
+(def default-store (ModelFactory/createDefaultModel))
+
+;; Helper functions
+
+(defn import-core-data []
+  (store/import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
+
+(defn reload-core-data []
+  (do
+    (store/clear-all default-store)
+    (import-core-data)))
+
+(defn export-core-data []
+  (store/export-from default-store "resources/private/data/out.ttl" {}))
 
 (defn resource [thing]
   (cond
@@ -54,12 +66,12 @@
   (files "/data/" {:root "resources/private/data/" :mime-types {"ttl" "text/turtle"}})
   (files "/templates/" {:root "resources/private/templates/"})
   (POST "*" {body :body :as request}
-        (store/add-statements store/default-store body {})
+        (store/add-statements default-store body {})
         {:status 200 :headers {}})
   (GET "/" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
   (GET "*" [:as request]
-       (if-let [response (seq (transform/dereference (resource request)))]
+       (if-let [response (seq (transform/dereference (resource request) default-store))]
          response
          (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>")))
   (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
@@ -71,5 +83,5 @@
 
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 8080))]
-    (store/import-core-data)
+    (import-core-data)
     (.start (run-jetty #'app {:port port :join? false}))))

@@ -163,7 +163,13 @@
 	] .
 
 <https://www.youtube.com/embed/m-u6XkNpSAI>
-	a schema:VideoObject .
+	a schema:VideoObject ;
+	dc:hasPart [
+		a knowl:VideoSegment ;
+		knowl:startTime "00:00:12"^^xsd:time ;
+		knowl:endTime "00:00:18"^^xsd:time ;
+		schema:mentions <dbp:King_Arthur_Flour> 
+	] .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;

@@ -41,12 +41,11 @@
   "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
   (conj-selector [this selector] "Appends a selector to the selector-chain"))
 
-(defrecord Context [depth rootline]
+(defrecord Context [depth rootline default-store]
   ContextHandling
   (conj-selector
     [this selector]
     (update-in this [:rootline] #(into % selector))))
-(def ^:dynamic context (Context. 0 []))
 
 (def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
 (defn set-base [template]
@@ -214,7 +213,7 @@
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-  (let [stores (store/stores-for resource)]
+  (let [stores (store/stores-for resource (.default-store context))]
     (pmap-set #(store/find-matching % resource) stores)))
 
 (defn- extract-types-from [statements]
@@ -250,8 +249,8 @@
 
 ;; Entry Point
 
-(defn dereference [resource]
-  (when-let [document (transform resource (Context. 0 []))]
+(defn dereference [resource default-store]
+  (when-let [document (transform resource (Context. 0 [] default-store))]
     (enlive/emit* document)))
 
 ;; Fixes a problem with elive escaping strings

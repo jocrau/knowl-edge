@@ -22,16 +22,14 @@
   ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
   knowledge.store
-  (:use [clojure.contrib.core :only (-?>)])
-  (:require
-    [knowledge.model :as model]))
+  (:require [knowledge.model :as model]))
 
-(def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
-
-(defn- serialization-format [options]
+(defn serialization-format [options]
   (name (or (:format options) "TTL")))
 
 (defprotocol Store
+  (get-base-iri [this])
+  (clear-all [this])
   (add-statements [this statements] [this statements options])
   (find-by-query [this query-string] [this query-string service])
   (find-types-of [this resource])
@@ -44,10 +42,8 @@
 (deftype Endpoint [service options])
 (deftype MemoryStore [model options])
 
-(declare default-store)
-
-(defn stores-for-memo [resource]
-    (let [stores (find-by-query default-store (str "
+(defn stores-for [resource default-store]
+  (let [stores (find-by-query default-store (str "
 					PREFIX void: <http://rdfs.org/ns/void#>
 					CONSTRUCT {
 					?s void:sparqlEndpoint ?endpoint .
@@ -58,9 +54,6 @@
 					?s void:uriSpace ?uriSpace .
 					FILTER strStarts(\"" (model/identifier resource) "\", ?uriSpace)
 					}"))]
-    (conj (map
-            #(Endpoint. (-> % knowledge.model/object knowledge.model/value) {})
-            stores)
+    (conj (map #(Endpoint. (-> % model/object model/value) {})
+               stores)
           default-store)))
-
-(defn stores-for [resource] (stores-for-memo resource))

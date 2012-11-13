@@ -21,21 +21,23 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-   knowledge.implementation.jena.store)
+   knowledge.implementation.store
+  (:use knowledge.store
+        [clojure.contrib.core :only (-?>)])
+  (:require [clojure.contrib.str-utils2 :as string]
+            [knowledge.model :as model])
+  (:import (com.hp.hpl.jena.query QueryExecutionFactory)
+           (com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
+           (knowledge.store Endpoint MemoryStore)))
 
-(in-ns 'knowledge.store)
-(require '[clojure.contrib.str-utils2 :as string])
-(require '[knowledge.model :as model])
-(import '(com.hp.hpl.jena.query QueryExecutionFactory)
-        '(com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
-        '(knowledge.store Endpoint MemoryStore))
-
-(def default-store (ModelFactory/createDefaultModel))
+(defn get-base-iri* [] (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
 
 ;; Endpoint Implementation
 
-(extend-type knowledge.store.Endpoint
+(extend-type Endpoint
   Store
+  (get-base-iri [this] (get-base-iri*))
+  (clear-all [this] nil)
   (find-by-query
     ([this query-string] (find-by-query this query-string (.service this)))
     ([this query-string service]
@@ -63,15 +65,15 @@
 
 ;; MemoryStore Implementation
 
-(declare export-core-data)
-
 (extend-type com.hp.hpl.jena.rdf.model.impl.ModelCom
   Store
+  (get-base-iri [this] (get-base-iri*))
+  (clear-all [this] (.removeAll this))
   (add-statements
     ([this statements]
       (add-statements this statements {}))
     ([this statements options]
-      (.read this statements base-iri (serialization-format options))))
+      (.read this statements (get-base-iri this) (serialization-format options))))
   (find-by-query
     ([this query-string]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
@@ -90,21 +92,8 @@
   (import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]
-      (.read this stream base-iri (serialization-format options))))
+      (.read this stream (get-base-iri*) (serialization-format options))))
   (export-from
     [this target options]
     (with-open [stream (clojure.java.io/output-stream target)]
       (.write this stream (serialization-format options)))))
-
-;; Helper functions
-
-(defn import-core-data []
-  (import-into default-store (clojure.java.io/resource "private/data/core.ttl") {}))
-
-(defn reload-core-data []
-  (do
-    (.removeAll default-store)
-    (import-core-data)))
-
-(defn export-core-data []
-  (export-from default-store "resources/private/data/out.ttl" {}))

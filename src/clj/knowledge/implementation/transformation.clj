@@ -21,7 +21,7 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-   knowledge.implementation.jena.transformation)
+   knowledge.implementation.transformation)
 
 (in-ns 'knowledge.transformation)
 

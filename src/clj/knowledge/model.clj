@@ -47,12 +47,6 @@
   (predicate [statement])
   (object [statement]))
 
-(extend-type String
-  Value
-  (value [this] this)
-  Resource
-  (identifier [this] this))
-
 (extend-type nil
   Value
   (value [this] nil)

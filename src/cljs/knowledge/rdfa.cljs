@@ -7,7 +7,8 @@
             [rdfa.core :as core]
             [rdfa.repr :as repr]
             [rdfa.dom :as rdfadom]
-            [rdfa.stddom :as stddom]))
+            [rdfa.stddom :as stddom]
+            [knowledge.store :as store]))
 
 (declare rdfa)
 (declare base)
@@ -17,14 +18,14 @@
         location (.-URL js/document)]
     (:triples (core/extract-rdfa :html document-element location))))
 
-(defn ^:export serialize [triples _]
+(defn ^:export serialize [triples]
   (repr/print-triples triples))
 
 (defn export-graph []
   (let [connection (net/xhr-connection)
         location (.-URL js/document)
         method "POST"
-        representation (serialize (get-triples) :n3)
+        representation (serialize (get-triples))
         headers (cljs/js-obj "Content-Type" "text/turtle;charset=utf-8")]
     (net/transmit connection location method representation headers)))
 
@@ -64,9 +65,19 @@
       (dom/log (str "smart edit detected " (.-obj (.-editable info)))))))
 
 (defn init []
-  (def rdfa (.init js/RDFaDOM))
-  (def base (.-origin (.-location js/document)))
-  (attach-handler "edit-btn" edit)
-  (attach-content-change-handler))
+  (do 
+    (def rdfa (.init js/RDFaDOM))
+    (def base (.-origin (.-location js/document)))
+    (attach-handler "edit-btn" edit)
+    (attach-content-change-handler)))
 
 (.addEventListener js/document "DOMContentLoaded" init)
+
+(def default-store (store/MemoryStore.
+                     (js/rdfstore.Store.
+                       (cljs/js-obj :name "mycopilot" :overwrite true)
+                       (fn [store] (.load store "text/turtle" (serialize (get-triples)) nil)))
+                     {}))
+
+(defn ^:export find-by-query [query]
+  (store/find-by-query default-store query))
