@@ -28,6 +28,7 @@
     knowledge.model)
   (:require
     [knowledge.store :as store]
+    [knowledge.base :as base]
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
@@ -41,7 +42,7 @@
   "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
   (conj-selector [this selector] "Appends a selector to the selector-chain"))
 
-(defrecord Context [depth rootline default-store]
+(defrecord Context [depth rootline]
   ContextHandling
   (conj-selector
     [this selector]
@@ -213,7 +214,7 @@
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-  (let [stores (store/stores-for resource (.default-store context))]
+  (let [stores (store/stores-for resource base/default-store)]
     (pmap-set #(store/find-matching % resource) stores)))
 
 (defn- extract-types-from [statements]
@@ -249,8 +250,8 @@
 
 ;; Entry Point
 
-(defn dereference [resource default-store]
-  (when-let [document (transform resource (Context. 0 [] default-store))]
+(defn dereference [resource]
+  (when-let [document (transform resource (Context. 0 []))]
     (enlive/emit* document)))
 
 ;; Fixes a problem with elive escaping strings

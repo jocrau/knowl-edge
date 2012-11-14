@@ -73,11 +73,15 @@
 
 (.addEventListener js/document "DOMContentLoaded" init)
 
-(def default-store (store/MemoryStore.
-                     (js/rdfstore.Store.
-                       (cljs/js-obj :name "core" :overwrite true)
-                       (fn [store] (.load store "text/turtle" (serialize (get-triples)) nil)))
-                     {}))
+;; RDFa API
 
-(defn ^:export find-by-query [query]
-  (store/find-by-query default-store query))
+(extend-type js/Document
+  store/Store
+  (find-by-query
+    ([this query-string callback]
+      (let [impl (.-model this)]
+        (.execute impl query-string
+          (fn [success results]
+            (if success
+              (callback results)
+              (dom/log "No results."))))))))

@@ -39,9 +39,9 @@
   (get-base-iri [this] (get-base-iri*))
   (clear-all [this] nil)
   (find-by-query
-    ([this query-string] (find-by-query this query-string (.service this)))
-    ([this query-string service]
-      (with-open [query-execution (QueryExecutionFactory/sparqlService service query-string)]
+    ([this query-string] (find-by-query this query-string nil))
+    ([this query-string _]
+      (with-open [query-execution (QueryExecutionFactory/sparqlService (.service this) query-string)]
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
@@ -75,7 +75,8 @@
     ([this statements options]
       (.read this statements (get-base-iri this) (serialization-format options))))
   (find-by-query
-    ([this query-string]
+    ([this query-string] (find-by-query this query-string nil))
+    ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
         (try
           (iterator-seq (.listStatements (.execConstruct query-execution)))

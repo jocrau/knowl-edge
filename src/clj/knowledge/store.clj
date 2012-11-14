@@ -31,7 +31,7 @@
   (get-base-iri [this])
   (clear-all [this])
   (add-statements [this statements] [this statements options])
-  (find-by-query [this query-string] [this query-string service])
+  (^:export find-by-query [this query-string] [this query-string callback])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
 
@@ -42,18 +42,19 @@
 (deftype Endpoint [service options])
 (deftype MemoryStore [model options])
 
-(defn stores-for [resource default-store]
-  (let [stores (find-by-query default-store (str "
-					PREFIX void: <http://rdfs.org/ns/void#>
-					CONSTRUCT {
-					?s void:sparqlEndpoint ?endpoint .
-					}
-					WHERE {
-					?s a void:Dataset .
-					?s void:sparqlEndpoint ?endpoint .
-					?s void:uriSpace ?uriSpace .
-					FILTER strStarts(\"" (model/identifier resource) "\", ?uriSpace)
-					}"))]
-    (conj (map #(Endpoint. (-> % model/object model/value) {})
-               stores)
-          default-store)))
+(defn stores-for 
+  ([resource default-store]
+    (let [query-string (str "PREFIX void: <http://rdfs.org/ns/void#>
+														CONSTRUCT {
+														?s void:sparqlEndpoint ?endpoint .
+														}
+														WHERE {
+														?s a void:Dataset .
+														?s void:sparqlEndpoint ?endpoint .
+														?s void:uriSpace ?uriSpace .
+														FILTER strStarts(\"" (model/identifier resource) "\", ?uriSpace)
+														}")
+          stores (find-by-query default-store query-string)]
+      (conj (map #(Endpoint. (-> % model/object model/value) {})
+                 stores)
+            default-store))))
