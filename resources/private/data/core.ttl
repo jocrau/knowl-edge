@@ -1,5 +1,6 @@
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix cnt:     <http://www.w3.org/2011/content#> .
+@prefix oa:      <http://www.w3.org/ns/openannotation/core/> .
 @prefix ore:     <http://www.openarchives.org/ore/terms/> .
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -24,6 +25,7 @@
 @prefix void:    <http://rdfs.org/ns/void#> .
 @prefix ex:      <http://example.com/ontology#> .
 @prefix schema:  <http://schema.org/> .
+@prefix ma:      <http://www.w3.org/ns/ma-ont#> .
 @prefix bake:    <http://bakepedia.org/ontology#> .
 
 <urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286>
@@ -164,6 +166,7 @@
 
 <https://www.youtube.com/embed/m-u6XkNpSAI>
 	a schema:VideoObject ;
+	a ma:MediaResource ;
 	dc:hasPart [
 		a knowl:VideoSegment ;
 		knowl:startTime "00:00:12"^^xsd:time ;
