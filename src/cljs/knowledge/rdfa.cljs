@@ -75,7 +75,7 @@
 
 (def default-store (store/MemoryStore.
                      (js/rdfstore.Store.
-                       (cljs/js-obj :name "mycopilot" :overwrite true)
+                       (cljs/js-obj :name "core" :overwrite true)
                        (fn [store] (.load store "text/turtle" (serialize (get-triples)) nil)))
                      {}))
 
