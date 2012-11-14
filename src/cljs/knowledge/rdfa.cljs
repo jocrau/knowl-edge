@@ -7,8 +7,7 @@
             [rdfa.core :as core]
             [rdfa.repr :as repr]
             [rdfa.dom :as rdfadom]
-            [rdfa.stddom :as stddom]
-            [knowledge.store :as store]))
+            [rdfa.stddom :as stddom]))
 
 (declare rdfa)
 (declare base)
@@ -72,16 +71,3 @@
     (attach-content-change-handler)))
 
 (.addEventListener js/document "DOMContentLoaded" init)
-
-;; RDFa API
-
-(extend-type js/Document
-  store/Store
-  (find-by-query
-    ([this query-string callback]
-      (let [impl (.-model this)]
-        (.execute impl query-string
-          (fn [success results]
-            (if success
-              (callback results)
-              (dom/log "No results."))))))))
