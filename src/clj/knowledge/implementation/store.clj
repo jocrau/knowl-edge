@@ -39,7 +39,7 @@
   (get-base-iri [this] (get-base-iri*))
   (clear-all [this] nil)
   (find-by-query
-    ([this query-string] (find-by-query this query-string nil))
+    ([this query-string] (find-by-query this query-string #()))
     ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/sparqlService (.service this) query-string)]
         (let [options (.options this)]
