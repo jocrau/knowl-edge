@@ -9,7 +9,6 @@
             [rdfa.dom :as rdfadom]
             [rdfa.stddom :as stddom]))
 
-(declare rdfa)
 (declare base)
 
 (defn ^:export get-triples []
@@ -29,7 +28,7 @@
     (net/transmit connection location method representation headers)))
 
 (defn get-editables []
-  (.getElementsByType rdfa "http://rdfs.org/sioc/types#BlogPost"))
+  (knowledge.rdfa.api/get-elements-by-type "http://rdfs.org/sioc/types#BlogPost"))
 
 (defn attach-handler [id handler]
   (event/listen
@@ -65,7 +64,6 @@
 
 (defn init []
   (do 
-    (def rdfa (.init js/RDFaDOM))
     (def base (.-origin (.-location js/document)))
     (attach-handler "edit-btn" edit)
     (attach-content-change-handler)))
