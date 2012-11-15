@@ -72,8 +72,8 @@
 (defn- set-language [language]
   (comp (enlive/set-attr :lang (value language)) (enlive/set-attr :xml:lang (value language))))
 
-(defn- set-content [resource]
-  (enlive/set-attr :content (value resource)))
+(defn- set-content [content]
+  (enlive/set-attr :content content))
 
 (defn- set-resource [resource]
   (if-let [iri (identifier resource)]
@@ -88,12 +88,16 @@
 (defn- set-predicate [resource]
   #(let [current-attrs (:attrs % {})
          current-attr-names (-> current-attrs keys set)
-         attr-name (first (set/intersection current-attr-names #{:rel :property}))
-         new-attrs  (assoc current-attrs attr-name (identifier resource))]
-     (assoc % :attrs new-attrs)))
+         iri (identifier resource)]
+     (if-let [attr-name (first (set/intersection current-attr-names #{:rel :property}))]
+       (assoc % :attrs (assoc current-attrs attr-name iri)))))
 
 (defn- set-reference [resource]
-  (enlive/set-attr :href (identifier resource)))
+  #(let [current-attrs (:attrs % {})
+         current-attr-names (-> current-attrs keys set)
+         iri (identifier resource)]
+     (if-let [attr-name (first (set/intersection current-attr-names #{:href :src}))]
+       (assoc % :attrs (assoc current-attrs attr-name iri)))))
 
 (defn- set-types [types]
   (enlive/set-attr :typeof (string/join " " (map str types))))
@@ -105,22 +109,6 @@
           (map #(or (-> % :attrs :property)
                     (-> % :attrs :rel))
                (enlive/select snippet [(property?)]))))
-
-(defn link-external [target]
-  (let [url (identifier target)]
-    {:tag :a :attrs {:href url} :content url}))
-
-(defn link-internal [target]
-  (let [url (identifier target)]
-    {:tag :a :attrs {:href url :class "btn btn-mini"} :content "Read More"})) ;; TODO static text
-
-(defn link-image [target]
-  (let [url (identifier target)]
-    {:tag :img :attrs {:src url} :content ""}))
-
-(defn link-video [target]
-  (let [url (identifier target)]
-    {:tag :iframe :attrs {:src (str url "?enablejsapi=1&origin=http://localhost:8080") :id "player" :type "text/html" :frameborder 0 :width "100%" :height "315"} :content ""}))
 
 ;; Transformations
 
@@ -149,17 +137,23 @@
         object (object statement)]
     (condp = (identifier predicate)
       know:externalLink
-      (enlive/content (link-external object))
+      (enlive/do->
+        (set-reference object)
+        (enlive/content (value object)))
       dbo:wikiPageExternalLink
-      (enlive/content (link-external object))
+      (enlive/do->
+        (set-reference object)
+        (enlive/content (value object)))
       know:internalLink
-      (enlive/content (link-internal object))
+      (set-reference object)
       foaf:depiction
-      (enlive/content (link-image object))
+      (do
+        #(println %)
+        (set-reference object))
       schema:image
-      (enlive/content (link-image object))
-      schema:video
-      (enlive/content (link-video object))
+      (set-reference object)
+      schema:encoding
+      (set-reference object)
       (enlive/do->
         (enlive/content (transform object context))
         (if (satisfies? knowledge.model/Literal object)

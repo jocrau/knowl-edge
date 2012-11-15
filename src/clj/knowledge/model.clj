@@ -71,7 +71,7 @@
 (def know:template (str know "template"))
 (def schema "http://schema.org/")
 (def schema:image (str schema "image"))
-(def schema:video (str schema "video"))
+(def schema:encoding (str schema "encoding"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 (def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
