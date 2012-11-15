@@ -1,5 +1,6 @@
 (ns knowledge.rdfa.api
-  (:require [knowledge.store :as store]
+  (:require [cljs.core :as cljs]
+            [knowledge.store :as store]
             [knowledge.base :as base]))
 
 ;; Data Access
@@ -12,5 +13,5 @@
 
 ;; Expose the API to JavaScript
 
-(set! js/document.data (fn []))
+(if-not js/document.data (set! js/document.data (js* "{}")))
 (set! js/document.data.query find-by-query)
