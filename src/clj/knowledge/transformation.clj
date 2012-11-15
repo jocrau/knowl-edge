@@ -136,6 +136,10 @@
   (let [predicate (predicate statement)
         object (object statement)]
     (condp = (identifier predicate)
+      "http://dbpedia.org/property/homepage"
+      (enlive/do->
+        (set-reference object)
+        (enlive/content (value object)))      
       know:externalLink
       (enlive/do->
         (set-reference object)

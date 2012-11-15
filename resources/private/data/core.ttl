@@ -164,22 +164,24 @@
 		foaf:page <http://www.romuloyanes.com/>
 	] .
 
-<https://www.youtube.com/embed/m-u6XkNpSAI>
+<urn:uuid:d1717f75-71b7-447d-8fe8-611d5161e98d>
 	a schema:VideoObject ;
 	a ma:MediaResource ;
-	dc:hasPart [
-		a knowl:VideoSegment ;
-		knowl:startTime "00:00:12"^^xsd:time ;
-		knowl:endTime "00:00:18"^^xsd:time ;
-		schema:mentions <dbp:King_Arthur_Flour> 
-	] .
+	schema:encoding <https://www.youtube.com/embed/m-u6XkNpSAI> ;
+	ma:hasFragment <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> .
+
+<https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16>
+	a ma:MediaFragment ;
+	knowl:startTime "00:00:10"^^xsd:time ;
+	knowl:endTime "00:00:16"^^xsd:time ;
+	schema:mentions dbp:King_Arthur_Flour .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
 	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
 	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
 	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
-	schema:video <https://www.youtube.com/embed/m-u6XkNpSAI> ;
+	schema:video <urn:uuid:d1717f75-71b7-447d-8fe8-611d5161e98d> ;
 	schema:creator </people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
 	schema:prepTime "PT20M"^^xsd:duration ;
