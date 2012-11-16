@@ -26,20 +26,19 @@
       (effects/highlight (api/get-elements-by-subject resource)))))
 
 (defn update-related-content [player]
-  #(if (= (current-state player) :playing)
-     (let [current-position (.round js/Math (current-time player))]
-       (if-not (= current-position position)
-         (do
-           #_(dom/log position)
-           (set! position current-position)
-           (let [query (str "SELECT ?mentioned WHERE {?s a <http://www.w3.org/ns/ma-ont#MediaFragment> ; <http://schema.org/mentions> ?mentioned ; <http://knowl-edge.org/ontology/core#start> ?start ; <http://knowl-edge.org/ontology/core#end> ?end . FILTER (?start < " position " && ?end > " position ")}")]
-             (api/find-by-query query highlight-results)))))))
+  #(let [current-position (.round js/Math (current-time player))]
+     (if-not (= current-position position)
+       (do
+         #_(dom/log position)
+         (set! position current-position)
+         (let [query (str "SELECT ?mentioned WHERE {?s a <http://www.w3.org/ns/ma-ont#MediaFragment> ; <http://schema.org/mentions> ?mentioned ; <http://knowl-edge.org/ontology/core#start> ?start ; <http://knowl-edge.org/ontology/core#end> ?end . FILTER (?start < " position " && ?end > " position ")}")]
+           (api/find-by-query query highlight-results))))))
 
 (defn current-time [player]
   (.getCurrentTime player))
 
 (defn ^:export on-player-ready [event]
-  (.playVideo (.-target event)))
+  #_(.playVideo (.-target event)))
 
 (defn ^:export on-player-state-change [event]
   (let [player (.-target event)]
