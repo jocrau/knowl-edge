@@ -29,15 +29,22 @@
 @prefix bake:    <http://bakepedia.org/ontology#> .
 @prefix muov:    <http://purl.oclc.org/NET/muo/ucum/unit/volume/> .
 @prefix muow:    <http://purl.oclc.org/NET/muo/ucum/unit/weight/> .
+@prefix free:    <http://rdf.freebase.com/ns/> .
+@prefix :        <urn:uuid:> .
 
-<urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286>
+:16d041e0-16f0-4b2a-9150-3452e5b93286
 	a knowl:Application ;
-	knowl:source <urn:uuid:dd301f85-e38d-48d2-905d-c99bb976e751> .
+	knowl:source :dd301f85-e38d-48d2-905d-c99bb976e751 .
 
-<urn:uuid:58bb82d3-8f34-4c69-8c8d-872edeb6cc51>
+:58bb82d3-8f34-4c69-8c8d-872edeb6cc51
 	a void:Dataset ;
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
 	void:uriSpace "http://dbpedia.org/resource/" .
+
+:5ad0c010-303b-11e2-81c1-0800200c9a66
+	a void:Dataset ;
+	void:sparqlEndpoint <http://lod.openlinksw.com/sparql> ;
+	void:uriSpace "http://rdf.freebase.com/ns/" .
 
 </posts>
 	a foaf:Document ;
@@ -91,7 +98,7 @@
 	a foaf:Document ;
 	knowl:template </templates/people.html> ;
 	rdfs:label "Early Bostonians"@en ;
-	knowl:contains <urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff> .
+	knowl:contains :718c0bbe-a89a-4115-a9d8-3a8ada9ceeff .
 
 </posts/748fc789-6b8e-4628-a248-f563ec0482f5#this>
       a sioc:BlogPost ;
@@ -169,7 +176,14 @@
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#this>
 	a ma:MediaResource ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI> ;
-	ma:hasFragment </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>, </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29> .
+	ma:hasFragment 
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>, 
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=53,58>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,87> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>
 	a ma:MediaFragment ;
@@ -184,6 +198,41 @@
 	knowl:start 22 ;
 	knowl:end 29 ;
 	schema:mentions dbp:KitchenAid .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=53,58>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=53,58> ;
+	knowl:start 53 ;
+	knowl:end 58 ;
+	schema:mentions </ingredients/All_Purouse_Flour#this> .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=59,62> ;
+	knowl:start 59 ;
+	knowl:end 62 ;
+	schema:mentions </ingredients/Old_Fashioned_Oats#this> .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=62,65> ;
+	knowl:start 62 ;
+	knowl:end 65 ;
+	schema:mentions </ingredients/Sugar#this> .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=67,82> ;
+	knowl:start 67 ;
+	knowl:end 82 ;
+	schema:mentions </ingredients/Slivered_Almonds#this> .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,87>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=82,87> ;
+	knowl:start 82 ;
+	knowl:end 87 ;
+	schema:mentions </ingredients/Kosher_Salt#this> .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
@@ -214,80 +263,57 @@
 			a bake:Component ;
 			bake:quantity "1 cup"@en ;
 			bake:ingredient </ingredients/All_Purouse_Flour#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1/2 cup"@en ;
 			bake:ingredient </ingredients/Old_Fashioned_Oats#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1/3 cup"@en ;
 			bake:ingredient </ingredients/Slivered_Almonds#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1/3 cup"@en ;
 			bake:ingredient </ingredients/Sugar#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "2 tablespoons"@en ;
 			bake:ingredient </ingredients/Sugar#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "2 teaspoons"@en ;
 			bake:ingredient </ingredients/Baking_Powder#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1/2 teaspoon"@en ;
 			bake:ingredient </ingredients/Kosher_Salt#this> 
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "6 tablesoons"@en ;
 			bake:ingredient </ingredients/Butter#this> ;
 			bake:comment "chilled, unsalted, cut into 1/2-inch cubes"@en
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1 cup"@en ;
 			bake:ingredient </ingredients/Heavy_Cream#this> ;
 			bake:comment "divided, plus more for brushing"@en
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1 1/2 teaspoons"@en ;
 			bake:ingredient </ingredients/Vanilla_Extract#this> ;
 			bake:comment "divided"@en
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "4 cups"@en ;
 			bake:ingredient </ingredients/Strawberries#this> ;
 			bake:comment "hulled, sliced"@en
-		] ;
-		bake:component [
+		], [
 			a bake:Component ;
 			bake:quantity "1 tablespoon"@en ;
 			bake:ingredient </ingredients/Grand_Marnier#this> ;
 			bake:comment "or other orange liqueur, optional"@en
 		] 
 	] ;
-	schema:ingredients
-		"1 cup all-purpose flour"@en ,
-		"1/2 cup old-fashioned oats"@en ,
-		"1/3 cup slivered almonds"@en ,
-		"1/3 cup plus 2 tablespoons sugar, divided"@en ,
-		"2 teaspoons baking powder"@en ,
-		"1/2 teaspoon kosher salt"@en ,
-		"6 tablespoons (3/4 stick) chilled unsalted butter, cut into 1/2-inch cubes"@en ,
-		"1 cup chilled heavy cream, divided, plus more for brushing"@en ,
-		"1 1/2 teaspoons vanilla extract, divided"@en ,
-		"4 cups fresh strawberries, hulled, sliced"@en ,
-		"1 tablespoon Grand Marnier or other orange liqueur (optional)"@en ;
 	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. Transfer to a work surface.
 
 Knead until dough comes together, about 4 turns. Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
@@ -353,7 +379,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Grand_Marnier#this>
 	a bake:Ingredient ;
 	bake:name "Grand Marnier"@en ;
-	rdfs:seeAlso dbp:Grand_Marnier .
+	rdfs:seeAlso free:m.02fv84 .
 
 </people/Jochen_Rau#this>
       a foaf:Person ;
@@ -416,19 +442,19 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </offers/814d0702-fca5-4539-b262-57919b9322e8#this>
 	a gr:Offering ;
 	gr:hasBusinessFunction gr:Sell ;
-	gr:hasPriceSpecification <urn:uuid:dcc4764e-022d-46fa-8838-8ed685128896> ;
+	gr:hasPriceSpecification :dcc4764e-022d-46fa-8838-8ed685128896 ;
 	gr:description "Introducing the new 13-inch MacBook Pro. The state-of-the-art dual-core Intel i5 processor delivers up to 2x faster performance (over the previous generation of MacBook Pro). New Thunderbolt technology lets you connect high-performance peripherals and high-resolution displays to a single port, and transfer files at lightning speeds."@en ;
 	gr:name "Apple MacBook Pro MC700LL/A 13.3-Inch Laptop"@en ;
 	foaf:page <http://localhost:8080/foo/bar> ;
 	knowl:internalLink </offers/814d0702-fca5-4539-b262-57919b9322e8> .
 
-<urn:uuid:dcc4764e-022d-46fa-8838-8ed685128896>
+:dcc4764e-022d-46fa-8838-8ed685128896
 	a gr:UnitPriceSpecification ;
     gr:hasCurrency "USD"@en ;
     gr:hasCurrencyValue "2399.99"^^xsd:float ;
     gr:validThrough "2011-12-24T00:00:00+01:00"^^xsd:dateTime .
 
-<urn:uuid:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff>
+:718c0bbe-a89a-4115-a9d8-3a8ada9ceeff
     a sp:Construct ;
 	knowl:sparqlEndpoint <http://live.dbpedia.org/sparql> ;
 	knowl:query """
