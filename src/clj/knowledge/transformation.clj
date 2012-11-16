@@ -72,8 +72,17 @@
 (defn- set-language [language]
   (comp (enlive/set-attr :lang (value language)) (enlive/set-attr :xml:lang (value language))))
 
-(defn- set-content [content]
+(defn- set-content-attr [content]
   (enlive/set-attr :content content))
+
+(defn- set-content [content]
+  (fn [node]
+    (let [existing-content (:content node)]
+      (if (seq existing-content)
+        (assoc node :content (enlive/flatten-nodes-coll content))
+        (if (string? content)
+          ((enlive/set-attr :content content) node)
+          node)))))
 
 (defn- set-resource [resource]
   (if-let [iri (identifier resource)]
@@ -132,6 +141,9 @@
         duration (.parsePeriod parser (value literal))]
     (.print unparser (.normalizedStandard duration))))
 
+(defn literal? [object]
+  (satisfies? knowledge.model/Literal object))
+
 (defn transform-statement [statement context]
   (let [predicate (predicate statement)
         object (object statement)]
@@ -139,15 +151,15 @@
       "http://dbpedia.org/property/homepage"
       (enlive/do->
         (set-reference object)
-        (enlive/content (value object)))      
+        (set-content (value object)))      
       know:externalLink
       (enlive/do->
         (set-reference object)
-        (enlive/content (value object)))
+        (set-content (value object)))
       dbo:wikiPageExternalLink
       (enlive/do->
         (set-reference object)
-        (enlive/content (value object)))
+        (set-content (value object)))
       know:internalLink
       (set-reference object)
       foaf:depiction
@@ -159,14 +171,14 @@
       schema:encoding
       (set-reference object)
       (enlive/do->
-        (enlive/content (transform object context))
-        (if (satisfies? knowledge.model/Literal object)
+        (set-content (transform object context))
+        (if (literal? object)
           (enlive/do->
             (if-let [datatype (datatype object)]
               (enlive/do->
                 (set-datatype datatype)
                 (if-not (= (value datatype) rdf:XMLLiteral)
-                  (set-content (value object))
+                  (set-content-attr (value object))
                   identity))
               identity)
             (set-language (language object)))
