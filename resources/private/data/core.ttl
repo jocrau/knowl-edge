@@ -27,6 +27,8 @@
 @prefix schema:  <http://schema.org/> .
 @prefix ma:      <http://www.w3.org/ns/ma-ont#> .
 @prefix bake:    <http://bakepedia.org/ontology#> .
+@prefix muov:    <http://purl.oclc.org/NET/muo/ucum/unit/volume/> .
+@prefix muow:    <http://purl.oclc.org/NET/muo/ucum/unit/weight/> .
 
 <urn:uuid:16d041e0-16f0-4b2a-9150-3452e5b93286>
 	a knowl:Application ;
@@ -204,7 +206,75 @@
 		schema:proteinContent "6" ;
 		schema:sodiumContent "360"
 	] ;
-	schema:recipeYield "6 pieces" ;
+	schema:recipeYield "6 pieces"@en ;
+	bake:components [
+		a bake:ComponentList ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1 cup"@en ;
+			bake:ingredient </ingredients/All_Purouse_Flour#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1/2 cup"@en ;
+			bake:ingredient </ingredients/Old_Fashioned_Oats#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1/3 cup"@en ;
+			bake:ingredient </ingredients/Slivered_Almonds#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1/3 cup"@en ;
+			bake:ingredient </ingredients/Sugar#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "2 tablespoons"@en ;
+			bake:ingredient </ingredients/Sugar#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "2 teaspoons"@en ;
+			bake:ingredient </ingredients/Baking_Powder#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1/2 teaspoon"@en ;
+			bake:ingredient </ingredients/Kosher_Salt#this> 
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "6 tablesoons"@en ;
+			bake:ingredient </ingredients/Butter#this> ;
+			bake:comment "chilled, unsalted, cut into 1/2-inch cubes"@en
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1 cup"@en ;
+			bake:ingredient </ingredients/Heavy_Cream#this> ;
+			bake:comment "divided, plus more for brushing"@en
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1 1/2 teaspoons"@en ;
+			bake:ingredient </ingredients/Vanilla_Extract#this> ;
+			bake:comment "divided"@en
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "4 cups"@en ;
+			bake:ingredient </ingredients/Strawberries#this> ;
+			bake:comment "hulled, sliced"@en
+		] ;
+		bake:component [
+			a bake:Component ;
+			bake:quantity "1 tablespoon"@en ;
+			bake:ingredient </ingredients/Grand_Marnier#this> ;
+			bake:comment "or other orange liqueur, optional"@en
+		] 
+	] ;
 	schema:ingredients
 		"1 cup all-purpose flour"@en ,
 		"1/2 cup old-fashioned oats"@en ,
@@ -229,6 +299,60 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	schema:copyrightHolder dbp:Condé_Nast_Publications ;
 	schema:copyrightYear "2012" .
 
+</ingredients/All_Purouse_Flour#this> 
+	a bake:Ingredient ;
+	bake:name "All Purouse Flour"@en ;
+	rdfs:seeAlso dbp:All_Purouse_Flour .
+
+</ingredients/Old_Fashioned_Oats#this> 
+	a bake:Ingredient ;
+	bake:name "Old Fashioned Oats"@en ;
+	rdfs:seeAlso dbp:Old_Fashioned_Oats .
+
+</ingredients/Slivered_Almonds#this> 
+	a bake:Ingredient ;
+	bake:name "Slivered Almonds"@en ;
+	rdfs:seeAlso dbp:Slivered_Almonds .
+
+</ingredients/Sugar#this> 
+	a bake:Ingredient ;
+	bake:name "Sugar"@en ;
+	rdfs:seeAlso dbp:Sugar .
+
+</ingredients/Baking_Powder#this> 
+	a bake:Ingredient ;
+	bake:name "Baking Powder"@en ;
+	rdfs:seeAlso dbp:Baking_Powder .
+
+</ingredients/Kosher_Salt#this> 
+	a bake:Ingredient ;
+	bake:name "Kosher Salt"@en ;
+	rdfs:seeAlso dbp:Kosher_Salt .
+
+</ingredients/Butter#this>
+	a bake:Ingredient ;
+	bake:name "Butter"@en ;
+	rdfs:seeAlso dbp:Butter .
+
+</ingredients/Heavy_Cream#this>
+	a bake:Ingredient ;
+	bake:name "Heavy Cream"@en ;
+	rdfs:seeAlso dbp:Heavy_Cream .
+
+</ingredients/Vanilla_Extract#this>
+	a bake:Ingredient ;
+	bake:name "Vanilla Extract"@en ;
+	rdfs:seeAlso dbp:Vanilla_Extract .
+
+</ingredients/Strawberries#this>
+	a bake:Ingredient ;
+	bake:name "Strawberries"@en ;
+	rdfs:seeAlso dbp:Strawberries .
+
+</ingredients/Grand_Marnier#this>
+	a bake:Ingredient ;
+	bake:name "Grand Marnier"@en ;
+	rdfs:seeAlso dbp:Grand_Marnier .
 
 </people/Jochen_Rau#this>
       a foaf:Person ;

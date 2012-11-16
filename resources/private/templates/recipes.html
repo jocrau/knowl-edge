@@ -13,11 +13,11 @@
 	<title property="http://www.w3.org/2000/01/rdf-schema#label">knowl:edge - Products</title>
 	<link rel="icon" href="static/img/favicon.ico" />
 
-    <link href="static/css/bootstrap.css" rel="stylesheet">
-    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
 	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="static/css/styles.css"/>
+	<link href="static/css/styles.css" rel="stylesheet" type="text/css" />
 	
 	</head>
 	<body>
@@ -46,10 +46,21 @@
 						<div class="row">
 							<div class="span6">
 								<h4>Ingredients</h4>
-								<ul>
-									<li property="http://schema.org/ingredients">3 or 4 ripe bananas, smashed</li>
-								</ul>
-		
+								<div rel="http://bakepedia.org/ontology#components">
+									<ul typeof="http://bakepedia.org/ontology#ComponentList">
+										<li rel="http://bakepedia.org/ontology#component">
+											<span typeof="http://bakepedia.org/ontology#Component">
+												<span property="http://bakepedia.org/ontology#quantity">2 or 3</span>
+												<span rel="http://bakepedia.org/ontology#ingredient">
+													<span typeof="http://bakepedia.org/ontology#Ingredient">
+														<span property="http://bakepedia.org/ontology#name">Bananas</span>
+													</span>
+												</span>
+												<span property="http://bakepedia.org/ontology#comment"> </span></li>
+											</span>
+									</ul>
+								</div>
+								
 								<h4>Preparation</h4>
 								
 								<p property="http://schema.org/recipeInstructions">
@@ -63,15 +74,15 @@
 							
 								<div rel="http://schema.org/nutrition">
 									<div typeof="http://schema.org/NutritionInformation">
-										<div>Calories (kcal) <span property="http://schema.org/calories">42</span></div>
-										<div>Fat (g) <span property="http://schema.org/fatContent">42</span></div>
-										<div>Saturated Fat (g) <span property="http://schema.org/saturatedFatContent">42</span></div>
-										<div>Cholesterol (mg) <span property="http://schema.org/cholesterolContent">42</span></div>
-										<div>Carbohydrates (g) <span property="http://schema.org/carbohydrateContent">42</span></div>
-										<div>Dietary Fiber (g) <span property="http://schema.org/fiberContent">42</span></div>
-										<div>Total Sugars (g) <span property="http://schema.org/sugarContent">42</span></div>
-										<div>Protein (g) <span property="http://schema.org/proteinContent">42</span></div>
-										<div>Sodium (mg) <span property="http://schema.org/sodiumContent">42</span></div>
+										<div>Calories <span property="http://schema.org/calories">42</span>kcal</div>
+										<div>Fat <span property="http://schema.org/fatContent">42</span>g</div>
+										<div>Saturated Fat <span property="http://schema.org/saturatedFatContent">42</span>g</div>
+										<div>Cholesterol <span property="http://schema.org/cholesterolContent">42</span>mg</div>
+										<div>Carbohydrates <span property="http://schema.org/carbohydrateContent">42</span>g</div>
+										<div>Dietary Fiber <span property="http://schema.org/fiberContent">42</span>g</div>
+										<div>Total Sugars <span property="http://schema.org/sugarContent">42</span>g</div>
+										<div>Protein <span property="http://schema.org/proteinContent">42</span>g</div>
+										<div>Sodium <span property="http://schema.org/sodiumContent">42</span>mg</div>
 									</div>
 								</div>
 								
@@ -118,11 +129,11 @@
 														<div property="http://www.w3.org/2000/01/rdf-schema#comment">
 															Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 														</div>
-														<div><a rel="http://dbpedia.org/property/homepage http://dbpedia.org/property/wikiPageExternalLink" href="#"></a></div>
+														<div><a rel="http://dbpedia.org/property/homepage http://dbpedia.org/property/wikiPageExternalLink" href="#"> </a></div>
 													</div>
 												</div>
-												<div property="http://knowl-edge.org/ontology/core#start">start</div>
-												<div property="http://knowl-edge.org/ontology/core#end">end</div>
+												<div property="http://knowl-edge.org/ontology/core#start"></div>
+												<div property="http://knowl-edge.org/ontology/core#end"></div>
 											</div>
 										</div>
 									</div>
@@ -148,6 +159,7 @@
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="static/js/bootstrap.js"></script>
 	<script type="text/javascript" src="static/js/parser.js"></script>
 	<script type="text/javascript" src="static/js/dom.js"></script>
 	<script type="text/javascript" src="static/js/rdf_store.js"></script>
