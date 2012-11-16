@@ -9,4 +9,4 @@
   (jquery #(.show (jquery elements))))
 
 (defn highlight [elements]
-    (jquery #(.effect (jquery elements) "highlight")))
+  (jquery #(.effect (jquery elements) "highlight")))
