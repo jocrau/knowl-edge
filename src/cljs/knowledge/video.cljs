@@ -1,7 +1,9 @@
 (ns knowledge.video
   (:require [cljs.core :as cljs]
             [clojure.browser.dom :as dom]
-            [goog.dom :as gdom]))
+            [goog.dom :as gdom]
+            [knowledge.rdfa.api :as api]
+            [knowledge.effects :as effects]))
 
 (def position)
 
@@ -16,11 +18,22 @@
 (defn current-time [player] (.getCurrentTime player))
 (defn current-state [player] (get states (.getPlayerState player)))
 
+(defn highlight-results [results]
+  (let [mentioned-resources (map #(if-let [mentioned-resource (.-mentioned %)]
+                                    (.-value mentioned-resource))
+                                 results)]
+    (doseq [resource mentioned-resources]
+      (effects/highlight (api/get-elements-by-subject resource)))))
+
 (defn update-related-content [player]
   #(if (= (current-state player) :playing)
      (let [current-position (.round js/Math (current-time player))]
        (if-not (= current-position position)
-         (do (dom/log position) (set! position current-position))))))
+         (do
+           #_(dom/log position)
+           (set! position current-position)
+           (let [query (str "SELECT ?mentioned WHERE {?s a <http://www.w3.org/ns/ma-ont#MediaFragment> ; <http://schema.org/mentions> ?mentioned ; <http://knowl-edge.org/ontology/core#start> ?start ; <http://knowl-edge.org/ontology/core#end> ?end . FILTER (?start < " position " && ?end > " position ")}")]
+             (api/find-by-query query highlight-results)))))))
 
 (defn current-time [player]
   (.getCurrentTime player))
