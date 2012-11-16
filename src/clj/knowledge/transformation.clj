@@ -168,7 +168,7 @@
         (set-reference object))
       schema:image
       (set-reference object)
-      schema:encoding
+      "http://www.w3.org/ns/ma-ont#locator"
       (set-reference object)
       (enlive/do->
         (set-content (transform object context))

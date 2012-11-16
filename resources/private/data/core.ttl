@@ -166,30 +166,31 @@
 		foaf:page <http://www.romuloyanes.com/>
 	] .
 
-<urn:uuid:d1717f75-71b7-447d-8fe8-611d5161e98d>
-	a schema:VideoObject ;
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#this>
 	a ma:MediaResource ;
-	schema:encoding <https://www.youtube.com/embed/m-u6XkNpSAI> ;
-	ma:hasFragment <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29>, <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> .
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI> ;
+	ma:hasFragment </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>, </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29> .
 
-<https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29>
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>
 	a ma:MediaFragment ;
-	knowl:start 4 ;
-	knowl:end 29 ;
-	schema:mentions dbp:KitchenAid .
-
-<https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16>
-	a ma:MediaFragment ;
-	knowl:start 2 ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> ;
+	knowl:start 10 ;
 	knowl:end 16 ;
 	schema:mentions dbp:King_Arthur_Flour .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29> ;
+	knowl:start 22 ;
+	knowl:end 29 ;
+	schema:mentions dbp:KitchenAid .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
 	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
 	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
 	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
-	schema:video <urn:uuid:d1717f75-71b7-447d-8fe8-611d5161e98d> ;
+	schema:video </media/d1717f75-71b7-447d-8fe8-611d5161e98d#this> ;
 	schema:creator </people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
 	schema:prepTime "PT20M"^^xsd:duration ;
