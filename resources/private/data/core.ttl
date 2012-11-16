@@ -168,19 +168,19 @@
 	a schema:VideoObject ;
 	a ma:MediaResource ;
 	schema:encoding <https://www.youtube.com/embed/m-u6XkNpSAI> ;
-	ma:hasFragment <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16>, <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29> .
-
-<https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16>
-	a ma:MediaFragment ;
-	knowl:startTime "00:00:10"^^xsd:time ;
-	knowl:endTime "00:00:16"^^xsd:time ;
-	schema:mentions dbp:King_Arthur_Flour .
+	ma:hasFragment <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29>, <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> .
 
 <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29>
 	a ma:MediaFragment ;
-	knowl:startTime "00:00:22"^^xsd:time ;
-	knowl:endTime "00:00:29"^^xsd:time ;
+	knowl:start 4 ;
+	knowl:end 29 ;
 	schema:mentions dbp:KitchenAid .
+
+<https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16>
+	a ma:MediaFragment ;
+	knowl:start 2 ;
+	knowl:end 16 ;
+	schema:mentions dbp:King_Arthur_Flour .
 
 </recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
