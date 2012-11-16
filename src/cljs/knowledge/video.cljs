@@ -25,9 +25,9 @@
 (defn current-time [player]
   (.getCurrentTime player))
 
-(defn ^:export on_player_ready [event]
-  #_(.playVideo (.-target event)))
+(defn ^:export on-player-ready [event]
+  (.playVideo (.-target event)))
 
-(defn ^:export on_player_state_change [event]
+(defn ^:export on-player-state-change [event]
   (let [player (.-target event)]
     (js/setInterval (update-related-content player) 600)))
