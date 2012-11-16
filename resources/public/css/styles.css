@@ -19,8 +19,16 @@ h3 {
   color: #555;
 }
 
-*[rel*="http://xmlns.com/foaf/0.1/depiction"] {
+*[rel~="http://xmlns.com/foaf/0.1/depiction"] {
 	max-width: 40%;
 	max-height: 300px;
 	margin: 10px;
 }
+
+/* *[property~="http://bakepedia.org/ontology#comment"]:before { */
+/* 	content:"(" ; */
+/* } */
+
+/* *[property~="http://bakepedia.org/ontology#comment"]:after { */
+/* 	content:")" ; */
+/* } */
