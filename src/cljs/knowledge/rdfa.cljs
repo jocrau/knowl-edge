@@ -11,6 +11,10 @@
 
 (declare base)
 
+(extend-type js/NodeList
+  ISeqable
+  (-seq [array] (array-seq array 0)))
+
 (defn ^:export get-triples []
   (let [document-element (.-documentElement js/document)
         location (.-URL js/document)]
