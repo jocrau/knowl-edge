@@ -22,8 +22,7 @@
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
    knowledge.implementation.store
-  (:use knowledge.store
-        [clojure.contrib.core :only (-?>)])
+  (:use [clojure.contrib.core :only (-?>)])
   (:require [clojure.contrib.str-utils2 :as string]
             [knowledge.model :as model])
   (:import (com.hp.hpl.jena.query QueryExecutionFactory)
@@ -35,11 +34,11 @@
 ;; Endpoint Implementation
 
 (extend-type Endpoint
-  Store
-  (get-base-iri [this] (get-base-iri*))
-  (clear-all [this] nil)
-  (find-by-query
-    ([this query-string] (find-by-query this query-string #()))
+  knowledge.store/Store
+  (knowledge.store/get-base-iri [this] (get-base-iri*))
+  (knowledge.store/clear-all [this] nil)
+  (knowledge.store/find-by-query
+    ([this query-string] (knowledge.store/find-by-query this query-string #()))
     ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/sparqlService (.service this) query-string)]
         (let [options (.options this)]
@@ -48,12 +47,12 @@
           (try
             (iterator-seq (.listStatements (.execConstruct query-execution)))
             (catch Exception e nil))))))
-  (find-types-of [this resource]  (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
+  (knowledge.store/find-types-of [this resource]  (let [statements (knowledge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
                                     (map #(model/object %) statements)))
-  (find-matching
-    ([this] (find-matching this nil nil nil))
-    ([this subject] (find-matching this subject nil nil))
-    ([this subject predicate] (find-matching this subject predicate nil))
+  (knowledge.store/find-matching
+    ([this] (knowledge.store/find-matching this nil nil nil))
+    ([this subject] (knowledge.store/find-matching this subject nil nil))
+    ([this subject predicate] (knowledge.store/find-matching this subject predicate nil))
     ([this subject predicate object] (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
                                            predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
                                            language-filter (if (nil? object)
@@ -61,40 +60,42 @@
                                            object (or (-?> object (string/join ["<" ">"])) "?o")
                                            pattern (string/join " " [subject predicate object])
                                            statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
-                                       (find-by-query this statement)))))
+                                       (knowledge.store/find-by-query this statement)))))
 
 ;; MemoryStore Implementation
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.ModelCom
-  Store
-  (get-base-iri [this] (get-base-iri*))
-  (clear-all [this] (.removeAll this))
-  (add-statements
+  knowledge.store/Store
+  (knowledge.store/get-base-iri [this] (get-base-iri*))
+  (knowledge.store/clear-all [this] (.removeAll this))
+  (knowledge.store/add-statements
     ([this statements]
-      (add-statements this statements {}))
+      (knowledge.store/add-statements this statements {}))
     ([this statements options]
-      (.read this statements (get-base-iri this) (serialization-format options))))
+      (.read this statements (knowledge.store/get-base-iri this) (knowledge.store/serialization-format options))))
   (find-by-query
-    ([this query-string] (find-by-query this query-string nil))
+    ([this query-string] (knowledge.store/find-by-query this query-string nil))
     ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
         (try
           (iterator-seq (.listStatements (.execConstruct query-execution)))
           (catch Exception e nil)))))
-  (find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
-                                       statements (find-matching this resource predicate)]
+  (knowledge.store/find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
+                                       statements (knowledge.store/find-matching this resource predicate)]
                                    (map #(model/object %) statements)))
-  (find-matching
-    ([this] (find-matching this nil nil nil))
-    ([this subject] (find-matching this subject nil nil))
-    ([this subject predicate] (find-matching this subject predicate nil))
+  (knowledge.store/find-matching
+    ([this] (knowledge.store/find-matching this nil nil nil))
+    ([this subject] (knowledge.store/find-matching this subject nil nil))
+    ([this subject predicate] (knowledge.store/find-matching this subject predicate nil))
     ([this subject predicate object] (iterator-seq (.listStatements this subject predicate object))))
-  Exporter
-  (import-into
+  knowledge.store/Exporter
+  (knowledge.store/import-into
     [this source options]
     (with-open [stream (clojure.java.io/input-stream source)]
-      (.read this stream (get-base-iri*) (serialization-format options))))
-  (export-from
+      (.read this stream (get-base-iri*) (knowledge.store/serialization-format options))))
+  (knowledge.store/export-from
     [this target options]
     (with-open [stream (clojure.java.io/output-stream target)]
-      (.write this stream (serialization-format options)))))
+      (.write this stream (knowledge.store/serialization-format options)))))
+
+(use 'knowledge.implementation.model)

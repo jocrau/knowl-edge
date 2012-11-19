@@ -267,4 +267,3 @@
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
 (defn- xml-str [x] x)
-

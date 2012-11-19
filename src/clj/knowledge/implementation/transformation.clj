@@ -23,10 +23,8 @@
     :author "Jochen Rau"}
    knowledge.implementation.transformation)
 
-(in-ns 'knowledge.transformation)
-
-(extend-protocol Transformer
+(extend-protocol knowledge.transformation/Transformer
   com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  (transform [this context] (transform-literal this context))
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-literal this context))
   com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  (transform [this context] (transform-resource this context)))
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-resource this context)))

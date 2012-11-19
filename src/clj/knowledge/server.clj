@@ -32,8 +32,11 @@
   (:require
     [knowledge.base :as base]
     [knowledge.model :as model]
+    [knowledge.implementation.model]
     [knowledge.store :as store]
-    [knowledge.transformation :as transform]))
+    [knowledge.implementation.store]
+    [knowledge.transformation :as transform]
+    [knowledge.implementation.transformation]))
 
 (defn resource [thing]
   (cond

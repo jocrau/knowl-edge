@@ -23,47 +23,46 @@
     :author "Jochen Rau"}
    knowledge.implementation.model
   (:refer-clojure :exclude [namespace])
-  (:use knowledge.model)
   (:require [clojure.contrib.str-utils2 :as string])
   (:import (com.hp.hpl.jena.rdf.model ModelFactory)
            (com.hp.hpl.jena.datatypes TypeMapper)))
 
 (extend-type String
-  Value
+  knowledge.model/Value
   (value [this] this)
-  Resource
+  knowledge.model/Resource
   (identifier [this] this))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  Value
-  (value [this] (.getURI this))
-  Resource
-  (identifier [this] (.getURI this))
-  (namespace [this] (.getNamespace this))
-  (local-name [this] (.getLocalName this)))
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this))
+  knowledge.model/Resource
+  (knowledge.model/identifier [this] (.getURI this))
+  (knowledge.model/namespace [this] (.getNamespace this))
+  (knowledge.model/local-name [this] (.getLocalName this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
-  Value
-  (value [this] (.getURI this)))
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
-  Value
-  (value [this] (.getURI this)))
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDFloat
-  Value
-  (value [this] (.getURI this)))
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.BaseDatatype
-  Value
-  (value [this] (.getURI this)))
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  Value
-  (value [this] (.getLexicalForm this))
-  Literal
-  (datatype [this] (.getDatatype this))
-  (language
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getLexicalForm this))
+  knowledge.model/Literal
+  (knowledge.model/datatype [this] (.getDatatype this))
+  (knowledge.model/language
     [this]
     (let [language (.getLanguage this)]
       (if (string/blank? language)
@@ -71,46 +70,46 @@
         language))))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType
-  Value
-  (value [this] (.getURI this))
-  Literal
-  (datatype [this] (.getDatatype this))
-  (language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
+  knowledge.model/Value
+  (knowledge.model/value [this] (.getURI this))
+  knowledge.model/Literal
+  (knowledge.model/datatype [this] (.getDatatype this))
+  (knowledge.model/language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
-  Statement
-  (subject [statement] (.getSubject statement))
-  (predicate [statement] (.getPredicate statement))
-  (object [statement] (.getObject statement)))
+  knowledge.model/Statement
+  (knowledge.model/subject [statement] (.getSubject statement))
+  (knowledge.model/predicate [statement] (.getPredicate statement))
+  (knowledge.model/object [statement] (.getObject statement)))
 
-(extend-protocol RDFFactory
+(extend-protocol knowledge.model/RDFFactory
   String
-  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+  (knowledge.model/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (if (string/blank? this)
                               (.createResource model)
                               (.createResource model this))))
-  (create-literal
+  (knowledge.model/create-literal
     ([this] (with-open [model (ModelFactory/createDefaultModel)]
               (.createLiteral model this)))
     ([this language-or-datatype]
       (with-open [model (ModelFactory/createDefaultModel)]
-        (if (iri-string? (name language-or-datatype))
+        (if (knowledge.model/iri-string? (name language-or-datatype))
           (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
           (.createLiteral model this (name language-or-datatype))))))
   clojure.lang.IPersistentVector
-  (create-resource
+  (knowledge.model/create-resource
     [this]
     (let [[prefix local-name] this
-          prefix (or (resolve-prefix prefix) prefix)
+          prefix (or (knowledge.model/resolve-prefix prefix) prefix)
           local-name (name local-name)]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createProperty model prefix local-name))))
   clojure.lang.Keyword
-  (create-resource
+  (knowledge.model/create-resource
     [this]
-    (let [iri (str *base* (name this))]
+    (let [iri (str knowledge.model/ontology-base-iri (name this))]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createResource model iri))))
   nil
-  (create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+  (knowledge.model/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (.createResource model))))

@@ -17,4 +17,3 @@
 
 (defn export-core-data []
   (store/export-from default-store "resources/private/data/out.ttl" {}))
-
