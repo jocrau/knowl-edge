@@ -62,7 +62,7 @@
 (defn- predicate= [resource]
   #{(enlive/attr-has :property (identifier resource)) (enlive/attr-has :rel (identifier resource))})
 
-(defn- property? []
+(defn- predicate? []
   #{(enlive/attr? :property)
     (enlive/attr? :rel)})
 
@@ -117,7 +117,7 @@
   (filter #(string/contains? % ":")
           (map #(or (-> % :attrs :property)
                     (-> % :attrs :rel))
-               (enlive/select snippet [(property?)]))))
+               (enlive/select snippet [(predicate?)]))))
 
 ;; Transformations
 
