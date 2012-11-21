@@ -1,4 +1,5 @@
-(ns knowledge.effects)
+(ns knowledge.effects
+   (:require [cljs.core :as cljs]))
 
 (def jquery (js* "$"))
 
@@ -10,3 +11,9 @@
 
 (defn highlight [elements]
   (jquery #(.effect (jquery elements) "highlight")))
+
+(defn initialize-tooltip [elements options]
+  (.popover (jquery elements) (cljs/clj->js options)))
+
+(defn toggle-tooltip [element]
+  (.popover (jquery element) "toggle"))
