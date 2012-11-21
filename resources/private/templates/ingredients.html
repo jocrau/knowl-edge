@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    version="XHTML+RDFa 1.1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.w3.org/1999/xhtml
+                        http://www.w3.org/MarkUp/SCHEMA/xhtml-rdfa-2.xsd"
+    lang="en"
+    xml:lang="en"
+    typeof="http://xmlns.com/foaf/0.1/Document">
+<head>
+	<meta charset="UTF-8">
+	<base href="http://localhost:8080/" />
+	<title property="http://www.w3.org/2000/01/rdf-schema#label">knowl:edge - Products</title>
+	<link rel="icon" href="static/img/favicon.ico" />
+
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
+	<link href="static/css/styles.css" rel="stylesheet" type="text/css" />
+	
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="#">knowl:edge</a>
+					<ul class="nav">
+						<li><a href="posts">Blog</a></li>
+						<li><a href="people">People</a></li>
+						<li><a href="products">Products</a></li>
+						<li><a href="bostonians">Bostonians</a></li>
+						<li><a href="recipes">Recipes</a></li>
+					</ul>
+					<a id="edit-btn" href="javascript:void(0)" class="btn pull-right">Edit</a>
+				</div>
+			</div>
+		</div>
+				
+		<div class="container">
+			<div class="row">
+				<div id="test-content" rel="http://knowl-edge.org/ontology/core#contains">
+					<div class="span12" about="http://bakeopedia.org/ingredients/foo" typeof="http://bakepedia.org/ontology#Ingredient">
+							<h3 property="http://bakepedia.org/ontology#name">Bananas</h3>	
+							<div rel="http://www.w3.org/2000/01/rdf-schema#seeAlso">
+								<div typeof="http://dbpedia.org/class/yago/LeaveningAgents
+											http://dbpedia.org/class/yago/Cereals
+											http://dbpedia.org/class/yago/FoodAdditives
+											http://www.w3.org/2000/01/rdf-schema#Resource 
+											http://www.w3.org/2002/07/owl#Thing">
+									<div class="row">
+										<div class="span9" >	
+											<p property="http://dbpedia.org/ontology/abstract"> </p>
+											<p><a rel="http://knowl-edge.org/ontology/core#externalLink http://dbpedia.org/ontology/wikiPageExternalLink" href="#">Read More</a></p>							
+										</div>
+										<div class="span3" >
+											<img rel="http://dbpedia.org/ontology/thumbnail http://schema.org/image http://xmlns.com/foaf/0.1/depiction" src="static/img/placeholder/300x200.gif" class="img-polaroid"/>
+											<h4>Nutrition Information</h4>
+											<table class="table table-condensed table-striped">
+												<tbody>
+													<tr><td>Calcium (mg)</td><td><span property="http://dbpedia.org/property/calciumMg"> </span></td></tr>
+													<tr><td>Carbs (g)</td><td><span property="http://dbpedia.org/property/carbs"> </span></td></tr>
+													<tr><td>Fat (g)</td><td><span property="http://dbpedia.org/property/fat"> </span></td></tr>
+													<tr><td>Saturated Fat (g)</td><td><span property="http://dbpedia.org/property/saturatedFat"> </span></td></tr>
+													<tr><td>Fiber (g)</td><td><span property="http://dbpedia.org/property/fiber"> </span></td></tr>
+													<tr><td>Folate</td (&#181;g)><td><span property="http://dbpedia.org/property/folateUg"> </span></td></tr>
+													<tr><td>Iron (mg)</td><td><span property="http://dbpedia.org/property/ironMg"> </span></td></tr>
+													<tr><td>Niacin (mg)</td><td><span property="http://dbpedia.org/property/niacinMg"> </span></td></tr>
+													<tr><td>Protein (g)</td><td><span property="http://dbpedia.org/property/protein"> </span></td></tr>
+													<tr><td>Potassium (mg)</td><td><span property="http://dbpedia.org/property/potassiumMg"> </span></td></tr>
+													<tr><td>Phosphorus (mg)</td><td><span property="http://dbpedia.org/property/phosphorusMg"> </span></td></tr>
+													<tr><td>Energy (kJ)</td><td><span property="http://dbpedia.org/property/kj"> </span></td></tr>
+													<tr><td>Riboflavin (mg)</td><td><span property="http://dbpedia.org/property/riboflavinMg"> </span></td></tr>
+													<tr><td>Sugars (g)</td><td><span property="http://dbpedia.org/property/sugars"> </span></td></tr>
+													<tr><td>Thiamin (mg)</td><td><span property="http://dbpedia.org/property/thiaminMg"> </span></td></tr>
+													<tr><td>Vit. B6 (mg)</td><td><span property="http://dbpedia.org/property/vitb6Mg"> </span></td></tr>
+													<tr><td>Water (g)</td><td><span property="http://dbpedia.org/property/water"> </span></td></tr>
+													<tr><td>Zinc (mg)</td><td><span property="http://dbpedia.org/property/zincMg"> </span></td></tr>
+												</tbody>
+											</table>				
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			</div>
+		</div>
+				
+		<footer class="container footer">
+			<div class="row">
+				<div class="span12">&nbsp;</div>				
+			</div>
+		</footer>
+	</div>
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="static/js/bootstrap.js"></script>
+	<script type="text/javascript" src="static/js/parser.js"></script>
+	<script type="text/javascript" src="static/js/dom.js"></script>
+	<script type="text/javascript" src="static/js/rdf_store.js"></script>
+	<script type="text/javascript" src="static/js/app.js"></script>
+	
+</body>
+</html>

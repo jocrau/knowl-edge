@@ -93,7 +93,6 @@
 	rdfs:label "Single Product"@en ;
 	knowl:contains </offers/814d0702-fca5-4539-b262-57919b9322e8#this> .
 
-
 </bostonians>
 	a foaf:Document ;
 	knowl:template </templates/people.html> ;
@@ -339,7 +338,14 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Slivered_Almonds#this> 
 	a bake:Ingredient ;
 	bake:name "Slivered Almonds"@en ;
+	knowl:internalLink </ingredients/Almonds> ;
 	rdfs:seeAlso dbp:Almond .
+
+</ingredients/Almonds>
+	a foaf:Document ;
+	knowl:template </templates/ingredients.html> ;
+	rdfs:label "Almonds"@en ;
+	knowl:contains </ingredients/Slivered_Almonds#this> .
 
 </ingredients/Sugar#this> 
 	a bake:Ingredient ;
@@ -349,7 +355,14 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Baking_Powder#this> 
 	a bake:Ingredient ;
 	bake:name "Baking Powder"@en ;
-	rdfs:seeAlso dbp:Baking_powder .
+	knowl:internalLink </ingredients/Baking_Powder> ;
+	rdfs:seeAlso dbp:Baking_powder  .
+
+</ingredients/Baking_Powder>
+	a foaf:Document ;
+	knowl:template </templates/ingredients.html> ;
+	rdfs:label "Baking Powder"@en ;
+	knowl:contains </ingredients/Baking_Powder#this> .
 
 </ingredients/Kosher_Salt#this> 
 	a bake:Ingredient ;

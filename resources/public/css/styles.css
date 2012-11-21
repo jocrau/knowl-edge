@@ -21,8 +21,14 @@ h3 {
 
 *[rel~="http://xmlns.com/foaf/0.1/depiction"] {
 	max-width: 40%;
-	max-height: 300px;
+	max-height: 200px;
 	margin: 10px;
+}
+
+.span3 *[rel~="http://xmlns.com/foaf/0.1/depiction"] {
+	max-width: 100%;
+	max-height: 200px;
+	margin: 0px;
 }
 
 /* *[property~="http://bakepedia.org/ontology#comment"]:before { */
