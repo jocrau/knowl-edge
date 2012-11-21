@@ -14,7 +14,10 @@
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :plugins [[lein-cljsbuild "0.2.9"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
-  :source-paths ["src/clj" "src/cljs"]
+  :source-paths ["src/clj"
+                 "src/cljs"
+                 "cljs-checkouts/clojurescript/src/clj"
+                 "cljs-checkouts/clojurescript/src/cljs"]
   :resource-paths ["resources"]
   :cljsbuild {:crossovers [knowledge.store knowledge.model]
               :crossover-jar true
