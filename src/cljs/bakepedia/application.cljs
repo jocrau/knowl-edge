@@ -10,7 +10,7 @@
                                   {:title "Info"
                                    :content (fn [element] (.html (jquery "*[rel~=\"http://www.w3.org/2000/01/rdf-schema#seeAlso\"]" (jquery element))))
                                    :html true
-                                   :trigger "click"
+                                   :trigger "hover"
                                    :placement "bottom"})
     #_(effects/hide (api/get-elements-by-property "http://www.w3.org/ns/ma-ont#hasFragment"))))
 
