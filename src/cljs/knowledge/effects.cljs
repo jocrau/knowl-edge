@@ -13,7 +13,8 @@
   (jquery #(.effect (jquery elements) "highlight")))
 
 (defn initialize-tooltip [elements options]
-  (.popover (jquery elements) (cljs/clj->js options)))
+  (let [options (assoc options :content (fn [] (this-as element ((:content options) element))))]
+    (.popover (jquery elements) (cljs/clj->js options))))
 
 (defn toggle-tooltip [element]
   (.popover (jquery element) "toggle"))
