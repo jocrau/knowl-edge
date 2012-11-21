@@ -43,7 +43,7 @@
 
 :5ad0c010-303b-11e2-81c1-0800200c9a66
 	a void:Dataset ;
-	void:sparqlEndpoint <http://lod.openlinksw.com/sparql> ;
+	void:sparqlEndpoint <http://factforge.net/sparql> ;
 	void:uriSpace "http://rdf.freebase.com/ns/" .
 
 </posts>
@@ -329,17 +329,17 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/All_Purouse_Flour#this> 
 	a bake:Ingredient ;
 	bake:name "All Purouse Flour"@en ;
-	rdfs:seeAlso dbp:All_Purouse_Flour .
+	rdfs:seeAlso dbp:Flour .
 
 </ingredients/Old_Fashioned_Oats#this> 
 	a bake:Ingredient ;
 	bake:name "Old Fashioned Oats"@en ;
-	rdfs:seeAlso dbp:Old_Fashioned_Oats .
+	rdfs:seeAlso dbp:Rolled_oats .
 
 </ingredients/Slivered_Almonds#this> 
 	a bake:Ingredient ;
 	bake:name "Slivered Almonds"@en ;
-	rdfs:seeAlso dbp:Slivered_Almonds .
+	rdfs:seeAlso dbp:Almond .
 
 </ingredients/Sugar#this> 
 	a bake:Ingredient ;
@@ -349,12 +349,12 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Baking_Powder#this> 
 	a bake:Ingredient ;
 	bake:name "Baking Powder"@en ;
-	rdfs:seeAlso dbp:Baking_Powder .
+	rdfs:seeAlso dbp:Baking_powder .
 
 </ingredients/Kosher_Salt#this> 
 	a bake:Ingredient ;
 	bake:name "Kosher Salt"@en ;
-	rdfs:seeAlso dbp:Kosher_Salt .
+	rdfs:seeAlso dbp:Salt .
 
 </ingredients/Butter#this>
 	a bake:Ingredient ;
@@ -364,22 +364,23 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Heavy_Cream#this>
 	a bake:Ingredient ;
 	bake:name "Heavy Cream"@en ;
-	rdfs:seeAlso dbp:Heavy_Cream .
+	rdfs:seeAlso dbp:Cream .
 
 </ingredients/Vanilla_Extract#this>
 	a bake:Ingredient ;
 	bake:name "Vanilla Extract"@en ;
-	rdfs:seeAlso dbp:Vanilla_Extract .
+	rdfs:seeAlso dbp:Vanilla_extract .
 
 </ingredients/Strawberries#this>
 	a bake:Ingredient ;
 	bake:name "Strawberries"@en ;
-	rdfs:seeAlso dbp:Strawberries .
+	rdfs:seeAlso dbp:Garden_strawberry .
 
 </ingredients/Grand_Marnier#this>
 	a bake:Ingredient ;
 	bake:name "Grand Marnier"@en ;
-	rdfs:seeAlso free:m.02fv84 .
+	foaf:depiction <http://upload.wikimedia.org/wikipedia/commons/0/03/Grand_Marnier_Bottle.jpg> ;
+	rdfs:seeAlso dbp:Grand_Marnier .
 
 </people/Jochen_Rau#this>
       a foaf:Person ;
