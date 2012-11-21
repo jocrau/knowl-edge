@@ -36,31 +36,18 @@
     [net.cgrand.enlive-html :as enlive])
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
 
-;; Context
-
-(defprotocol ContextHandling
-  "Functions for dealing with a transformations context (like render depth, the web request, or the current selector chain)."
-  (conj-selector [this selector] "Appends a selector to the selector-chain"))
-
-(defrecord Context [depth rootline]
-  ContextHandling
-  (conj-selector
-    [this selector]
-    (update-in this [:rootline] #(into % selector))))
-
-(def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
-(defn set-base [template]
-  (enlive/at template
-    [:base] (enlive/substitute {:tag :base :attrs {:href base-iri}})))
-(def ^:dynamic template (set-base (enlive/html-resource (java.io.File. "resources/private/templates/page.html"))))
+(def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
+(def default-template-iri (str base-iri "templates/page.html"))
 
 ;; Predicates
 
 (defn- type= [resource]
-  #{(enlive/attr-has :typeof (identifier resource)) (enlive/attr-has :about (identifier resource))})
+  #{(enlive/attr-has :typeof (identifier resource))
+    (enlive/attr-has :about (identifier resource))})
 
 (defn- predicate= [resource]
-  #{(enlive/attr-has :property (identifier resource)) (enlive/attr-has :rel (identifier resource))})
+  #{(enlive/attr-has :property (identifier resource))
+    (enlive/attr-has :rel (identifier resource))})
 
 (defn- predicate? []
   #{(enlive/attr? :property)
@@ -89,7 +76,7 @@
     (enlive/set-attr :about iri)
     (enlive/remove-attr :about)))
 
-(defn set-attr
+(defn- set-attr
  "Assocs attributes on the selected element."
  [& kvs]
   #(assoc % :attrs (apply assoc (:attrs % {}) kvs)))
@@ -192,47 +179,18 @@
                                                     [statement statements]
                                                     (transform-statement statement context))))))
 
-(defn transform-statements [statements resource types context]
-  (let [context (conj-selector context [(into #{} (map #(type= %) types))])
-        snippet (enlive/transform (enlive/select (:template context) (:rootline context))
-                                  [enlive/root]
-                                  (enlive/do->
-                                    (set-types types)
-                                    (set-resource resource)))
-        grouped-statements (group-by #(predicate %) statements)]
+(defn transform-statements [statements snippet context]
+  (let [grouped-statements (group-by #(predicate %) statements)]
     (reduce
       (transform-statements* snippet grouped-statements context)
       snippet grouped-statements)))
-
-(defn pmap-set
-  "This function takes the same arguments as clojures (p)map and flattens the first level 
-   of the resulting lists of lists into a set."
-  [f & colls]
-  (into #{} (apply concat (apply pmap f colls))))
-
-(defn transform-query [query store context]
-  (when-let [statements (store/find-by-query store query)]
-    (pmap-set 
-      #(let [statement-group %
-             resource (key statement-group)
-             types (store/find-types-of store resource)
-             statements (val statement-group)]
-         (transform-statements statements resource types context))
-      (group-by #(subject %) statements))))
-
-(defn fetch-statements
-  "This function takes a resource and fetches statements with the given resource 
-   as subject in all stores."
-  [resource context]
-  (let [stores (store/stores-for resource base/default-store)]
-    (pmap-set #(store/find-matching % resource) stores)))
 
 (defn- extract-types-from [statements]
   (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
     (into #{} (map #(-> % object value) type-statements))))
 
 (defn- extract-template-iri-from [statements]
-  (if-let [statement (seq (filter #(= (-> % predicate identifier) know:template) statements))]
+  (when-let [statement (seq (filter #(= (-> % predicate identifier) know:template) statements))]
     (-> statement first object value)))
 
 (defn- extract-query-from [statements]
@@ -242,9 +200,51 @@
   (when-let [service-statements (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements)]
     (-> service-statements first object value)))
 
+(defn- pmap-set
+  "This function takes the same arguments as clojures (p)map and flattens the first level 
+   of the resulting lists of lists into a set."
+  [f & colls]
+  (into #{} (apply concat (apply pmap f colls))))
+
+(defn fetch-statements
+  "This function takes a resource and fetches statements with the given resource 
+   as subject in all stores."
+  [resource context]
+  (let [stores (store/stores-for resource base/default-store)]
+    (pmap-set #(store/find-matching % resource) stores)))
+
+(defn set-base [template]
+  (enlive/at template
+    [:base] (enlive/substitute {:tag :base :attrs {:href base-iri}})))
+
+(defn- fetch-template [iri]
+  (set-base (enlive/html-resource (java.net.URL. iri))))
+
+(defn- transform-resource* [resource types statements context]
+  (let [context (if-let [template-iri (extract-template-iri-from statements)]
+                   (assoc context :template (fetch-template template-iri))
+                   (if (contains? context :template)
+                     context
+                     (assoc context :template (fetch-template default-template-iri)))) ;; TODO memoize
+        context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
+        snippet (enlive/transform (enlive/select (:template context) (:rootline context))
+                                  [enlive/root]
+                                  (enlive/do->
+                                    (set-types types)
+                                    (set-resource resource)))]
+    (transform-statements statements snippet context)))
+
+(defn transform-query [query store context]
+  (when-let [grouped-statements (group-by #(subject %) (store/find-by-query store query))]
+    (pmap-set
+      (fn [[resource statements]]
+        (let [types (store/find-types-of store resource)]
+          (transform-resource* resource types statements context)))
+      grouped-statements)))
+
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (if-let [statements (fetch-statements resource context)]
+    (when-let [statements (fetch-statements resource context)]
       (let [types (extract-types-from statements)]
         (condp (fn [type types] (some #(= (identifier %) type) types)) types
           spin:Construct
@@ -252,16 +252,12 @@
             (when-let [service (extract-service-from statements)]
               (let [store (knowledge.store.Endpoint. service {})]
                 (transform-query query store context))))
-          (if-let [template-iri (extract-template-iri-from statements)]
-            (let [template (set-base (enlive/html-resource (java.net.URL. template-iri)))
-                  context (assoc context :template template)]
-              (transform-statements statements resource types context))
-            (transform-statements statements resource types context)))))))
+          (transform-resource* resource types statements context))))))
 
 ;; Entry Point
 
 (defn dereference [resource]
-  (when-let [document (transform resource (Context. 0 []))]
+  (when-let [document (transform resource {:rootline []})]
     (enlive/emit* document)))
 
 ;; Fixes a problem with elive escaping strings
