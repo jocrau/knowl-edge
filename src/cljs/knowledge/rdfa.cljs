@@ -54,14 +54,14 @@
       (if (= (gdom/getTextContent target) "Edit")
         (do
           (gdom/setTextContent target "Save")
-          (attach-editor))
+          #_(attach-editor))
         (do
           (gdom/setTextContent target "Edit")
           (export-graph)
-          (detach-editor))))))
+          #_(detach-editor))))))
 
 (defn attach-content-change-handler []
-  (Aloha.bind
+  #_(Aloha.bind
     "aloha-smart-content-changed"
     (fn [event info]
       (dom/log (str "smart edit detected " (.-obj (.-editable info)))))))
