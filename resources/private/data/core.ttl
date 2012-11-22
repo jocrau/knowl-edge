@@ -172,6 +172,122 @@
 		foaf:page <http://www.romuloyanes.com/>
 	] .
 
+</recipes/almond-oat-strawberry-shortcakes#this>
+	a schema:Recipe ;
+	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
+	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
+	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
+	schema:video </media/d1717f75-71b7-447d-8fe8-611d5161e98d#this> ;
+	schema:creator </people/Dede_Wilson#this> ;
+	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
+	schema:prepTime "PT20M"^^xsd:duration ;
+	schema:totalTime "PT1H"^^xsd:duration ;
+	schema:nutrition [
+		a schema:NutritionInformation ;
+		schema:calories "440" ;
+		schema:fatContent "29" ;
+		schema:saturatedFatContent "16" ;
+		schema:cholesterolContent "85" ;
+		schema:carbohydrateContent "42" ;
+		schema:fiberContent "4" ;
+		schema:sugarContent "18" ;
+		schema:proteinContent "6" ;
+		schema:sodiumContent "360"
+	] ;
+	schema:recipeYield "6 pieces"@en ;
+	bake:components [
+		a bake:ComponentList ;
+		bake:component 
+			<resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83> ,
+			<resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e> ,
+			<resources/e740421d-b4af-4d0c-945f-9113b039f029> ,
+			<resources/d4a11f74-162f-48f1-ba29-dd28e03321fa> ,
+			<resources/cf2d3916-2c3c-44b2-b5a5-2e6d31be67a5> ,
+			<resources/9a93dfe6-9517-4cf0-84a6-968d893f42fc> ,
+			<resources/a59d9f25-716a-4877-8f57-550e0a32b0e0> ,
+			<resources/770ca4ba-6033-470f-a2bc-f1b1b9f594e5> ,
+			<resources/0d4ab1b2-97d5-4ffc-bda9-7aab3a05673e> ,
+			<resources/a2db3d5c-3004-4b41-bc2e-2fe5f77c16c5> ,
+			<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce> ,
+			<resources/9635af41-a224-4944-950b-c54b7bf94899> 
+	] ;
+	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. Transfer to a work surface.
+
+Knead until dough comes together, about 4 turns. Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
+
+Bake, rotating sheet halfway through cooking, until golden brown around edges and a tester inserted into center comes out clean, about 20 minutes. Set biscuits on a wire rack; let cool. DO AHEAD: Biscuits can be made 8 hours ahead. Store cooled biscuits airtight at room temperature.
+
+Meanwhile, combine strawberries, 1 Tbsp. sugar, and Grand Marnier, if using, in a large bowl. Toss to coat. Let strawberries sit, tossing often, until juices release. Whisk 1/2 cup cream, 1/2 Tbsp. sugar, and 1/2 tsp. vanilla in a small bowl until peaks form.
+
+Cut warm or room-temperature biscuits in half; place bottom halves on plates. Divide whipped cream and strawberries over. Top with remaining biscuit halves."""@en ;
+	schema:copyrightHolder dbp:Condé_Nast_Publications ;
+	schema:copyrightYear "2012" .
+
+<resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
+			a bake:Component ;
+			bake:quantity "1 cup"@en ;
+			bake:ingredient </ingredients/All_Purouse_Flour#this>  .
+
+<resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83>
+			a bake:Component ;
+			bake:quantity "1/2 cup"@en ;
+			bake:ingredient </ingredients/Old_Fashioned_Oats#this>  .
+
+<resources/e740421d-b4af-4d0c-945f-9113b039f029>
+			a bake:Component ;
+			bake:quantity "1/3 cup"@en ;
+			bake:ingredient </ingredients/Slivered_Almonds#this>  .
+
+<resources/d4a11f74-162f-48f1-ba29-dd28e03321fa>
+			a bake:Component ;
+			bake:quantity "1/3 cup"@en ;
+			bake:ingredient </ingredients/Sugar#this>  .
+
+<resources/cf2d3916-2c3c-44b2-b5a5-2e6d31be67a5>
+			a bake:Component ;
+			bake:quantity "2 tablespoons"@en ;
+			bake:ingredient </ingredients/Sugar#this>  .
+
+<resources/9a93dfe6-9517-4cf0-84a6-968d893f42fc>
+			a bake:Component ;
+			bake:quantity "2 teaspoons"@en ;
+			bake:ingredient </ingredients/Baking_Powder#this>  .
+
+<resources/a59d9f25-716a-4877-8f57-550e0a32b0e0>
+			a bake:Component ;
+			bake:quantity "1/2 teaspoon"@en ;
+			bake:ingredient </ingredients/Kosher_Salt#this>  .
+
+<resources/770ca4ba-6033-470f-a2bc-f1b1b9f594e5>
+			a bake:Component ;
+			bake:quantity "6 tablesoons"@en ;
+			bake:ingredient </ingredients/Butter#this> ;
+			bake:comment "chilled, unsalted, cut into 1/2-inch cubes"@en .
+
+<resources/0d4ab1b2-97d5-4ffc-bda9-7aab3a05673e>
+			a bake:Component ;
+			bake:quantity "1 cup"@en ;
+			bake:ingredient </ingredients/Heavy_Cream#this> ;
+			bake:comment "divided, plus more for brushing"@en .
+
+<resources/a2db3d5c-3004-4b41-bc2e-2fe5f77c16c5>
+			a bake:Component ;
+			bake:quantity "1 1/2 teaspoons"@en ;
+			bake:ingredient </ingredients/Vanilla_Extract#this> ;
+			bake:comment "divided"@en .
+
+<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce>
+			a bake:Component ;
+			bake:quantity "4 cups"@en ;
+			bake:ingredient </ingredients/Strawberries#this> ;
+			bake:comment "hulled, sliced"@en .
+
+<resources/9635af41-a224-4944-950b-c54b7bf94899>
+			a bake:Component ;
+			bake:quantity "1 tablespoon"@en ;
+			bake:ingredient </ingredients/Grand_Marnier#this> ;
+			bake:comment "or other orange liqueur, optional"@en .
+
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#this>
 	a ma:MediaResource ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI> ;
@@ -203,127 +319,35 @@
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=53,58> ;
 	knowl:start 53 ;
 	knowl:end 58 ;
-	schema:mentions </ingredients/All_Purouse_Flour#this> .
+	schema:mentions <resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>
 	a ma:MediaFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=59,62> ;
 	knowl:start 59 ;
 	knowl:end 62 ;
-	schema:mentions </ingredients/Old_Fashioned_Oats#this> .
+	schema:mentions <resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>
 	a ma:MediaFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=62,65> ;
 	knowl:start 62 ;
 	knowl:end 65 ;
-	schema:mentions </ingredients/Sugar#this> .
+	schema:mentions <resources/d4a11f74-162f-48f1-ba29-dd28e03321fa> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>
 	a ma:MediaFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=67,82> ;
 	knowl:start 67 ;
 	knowl:end 82 ;
-	schema:mentions </ingredients/Slivered_Almonds#this> .
+	schema:mentions <resources/e740421d-b4af-4d0c-945f-9113b039f029> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,87>
 	a ma:MediaFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=82,87> ;
 	knowl:start 82 ;
 	knowl:end 87 ;
-	schema:mentions </ingredients/Kosher_Salt#this> .
-
-</recipes/almond-oat-strawberry-shortcakes#this>
-	a schema:Recipe ;
-	schema:name "Almond-Oat Strawberry Shortcakes"@en ;
-	schema:description "We mix finely ground oats and almonds into the biscuit dough for extra texture, flavor, and nutritional value."@en ;
-	schema:image </static/img/almond-oat-strawberry-shortcakes.jpg> ;
-	schema:video </media/d1717f75-71b7-447d-8fe8-611d5161e98d#this> ;
-	schema:creator </people/Dede_Wilson#this> ;
-	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
-	schema:prepTime "PT20M"^^xsd:duration ;
-	schema:totalTime "PT1H"^^xsd:duration ;
-	schema:nutrition [
-		a schema:NutritionInformation ;
-		schema:calories "440" ;
-		schema:fatContent "29" ;
-		schema:saturatedFatContent "16" ;
-		schema:cholesterolContent "85" ;
-		schema:carbohydrateContent "42" ;
-		schema:fiberContent "4" ;
-		schema:sugarContent "18" ;
-		schema:proteinContent "6" ;
-		schema:sodiumContent "360"
-	] ;
-	schema:recipeYield "6 pieces"@en ;
-	bake:components [
-		a bake:ComponentList ;
-		bake:component [
-			a bake:Component ;
-			bake:quantity "1 cup"@en ;
-			bake:ingredient </ingredients/All_Purouse_Flour#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "1/2 cup"@en ;
-			bake:ingredient </ingredients/Old_Fashioned_Oats#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "1/3 cup"@en ;
-			bake:ingredient </ingredients/Slivered_Almonds#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "1/3 cup"@en ;
-			bake:ingredient </ingredients/Sugar#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "2 tablespoons"@en ;
-			bake:ingredient </ingredients/Sugar#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "2 teaspoons"@en ;
-			bake:ingredient </ingredients/Baking_Powder#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "1/2 teaspoon"@en ;
-			bake:ingredient </ingredients/Kosher_Salt#this> 
-		], [
-			a bake:Component ;
-			bake:quantity "6 tablesoons"@en ;
-			bake:ingredient </ingredients/Butter#this> ;
-			bake:comment "chilled, unsalted, cut into 1/2-inch cubes"@en
-		], [
-			a bake:Component ;
-			bake:quantity "1 cup"@en ;
-			bake:ingredient </ingredients/Heavy_Cream#this> ;
-			bake:comment "divided, plus more for brushing"@en
-		], [
-			a bake:Component ;
-			bake:quantity "1 1/2 teaspoons"@en ;
-			bake:ingredient </ingredients/Vanilla_Extract#this> ;
-			bake:comment "divided"@en
-		], [
-			a bake:Component ;
-			bake:quantity "4 cups"@en ;
-			bake:ingredient </ingredients/Strawberries#this> ;
-			bake:comment "hulled, sliced"@en
-		], [
-			a bake:Component ;
-			bake:quantity "1 tablespoon"@en ;
-			bake:ingredient </ingredients/Grand_Marnier#this> ;
-			bake:comment "or other orange liqueur, optional"@en
-		] 
-	] ;
-	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. Transfer to a work surface.
-
-Knead until dough comes together, about 4 turns. Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
-
-Bake, rotating sheet halfway through cooking, until golden brown around edges and a tester inserted into center comes out clean, about 20 minutes. Set biscuits on a wire rack; let cool. DO AHEAD: Biscuits can be made 8 hours ahead. Store cooled biscuits airtight at room temperature.
-
-Meanwhile, combine strawberries, 1 Tbsp. sugar, and Grand Marnier, if using, in a large bowl. Toss to coat. Let strawberries sit, tossing often, until juices release. Whisk 1/2 cup cream, 1/2 Tbsp. sugar, and 1/2 tsp. vanilla in a small bowl until peaks form.
-
-Cut warm or room-temperature biscuits in half; place bottom halves on plates. Divide whipped cream and strawberries over. Top with remaining biscuit halves."""@en ;
-	schema:copyrightHolder dbp:Condé_Nast_Publications ;
-	schema:copyrightYear "2012" .
+	schema:mentions <resources/a59d9f25-716a-4877-8f57-550e0a32b0e0> .
 
 </ingredients/All_Purouse_Flour#this> 
 	a bake:Ingredient ;
@@ -345,12 +369,19 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	a foaf:Document ;
 	knowl:template </templates/ingredients.html> ;
 	rdfs:label "Almonds"@en ;
-	knowl:contains </ingredients/Slivered_Almonds#this> .
+	knowl:contains </ingredients/Slivered_Almonds#this>  .
 
 </ingredients/Sugar#this> 
 	a bake:Ingredient ;
 	bake:name "Sugar"@en ;
+	knowl:internalLink </ingredients/Sugar> ;
 	rdfs:seeAlso dbp:Sugar .
+
+</ingredients/Sugar>
+	a foaf:Document ;
+	knowl:template </templates/ingredients.html> ;
+	rdfs:label "Sugar"@en ;
+	knowl:contains </ingredients/Sugar#this>  .
 
 </ingredients/Baking_Powder#this> 
 	a bake:Ingredient ;
@@ -387,13 +418,27 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 </ingredients/Strawberries#this>
 	a bake:Ingredient ;
 	bake:name "Strawberries"@en ;
+	knowl:internalLink </ingredients/Strawberries> ;
 	rdfs:seeAlso dbp:Garden_strawberry .
+
+</ingredients/Strawberries>
+	a foaf:Document ;
+	knowl:template </templates/ingredients.html> ;
+	rdfs:label "Strawberries"@en ;
+	knowl:contains </ingredients/Strawberries#this>  .
 
 </ingredients/Grand_Marnier#this>
 	a bake:Ingredient ;
 	bake:name "Grand Marnier"@en ;
 	foaf:depiction <http://upload.wikimedia.org/wikipedia/commons/0/03/Grand_Marnier_Bottle.jpg> ;
+	knowl:internalLink </ingredients/Grand_Marnier> ;
 	rdfs:seeAlso dbp:Grand_Marnier .
+
+</ingredients/Grand_Marnier>
+	a foaf:Document ;
+	knowl:template </templates/ingredients.html> ;
+	rdfs:label "Grand Marinier"@en ;
+	knowl:contains </ingredients/Grand_Marnier#this> .
 
 </people/Jochen_Rau#this>
       a foaf:Person ;

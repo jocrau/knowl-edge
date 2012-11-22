@@ -23,7 +23,7 @@
                                     (.-value mentioned-resource))
                                  results)]
     (doseq [resource mentioned-resources]
-      (effects/highlight (api/get-elements-by-subject resource)))))
+        (effects/highlight (api/get-elements-by-subject resource)))))
 
 (defn update-related-content [player]
   #(let [current-position (.round js/Math (current-time player))]
@@ -31,6 +31,7 @@
        (do
          #_(dom/log position)
          (set! position current-position)
+         (effects/remove-all-highlights)
          (let [query (str "SELECT ?mentioned WHERE {?s a <http://www.w3.org/ns/ma-ont#MediaFragment> ; <http://schema.org/mentions> ?mentioned ; <http://knowl-edge.org/ontology/core#start> ?start ; <http://knowl-edge.org/ontology/core#end> ?end . FILTER (?start < " position " && ?end > " position ")}")]
            (api/find-by-query query highlight-results))))))
 

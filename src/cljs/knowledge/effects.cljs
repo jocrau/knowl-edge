@@ -10,7 +10,10 @@
   (jquery #(.show (jquery elements))))
 
 (defn highlight [elements]
-  (jquery #(.effect (jquery elements) "highlight")))
+  (jquery #(.addClass (jquery elements) "highlight")))
+
+(defn remove-all-highlights []
+  (jquery #(.removeClass (jquery "*") "highlight")))
 
 (defn initialize-tooltip [elements options]
   (let [options (assoc options :content (fn [] (this-as element ((:content options) element))))]
