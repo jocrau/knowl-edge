@@ -7,8 +7,11 @@
 
 
 (defprotocol PlayerInfo
-  (current-time [player])
+  (current-position [player])
   (current-state [player]))
 
-(deftype VideoPlayer [implementation])
+#_(defprotocol PlayerControls
+  (play [player])
+  (current-state [player]))
 
+#_(deftype VideoPlayer [implementation])
