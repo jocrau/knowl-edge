@@ -35,6 +35,10 @@ h3 {
 	background-color: #a5dca3;
 }
 
+.highlight[typeof~="http://bakepedia.org/ontology#Step"] {
+	background-color: #d5d6ff;
+}
+
 /* *[property~="http://bakepedia.org/ontology#comment"]:before { */
 /* 	content:"(" ; */
 /* } */

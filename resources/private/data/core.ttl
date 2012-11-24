@@ -211,7 +211,7 @@
 			<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce> ,
 			<resources/9635af41-a224-4944-950b-c54b7bf94899> 
 	] ;
-	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. Transfer to a work surface.
+	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. <span property="http://bakepedia.org/ontology#step" about="urn:uuida6fa0ed2-4d8f-4e71-9595-02446a38198b" typeof="http://bakepedia.org/ontology#Step"><span property="http://bakepedia.org/ontology#description">Transfer to a work surface.</span></span>
 
 Knead until dough comes together, about 4 turns. Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
 
@@ -222,6 +222,10 @@ Meanwhile, combine strawberries, 1 Tbsp. sugar, and Grand Marnier, if using, in 
 Cut warm or room-temperature biscuits in half; place bottom halves on plates. Divide whipped cream and strawberries over. Top with remaining biscuit halves."""@en ;
 	schema:copyrightHolder dbp:Condé_Nast_Publications ;
 	schema:copyrightYear "2012" .
+
+<urn:uuida6fa0ed2-4d8f-4e71-9595-02446a38198b>
+      a       bake:Step ;
+      bake:step "Transfer to a work surface."@en .
 
 <resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
 			a bake:Component ;
@@ -298,7 +302,8 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>,
 		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>,
 		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>,
-		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,87> .
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,87>,
+		</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,245> .
 
 </media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>
 	a ma:MediaFragment ;
@@ -348,6 +353,13 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	knowl:start 82 ;
 	knowl:end 87 ;
 	schema:mentions <resources/a59d9f25-716a-4877-8f57-550e0a32b0e0> .
+
+</media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,245>
+	a ma:MediaFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=237,245> ;
+	knowl:start 237 ;
+	knowl:end 245 ;
+	schema:mentions <urn:uuida6fa0ed2-4d8f-4e71-9595-02446a38198b> .
 
 </ingredients/All_Purouse_Flour#this> 
 	a bake:Ingredient ;
