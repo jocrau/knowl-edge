@@ -15,6 +15,8 @@
 (defn current-position [player] (.round js/Math (.getCurrentTime player)))
 (defn current-state [player] (get states (.getPlayerState player)))
 (defn play [player] (.playVideo player))
+(defn goto [player position] (.seekTo player position))
+(defn player-id [player] (.-id (.-a player)))
 
 (defn check-position [player event]
   #(if-not (= (current-state player) :unstarted)
@@ -22,17 +24,17 @@
      (if-not (= new-position position)
        (do
          (set! position new-position)
-         (states/send :knowledge.video.position-changed {:js-event event :player player :position new-position}))))))
+         (states/send [(player-id player) :knowledge.video.position-changed] {:js-event event :player player :position new-position}))))))
 
 (defn init []
   (letfn [(on-ready [event]
                     (let [player (.-target event)]
                       (js/setInterval (check-position player event) 100)
-                      (states/send :knowledge.video.player-ready {:js-event event :player player})))
+                      (states/send [(player-id player) :knowledge.video.player-ready] {:js-event event :player player})))
           (on-state-changed [event]
                             (let [player (.-target event)]
                               (do
-                                (states/send :knowledge.video.state-changed {:js-event event :player player :state (current-state player)})
+                                (states/send [(player-id player) :knowledge.video.state-changed] {:js-event event :player player :state (current-state player)})
                                 ((check-position player event)))))]
     (do 
       (let [tag (.createElement js/document "script")
