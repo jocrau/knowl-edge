@@ -38,12 +38,13 @@
 <http://knowl-edge.org/ontology/core#end> ?end .
 FILTER (?start < " position " && ?end > " position ")
 }")]
-      (letfn [(callback [results]
-                        (let [mentioned-resources (map #(if-let [mentioned-resource (.-mentioned %)]
-                                                          (.-value mentioned-resource))
-                                                       results)
-                              elements (map #(api/get-elements-by-subject %) mentioned-resources)]
-                          (effects/highlight elements)))]
+      (letfn [(callback
+              [results]
+              (let [parsed-results (map (fn [result] {:mentioned (.-value (.-mentioned result))})
+                                        results)]
+                (doseq [result parsed-results]
+                  (let [elements (api/get-elements-by-subject (:mentioned result))]
+                    (effects/highlight elements)))))]
         (api/find-by-query query callback))))
 
 (defn init []
