@@ -8,46 +8,39 @@
 
 (def jquery (js* "$"))
 
-(defn attach-goto-handler []
-  (let [query (str "SELECT ?mentioned ?fragment ?start WHERE {
+(defn- attach-goto-handler []
+  (api/find-by-query
+    "SELECT ?mentioned ?fragment ?start WHERE {
 ?fragment <http://schema.org/mentions> ?mentioned ;
 <http://knowl-edge.org/ontology/core#start> ?start .
-}")]
-    (letfn [(callback
-              [results]
-              (let [parsed-results (map (fn [result] {:mentioned (.-value (.-mentioned result))
-                                                      :fragment (.-value (.-fragment result))
-                                                      :start (.-value (.-start result))})
-                                        results)]
-                (doseq [result parsed-results]
-                  (let [elements (api/get-elements-by-subject (:mentioned result))]
-                    (do
-                      (effects/highlight elements)
-                      (doseq [element elements]
-                        (event/listen element "click" #(-> js/player
-                                                         (video/goto (:start result))
-                                                         (video/play)))))))))]
-      (api/find-by-query query callback))))
+}"
+    (fn [results]
+      (doseq [result results]
+        (let [elements (api/get-elements-by-subject (-> result :mentioned :value))]
+          (do
+            (effects/highlight elements)
+            (doseq [element elements]
+              (event/listen element "click" #(-> js/player
+                                               (video/goto (-> result :start :value))
+                                               (video/play))))))))))
 
-(defn- update-related-content [position]
+(defn- update-related-content [position] 
+  (do
     (effects/remove-all-highlights)
-    (let [query (str "SELECT ?mentioned WHERE {
+    (api/find-by-query
+      (str "SELECT ?mentioned WHERE {
 ?thing a <http://www.w3.org/ns/ma-ont#MediaFragment> ;
 <http://schema.org/mentions> ?mentioned ;
 <http://knowl-edge.org/ontology/core#start> ?start ;
 <http://knowl-edge.org/ontology/core#end> ?end .
 FILTER (?start < " position " && ?end > " position ")
-}")]
-      (letfn [(callback
-              [results]
-              (let [parsed-results (map (fn [result] {:mentioned (.-value (.-mentioned result))})
-                                        results)]
-                (doseq [result parsed-results]
-                  (let [elements (api/get-elements-by-subject (:mentioned result))]
-                    (effects/highlight elements)))))]
-        (api/find-by-query query callback))))
+}")
+      (fn [results]
+        (doseq [result results]
+          (let [elements (api/get-elements-by-subject (-> result :mentioned :value))]
+            (effects/highlight elements)))))))
 
-(defn init []
+(defn- init []
   (do
     (effects/initialize-tooltip (api/get-elements-by-type "http://bakepedia.org/ontology#Component")
                                   {:title "Info"

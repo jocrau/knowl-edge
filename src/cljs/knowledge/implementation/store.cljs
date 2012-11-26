@@ -11,5 +11,5 @@
           (.execute impl query-string
             (fn [success results]
               (if success
-                (callback results)
+                (callback (js->clj results :keywordize-keys true))
                 (dom/log "No results."))))))))
