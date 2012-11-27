@@ -133,7 +133,8 @@
 												
 								<div rel="http://schema.org/video">
 									<div about="http://example.com/foo/sdafsdf" typeof="http://www.w3.org/ns/ma-ont#MediaResource http://schema.org/VideoObject">
-										<iframe id="player" rel="http://www.w3.org/ns/ma-ont#locator" src="https://www.youtube.com/embed/xyz?enablejsapi=1&origin=http://localhost:8080/" width="100%" height="315" frameborder="0" allowfullscreen class="img-polaroid"></iframe>
+										<div class="video-overlay"></div>
+										<iframe id="player" rel="http://www.w3.org/ns/ma-ont#locator" src="https://www.youtube.com/embed/xyz?enablejsapi=1&origin=http://localhost:8080/" width="100%" height="315" frameborder="0" wmode="transparent" allowfullscreen class="img-polaroid"></iframe>
 										<div rel="http://www.w3.org/ns/ma-ont#hasFragment">
 											<div about="http://example.com/foo/1212123dsfasdffd" typeof="http://www.w3.org/ns/ma-ont#MediaFragment">
 												<div rel="http://schema.org/mentions"><div about="http://example.com/something" typeof="http://bakepedia.org/ontology#Component http://bakepedia.org/ontology#Step http://www.w3.org/2002/07/owl#Thing http://dbpedia.org/class/yago/KitchenwareBrands"></div></div>

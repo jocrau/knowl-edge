@@ -39,6 +39,20 @@ h3 {
 	background-color: #d5d6ff;
 }
 
+*[typeof~="http://schema.org/VideoObject"], *[typeof~="http://www.w3.org/ns/ma-ont#MediaResource"]  {
+	position: relative;
+}
+
+.video-overlay {
+	position: absolute;
+	left: 300px;
+	top: 200px;
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	content: "&nbsp;"
+}
+
 /* *[property~="http://bakepedia.org/ontology#comment"]:before { */
 /* 	content:"(" ; */
 /* } */
