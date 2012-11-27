@@ -231,22 +231,20 @@
 		schema:sodiumContent "360"
 	] ;
 	schema:recipeYield "6 pieces"@en ;
-	bake:components [
-		a bake:ComponentList ;
-		bake:component 
-			<resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83> ,
-			<resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e> ,
-			<resources/e740421d-b4af-4d0c-945f-9113b039f029> ,
-			<resources/d4a11f74-162f-48f1-ba29-dd28e03321fa> ,
-			<resources/cf2d3916-2c3c-44b2-b5a5-2e6d31be67a5> ,
-			<resources/9a93dfe6-9517-4cf0-84a6-968d893f42fc> ,
-			<resources/a59d9f25-716a-4877-8f57-550e0a32b0e0> ,
-			<resources/770ca4ba-6033-470f-a2bc-f1b1b9f594e5> ,
-			<resources/0d4ab1b2-97d5-4ffc-bda9-7aab3a05673e> ,
-			<resources/a2db3d5c-3004-4b41-bc2e-2fe5f77c16c5> ,
-			<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce> ,
+	bake:components (
+			<resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83>
+			<resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
+			<resources/e740421d-b4af-4d0c-945f-9113b039f029>
+			<resources/d4a11f74-162f-48f1-ba29-dd28e03321fa>
+			<resources/cf2d3916-2c3c-44b2-b5a5-2e6d31be67a5>
+			<resources/9a93dfe6-9517-4cf0-84a6-968d893f42fc>
+			<resources/a59d9f25-716a-4877-8f57-550e0a32b0e0>
+			<resources/770ca4ba-6033-470f-a2bc-f1b1b9f594e5>
+			<resources/0d4ab1b2-97d5-4ffc-bda9-7aab3a05673e>
+			<resources/a2db3d5c-3004-4b41-bc2e-2fe5f77c16c5>
+			<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce>
 			<resources/9635af41-a224-4944-950b-c54b7bf94899> 
-	] ;
+	) ;
 	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. <span property="http://bakepedia.org/ontology#step" about="urn:uuida6fa0ed2-4d8f-4e71-9595-02446a38198b" typeof="http://bakepedia.org/ontology#Step"><span property="http://bakepedia.org/ontology#description">Transfer to a work surface. Knead until dough comes together, about 4 turns.</span></span> Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
 
 Bake, rotating sheet halfway through cooking, until golden brown around edges and a tester inserted into center comes out clean, about 20 minutes. Set biscuits on a wire rack; let cool. DO AHEAD: Biscuits can be made 8 hours ahead. Store cooled biscuits airtight at room temperature.
