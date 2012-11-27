@@ -250,13 +250,12 @@
       grouped-statements)))
 
 (defn transform-list [statements nodes context]
-  (let [rest (extract-rest statements)]
+  (let [first (extract-first statements)
+        rest (extract-rest statements)
+        nodes (conj nodes (transform-resource first context))]
     (if (= (identifier rest) rdf:nil)
-      (conj nodes (transform-resource (extract-first statements) context))
-      (transform-list
-        (fetch-statements rest context)
-        (conj nodes (transform-resource (extract-first statements) context))
-        context))))
+      nodes
+      (transform-list (fetch-statements rest context) nodes context))))
 
 (defmacro match
   [statements & clauses]
