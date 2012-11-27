@@ -200,6 +200,12 @@
   (when-let [service-statements (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements)]
     (-> service-statements first object value)))
 
+(defn- extract-first [statements]
+  (-> (filter #(= (-> % predicate identifier) rdf:first) statements) first object))
+
+(defn- extract-rest [statements]
+  (-> (filter #(= (-> % predicate identifier) rdf:rest) statements) first object))
+
 (defn- pmap-set
   "This function takes the same arguments as clojures (p)map and flattens the first level 
    of the resulting lists of lists into a set."
@@ -243,6 +249,15 @@
         (transform-resource* resource statements context))
       grouped-statements)))
 
+(defn transform-list [statements nodes context]
+  (let [rest (extract-rest statements)]
+    (if (= (identifier rest) rdf:nil)
+      (conj nodes (transform-resource (extract-first statements) context))
+      (transform-list
+        (fetch-statements rest context)
+        (conj nodes (transform-resource (extract-first statements) context))
+        context))))
+
 (defmacro match
   [statements & clauses]
   `(condp
@@ -260,6 +275,7 @@
   (if (< (count (:rootline context)) 6)
     (when-let [statements (fetch-statements resource context)]
       (match statements
+             [nil rdf:first nil] (transform-list statements [] context)
              [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
                                              (when-let [service (extract-service-from statements)]
                                                (let [store (knowledge.store.Endpoint. service {})]
