@@ -233,33 +233,38 @@
                                   (enlive/do->
                                     (set-types types)
                                     (set-resource resource)))]
+    
     (transform-statements statements snippet context)))
 
 (defn transform-query [query store context]
   (when-let [grouped-statements (group-by #(subject %) (store/find-by-query store query))]
     (pmap-set
       (fn [[resource statements]]
-        (let [types (store/find-types-of store resource)]
-          (transform-resource* resource types statements context)))
+        (transform-resource* resource statements context))
       grouped-statements)))
+
+(defmacro match
+  [statements & clauses]
+  `(condp
+     (fn [pattern# statements#]
+       (some (fn [statement#]
+               (and
+                 (or (= (nth pattern# 0) nil) (= (-> statement# subject identifier) (nth pattern# 0)))
+                 (or (= (nth pattern# 1) nil) (= (-> statement# predicate identifier) (nth pattern# 1)))
+                 (or (= (nth pattern# 2) nil) (= (-> statement# object identifier) (nth pattern# 2)))))
+             statements#))
+     ~statements
+     ~@clauses))
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
     (when-let [statements (fetch-statements resource context)]
-      (condp
-        (fn [pattern statements]
-          (some (fn [statement]
-                  (and
-                    (or (= (nth pattern 0) nil) (= (-> statement subject identifier) (nth pattern 0)))
-                    (or (= (nth pattern 1) nil) (= (-> statement predicate identifier) (nth pattern 1)))
-                    (or (= (nth pattern 2) nil) (= (-> statement object identifier) (nth pattern 2)))))
-                 statements))
-        statements
-        [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
-                                        (when-let [service (extract-service-from statements)]
-                                          (let [store (knowledge.store.Endpoint. service {})]
-                                            (transform-query query store context))))
-        [nil nil nil] (transform-resource* resource statements context)))))
+      (match statements
+             [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
+                                             (when-let [service (extract-service-from statements)]
+                                               (let [store (knowledge.store.Endpoint. service {})]
+                                                 (transform-query query store context))))
+             (transform-resource* resource statements context)))))
 
 ;; Entry Point
 
