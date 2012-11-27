@@ -220,12 +220,13 @@
 (defn- fetch-template [iri]
   (set-base (enlive/html-resource (java.net.URL. iri))))
 
-(defn- transform-resource* [resource types statements context]
+(defn- transform-resource* [resource statements context]
   (let [context (if-let [template-iri (extract-template-iri-from statements)]
                    (assoc context :template (fetch-template template-iri))
                    (if (contains? context :template)
                      context
                      (assoc context :template (fetch-template default-template-iri)))) ;; TODO memoize
+        types (extract-types-from statements)
         context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
         snippet (enlive/transform (enlive/select (:template context) (:rootline context))
                                   [enlive/root]
@@ -245,14 +246,20 @@
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
     (when-let [statements (fetch-statements resource context)]
-      (let [types (extract-types-from statements)]
-        (condp (fn [type types] (some #(= (identifier %) type) types)) types
-          spin:Construct
-          (when-let [query (extract-query-from statements)]
-            (when-let [service (extract-service-from statements)]
-              (let [store (knowledge.store.Endpoint. service {})]
-                (transform-query query store context))))
-          (transform-resource* resource types statements context))))))
+      (condp
+        (fn [pattern statements]
+          (some (fn [statement]
+                  (and
+                    (or (= (nth pattern 0) nil) (= (-> statement subject identifier) (nth pattern 0)))
+                    (or (= (nth pattern 1) nil) (= (-> statement predicate identifier) (nth pattern 1)))
+                    (or (= (nth pattern 2) nil) (= (-> statement object identifier) (nth pattern 2)))))
+                 statements))
+        statements
+        [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
+                                        (when-let [service (extract-service-from statements)]
+                                          (let [store (knowledge.store.Endpoint. service {})]
+                                            (transform-query query store context))))
+        [nil nil nil] (transform-resource* resource statements context)))))
 
 ;; Entry Point
 
