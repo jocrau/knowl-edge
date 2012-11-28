@@ -171,18 +171,15 @@
             (set-language (language object)))
           identity)))))
 
-(defn- transform-statements* [snippet grouped-statements context]
-  (fn [snippet [predicate statements]]
-    (enlive/at snippet [(predicate= predicate)] (enlive/do->
-                                                  (set-predicate predicate)
-                                                  (enlive/clone-for
-                                                    [statement statements]
-                                                    (transform-statement statement context))))))
-
 (defn transform-statements [statements snippet context]
   (let [grouped-statements (group-by #(predicate %) statements)]
     (reduce
-      (transform-statements* snippet grouped-statements context)
+      (fn [snippet [predicate statements]]
+        (enlive/at snippet [(predicate= predicate)] (enlive/do->
+                                                      (set-predicate predicate)
+                                                      (enlive/clone-for
+                                                        [statement statements]
+                                                        (transform-statement statement context)))))
       snippet grouped-statements)))
 
 (defn- extract-types-from [statements]
