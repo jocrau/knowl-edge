@@ -150,9 +150,7 @@
       know:internalLink
       (set-reference object)
       foaf:depiction
-      (do
-        #(println %)
-        (set-reference object))
+      (set-reference object)
       schema:image
       (set-reference object)
       "http://www.w3.org/ns/ma-ont#locator"
@@ -236,7 +234,6 @@
                                   (enlive/do->
                                     (set-types types)
                                     (set-resource resource)))]
-    
     (transform-statements statements snippet context)))
 
 (defn transform-query [query store context]
