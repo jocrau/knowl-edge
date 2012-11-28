@@ -11,7 +11,8 @@
 (defn- attach-goto-handler []
   (api/find-by-query
     "SELECT ?mentioned ?fragment ?start WHERE {
-?fragment <http://schema.org/mentions> ?mentioned ;
+?fragment a <http://knowl-edge.org/ontology/core#TemporalFragment> ;
+<http://schema.org/mentions> ?mentioned ;
 <http://knowl-edge.org/ontology/core#start> ?start .
 }"
     (fn [results]
@@ -26,10 +27,27 @@
 
 (defn- update-related-content [position] 
   (do
+    (effects/remove-all-overlays)
+    (api/find-by-query
+      (str "SELECT ?mentioned ?top ?left ?width ?height WHERE {
+?thing a <http://knowl-edge.org/ontology/core#SpatialFragment> ;
+<http://schema.org/mentions> ?mentioned ;
+<http://knowl-edge.org/ontology/core#start> ?start ;
+<http://knowl-edge.org/ontology/core#end> ?end ;
+<http://knowl-edge.org/ontology/core#start> ?top ;
+<http://knowl-edge.org/ontology/core#start> ?left ;
+<http://knowl-edge.org/ontology/core#start> ?width ;
+<http://knowl-edge.org/ontology/core#start> ?height .
+FILTER (?start < " position " && ?end > " position ")
+}")
+      (fn [results]
+        (doseq [result results]
+          (let [elements (api/get-elements-by-subject (-> result :mentioned :value))]
+            (effects/highlight elements)))))
     (effects/remove-all-highlights)
     (api/find-by-query
       (str "SELECT ?mentioned WHERE {
-?thing a <http://www.w3.org/ns/ma-ont#MediaFragment> ;
+?thing a <http://knowl-edge.org/ontology/core#TemporalFragment> ;
 <http://schema.org/mentions> ?mentioned ;
 <http://knowl-edge.org/ontology/core#start> ?start ;
 <http://knowl-edge.org/ontology/core#end> ?end .

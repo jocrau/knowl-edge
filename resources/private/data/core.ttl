@@ -336,10 +336,13 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,86>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=86,90>,
-		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,260> .
+		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=39,52>,
+		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,260>,
+		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=39,52&xywh=70,40,20,40> .
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> ;
 	knowl:start 10 ;
 	knowl:end 16 ;
@@ -347,6 +350,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=22,29> ;
 	knowl:start 22 ;
 	knowl:end 29 ;
@@ -354,6 +358,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=53,58>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=53,58> ;
 	knowl:start 53 ;
 	knowl:end 58 ;
@@ -361,6 +366,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=59,62> ;
 	knowl:start 59 ;
 	knowl:end 62 ;
@@ -368,6 +374,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=62,65> ;
 	knowl:start 62 ;
 	knowl:end 65 ;
@@ -375,6 +382,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=67,82>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=67,82> ;
 	knowl:start 67 ;
 	knowl:end 82 ;
@@ -382,6 +390,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=82,86>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=82,86> ;
 	knowl:start 82 ;
 	knowl:end 86 ;
@@ -389,13 +398,27 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=86,90>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=86,90> ;
 	knowl:start 86 ;
 	knowl:end 90 ;
 	schema:mentions <resources/9a93dfe6-9517-4cf0-84a6-968d893f42fc> .
 
+<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=39,52&xywh=70,40,20,40>
+	a ma:MediaFragment ;
+	a knowl:SpatialFragment ;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=39,52&xywh=70,40,20,40> ;
+	knowl:start 39 ;
+	knowl:end 52 ;
+	knowl:left 70;
+	knowl:top 40;
+	knowl:width 20;
+	knowl:height 40;
+	schema:mentions <guides/installing_the_multipurpose_blade_or_dough_blade#this> .
+
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,260>
 	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=237,260> ;
 	knowl:start 237 ;
 	knowl:end 260 ;
