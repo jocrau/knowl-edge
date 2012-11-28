@@ -249,6 +249,7 @@
         (transform-resource* resource statements context))
       grouped-statements)))
 
+(declare transform-resource)
 (defn transform-list [statements nodes context]
   (let [first (extract-first statements)
         rest (extract-rest statements)
