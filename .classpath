@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src/clj"/>
-	<classpathentry kind="src" path="checkouts"/>
+	<classpathentry kind="src" path="checkouts/clj-rdfa/src"/>
 	<classpathentry kind="src" path="src/cljs"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="ccw.LEININGEN_CONTAINER"/>
