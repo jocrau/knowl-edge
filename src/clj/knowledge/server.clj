@@ -38,6 +38,8 @@
     [knowledge.transformation :as transform]
     [knowledge.implementation.transformation]))
 
+(def 404page "<html><body><h1>Unknown Resource :-(</h1></body></html>")
+
 (defn resource [thing]
   (cond
     (map? thing) (let [uri (str (name (:scheme thing))
@@ -61,8 +63,8 @@
   (GET "*" [:as request]
        (if-let [response (seq (transform/dereference (resource request)))]
          response
-         (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>")))
-  (not-found "<html><body><h1>Unknown Resource :-(</h1></body></html>"))
+         (not-found 404page)))
+  (not-found 404page))
 
 (def app
   (-> route
