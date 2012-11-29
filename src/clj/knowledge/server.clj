@@ -38,7 +38,7 @@
     [knowledge.transformation :as transform]
     [knowledge.implementation.transformation]))
 
-(def 404page "<html><body><h1>Unknown Resource :-(</h1></body></html>")
+(def page404 "<html><body><h1>Unknown Resource :-(</h1></body></html>")
 
 (defn resource [thing]
   (cond
@@ -63,8 +63,8 @@
   (GET "*" [:as request]
        (if-let [response (seq (transform/dereference (resource request)))]
          response
-         (not-found 404page)))
-  (not-found 404page))
+         (not-found page404)))
+  (not-found page404))
 
 (def app
   (-> route
