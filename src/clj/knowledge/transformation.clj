@@ -37,7 +37,7 @@
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
 
 (def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
-(def default-template-iri (str base-iri "templates/page.html"))
+(def default-template-iri (str base-iri "templates/recipes.html"))
 
 ;; Predicates
 

@@ -1,3 +1,4 @@
+@base <http://localhost:8080> .
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix cnt:     <http://www.w3.org/2011/content#> .
 @prefix oa:      <http://www.w3.org/ns/openannotation/core/> .
@@ -36,19 +37,42 @@
 :58bb82d3-8f34-4c69-8c8d-872edeb6cc51
 	a void:Dataset ;
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
-	void:uriSpace "http://dbpedia.org/resource/" .
+	void:uriSpace <http://dbpedia.org/resource/> .
 
 :5ad0c010-303b-11e2-81c1-0800200c9a66
 	a void:Dataset ;
 	void:sparqlEndpoint <http://factforge.net/sparql> ;
-	void:uriSpace "http://rdf.freebase.com/ns/" .
+	void:uriSpace <http://rdf.freebase.com/ns/> .
+
+:2757de08-c63a-4aa4-8d45-5d9271d00aab
+	a void:Dataset ;
+	void:sparqlEndpoint <bakepedia/query> ;
+	void:uriSpace <> .
 
 <recipes>
 	a foaf:Document ;
 	knowl:template </templates/recipes.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> ;
-	knowl:externalLink <http://www.bonappetit.com/recipes/quick-recipes/2012/04/almond-oat-strawberry-shortcakes> .
+	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+
+<ingredients>
+	a foaf:Document ;
+	knowl:template </templates/recipes.html> ;
+	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
+	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+
+<guides>
+	a foaf:Document ;
+	knowl:template </templates/recipes.html> ;
+	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
+	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+
+<recipes>
+	a foaf:Document ;
+	knowl:template </templates/recipes.html> ;
+	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
+	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+
 
 <guides/installing_the_multipurpose_blade_or_dough_blade>
 	a foaf:Document ;
@@ -87,17 +111,18 @@
 
 <recipes/almond-oat-strawberry-shortcakes>
 	a foaf:Document ;
-	knowl:template </templates/recipes.html> ;
+	knowl:template </templates/recipe.html> ;
 	rdfs:label "Almond-Oat Strawberry Shortcakes"@en ;
 	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
 
 <static/img/almond-oat-strawberry-shortcakes.jpg>
 	a schema:Photograph ;
-	schema:creator [
+	schema:creator :5c07cd42-f783-45b9-b08a-90b5c5685466 .
+
+:5c07cd42-f783-45b9-b08a-90b5c5685466
 		a foaf:Person ;
 		foaf:name "Romulo Yanes" ;
-		foaf:page <http://www.romuloyanes.com/>
-	] .
+		foaf:page <http://www.romuloyanes.com/> .
 
 <recipes/almond-oat-strawberry-shortcakes#this>
 	a schema:Recipe ;
@@ -107,20 +132,9 @@
 	schema:video <media/d1717f75-71b7-447d-8fe8-611d5161e98d#this> ;
 	schema:creator <people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
-	schema:prepTime "PT20M"^^xsd:duration ;
+	knowl:externalLink <http://www.bonappetit.com/recipes/quick-recipes/2012/04/almond-oat-strawberry-shortcakes> ;
 	schema:totalTime "PT1H"^^xsd:duration ;
-	schema:nutrition [
-		a schema:NutritionInformation ;
-		schema:calories "440" ;
-		schema:fatContent "29" ;
-		schema:saturatedFatContent "16" ;
-		schema:cholesterolContent "85" ;
-		schema:carbohydrateContent "42" ;
-		schema:fiberContent "4" ;
-		schema:sugarContent "18" ;
-		schema:proteinContent "6" ;
-		schema:sodiumContent "360"
-	] ;
+	schema:nutrition :654ed887-9199-4229-be0d-f0ed7b061400 ;
 	schema:recipeYield "6 pieces"@en ;
 	bake:components (
 			<resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
@@ -145,6 +159,18 @@ Meanwhile, combine strawberries, 1 Tbsp. sugar, and Grand Marnier, if using, in 
 Cut warm or room-temperature biscuits in half; place bottom halves on plates. Divide whipped cream and strawberries over. Top with remaining biscuit halves."""@en ;
 	schema:copyrightHolder dbp:Condé_Nast_Publications ;
 	schema:copyrightYear "2012" .
+
+:654ed887-9199-4229-be0d-f0ed7b061400
+	a schema:NutritionInformation ;
+	schema:calories "440" ;
+	schema:fatContent "29" ;
+	schema:saturatedFatContent "16" ;
+	schema:cholesterolContent "85" ;
+	schema:carbohydrateContent "42" ;
+	schema:fiberContent "4" ;
+	schema:sugarContent "18" ;
+	schema:proteinContent "6" ;
+	schema:sodiumContent "360" .
 
 :a6fa0ed2-4d8f-4e71-9595-02446a38198b
       a       bake:Step ;

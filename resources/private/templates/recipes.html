@@ -27,129 +27,49 @@
 					<a class="brand" href="#">Bakepedia</a>
 					<ul class="nav">
 						<li><a href="recipes">Recipes</a></li>
+						<li><a href="ingredients">Ingredients</a></li>
+						<li><a href="guides">How To</a></li>
 					</ul>
-					<a id="edit-btn" href="javascript:void(0)" class="btn pull-right">Edit</a>
 				</div>
 			</div>
 		</div>
 				
 		<div class="container">
 			<div class="row">
-				<div id="test-content" rel="http://knowl-edge.org/ontology/core#contains">
-					<div class="span12" about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
-						<h2 property="http://schema.org/name">Mom's World Famous Banana Bread</h2>
-													
-						<div class="row">
-							<div class="span6">
-							
-								<p><img rel="http://schema.org/image" src="static/img/placeholder/300x200.gif" class="img-polaroid"/></p>
-							
-								<h4>Ingredients</h4>
-								<ul inlist="" rel="http://bakepedia.org/ontology#components">
-									<li about="http://bakepedia.org/resource/12343422" typeof="http://bakepedia.org/ontology#Component">
-										<span property="http://bakepedia.org/ontology#quantity">2 or 3</span>
-										<span rel="http://bakepedia.org/ontology#ingredient">
-											<span typeof="http://bakepedia.org/ontology#Ingredient">
-												<span property="http://bakepedia.org/ontology#name">Bananas</span>
-												<span rel="http://www.w3.org/2000/01/rdf-schema#seeAlso" style="display: none;">
-													<span typeof="http://dbpedia.org/class/yago/LeaveningAgents
-																http://dbpedia.org/class/yago/Cereals
-																http://dbpedia.org/class/yago/FoodAdditives
-																http://www.w3.org/2000/01/rdf-schema#Resource 
-																http://www.w3.org/2002/07/owl#Thing">
-														<img rel="http://dbpedia.org/ontology/thumbnail http://schema.org/image http://xmlns.com/foaf/0.1/depiction" src="static/img/placeholder/300x200.gif" class="img-polaroid pull-right"/>
-														<span property="http://www.w3.org/2000/01/rdf-schema#comment"> </span>
-													</span>
-												</span>
-												<a rel="http://knowl-edge.org/ontology/core#internalLink" href="blog"><i title="Show more Information " class="icon-share-alt"></i></a>
-											</span>
-										</span>
-										<span property="http://bakepedia.org/ontology#comment"> </span>
-									</li>
-								</ul>
-								
-								<h4>Preparation</h4>
-								
-								<p property="http://schema.org/recipeInstructions">
-									Preheat the oven to 350 degrees. Mix in the ingredients in a bowl. Add
-									the flour last. Pour the mixture into a loaf pan and bake for one hour.
-								</p>
-								
-								<h4>Nutritional Information</h4>
-								
-								<p>1 serving contains</p>
-							
-								<div rel="http://schema.org/nutrition">
-									<div typeof="http://schema.org/NutritionInformation">
-										<div>Calories <span property="http://schema.org/calories">42</span>kcal</div>
-										<div>Fat <span property="http://schema.org/fatContent">42</span>g</div>
-										<div>Saturated Fat <span property="http://schema.org/saturatedFatContent">42</span>g</div>
-										<div>Cholesterol <span property="http://schema.org/cholesterolContent">42</span>mg</div>
-										<div>Carbohydrates <span property="http://schema.org/carbohydrateContent">42</span>g</div>
-										<div>Dietary Fiber <span property="http://schema.org/fiberContent">42</span>g</div>
-										<div>Total Sugars <span property="http://schema.org/sugarContent">42</span>g</div>
-										<div>Protein <span property="http://schema.org/proteinContent">42</span>g</div>
-										<div>Sodium <span property="http://schema.org/sodiumContent">42</span>mg</div>
-									</div>
-								</div>
-								
-								<h4>Ratings</h4>						
-								
-								<p property="http://schema.org/aggregateRating" typeof="http://schema.org/AggregateRating">
-									<span property="http://schema.org/ratingValue">4</span> stars - based on <span property="http://schema.org/reviewCount">250</span> reviews
-								</p>
-								
-							</div>
-							
-							<div class="span6">
-								<div class="well well-small">
+				<div id="test-content">
+					<div class="span12">
+						<h2>Recipes</h2>
+															
+						<div class="media" rel="http://knowl-edge.org/ontology/core#contains">
+							<div about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
+								<a class="pull-left" href="#">
+									<img rel="http://schema.org/image" src="http://placehold.it/64x64" class="media-object img-polaroid" />
+								</a>
+								<div class="media-body">
+										
+									<h4 property="http://schema.org/name" class="media-heading">Mom's World Famous Banana Bread</h4>
 									<p>By <span rel="http://schema.org/creator">
-											<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
-										</span>, 
-										<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span>
-									</p>
-									
-									<p property="http://schema.org/description">
+										<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
+									</span>, 
+									<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span>
+									<span>
+										(Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span>, 
+										Total time: <span property="http://schema.org/totalTime" content="PT3H">3 hour</span>, 
+										Yield: <span property="http://schema.org/recipeYield">1 loaf</span>)
+									</span>
+								</p>
+											
+								<p>
+									<span property="http://schema.org/description">
 										This classic banana bread recipe comes
 										from my mom -- the walnuts add a nice texture and flavor to the banana
 										bread.
-									</p>
-									
-									<p>
-										Prep Time: <span property="http://schema.org/prepTime" content="PT15M">15 minutes</span><br />
-										Total time: <span property="http://schema.org/totalTime" content="PT3H">3 hour</span><br/>
-										Yield: <span property="http://schema.org/recipeYield">1 loaf</span>
-									</p>
-									
-									<p>Read more: <a rel="http://knowl-edge.org/ontology/core#externalLink" href="#">Read More</a></p>
-								</div>
-																				
-								<div rel="http://schema.org/video">
-									<div about="http://example.com/foo/sdafsdf" typeof="http://www.w3.org/ns/ma-ont#MediaResource http://schema.org/VideoObject">
-										<iframe id="player" rel="http://www.w3.org/ns/ma-ont#locator" src="https://www.youtube.com/embed/xyz?enablejsapi=1&origin=http://localhost:8080/" width="100%" height="315" frameborder="0" wmode="transparent" allowfullscreen class="img-polaroid"></iframe>
-										<div rel="http://www.w3.org/ns/ma-ont#hasFragment">
-											<div about="http://example.com/foo/1212123dsfasdffd" typeof="http://knowl-edge.org/ontology/core#TemporalFragment">
-												<div rel="http://schema.org/mentions"><div about="http://example.com/something" typeof="http://bakepedia.org/ontology#Component http://bakepedia.org/ontology#Step http://www.w3.org/2002/07/owl#Thing http://dbpedia.org/class/yago/KitchenwareBrands"></div></div>
-												<div property="http://knowl-edge.org/ontology/core#start"></div>
-												<div property="http://knowl-edge.org/ontology/core#end"></div>
-											</div>
-											<div about="http://example.com/foo/12156476745dfgdfg" typeof="http://knowl-edge.org/ontology/core#SpatialFragment">
-												<div rel="http://schema.org/mentions"><div about="http://example.com/somethingelse" typeof="http://bakepedia.org/ontology#Guide"></div></div>
-												<div property="http://knowl-edge.org/ontology/core#start"></div>
-												<div property="http://knowl-edge.org/ontology/core#end"></div>
-												<div property="http://knowl-edge.org/ontology/core#top"></div>
-												<div property="http://knowl-edge.org/ontology/core#left"></div>
-												<div property="http://knowl-edge.org/ontology/core#width"></div>
-												<div property="http://knowl-edge.org/ontology/core#height"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+									</span>
+								</p>
+							</div>									
 						</div>
 					</div>
-
-			</div>
+				</div>
 			</div>
 		</div>
 				
