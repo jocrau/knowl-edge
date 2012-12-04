@@ -194,7 +194,7 @@
   (-> (filter #(= (-> % predicate identifier) know:query) statements) first object value))
 
 (defn- extract-service-from [statements]
-  (when-let [service-statements (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements)]
+  (when-let [service-statements (seq (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements))]
     (-> service-statements first object value)))
 
 (defn- extract-first [statements]
