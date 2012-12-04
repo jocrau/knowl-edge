@@ -62,6 +62,7 @@
 (def know "http://knowl-edge.org/ontology/core#")
 (def foaf "http://xmlns.com/foaf/0.1/")
 (def foaf:depiction (str foaf "depiction"))
+(def foaf:primaryTopic (str foaf "primaryTopic"))
 (def rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 (def rdf:type (str rdf "type"))
 (def rdf:List (str rdf "List"))

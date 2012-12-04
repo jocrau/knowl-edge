@@ -149,6 +149,8 @@
         (set-content (value object)))
       know:internalLink
       (set-reference object)
+      foaf:primaryTopic
+      (set-reference object)
       foaf:depiction
       (set-reference object)
       schema:image
