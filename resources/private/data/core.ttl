@@ -51,6 +51,8 @@
 	knowl:contains (
 		<ingredients/Slivered_Almonds#this>
 		<ingredients/Baking_Powder#this>
+		<ingredients/Strawberries#this>
+		<ingredients/Grand_Marnier#this>
 	) .
 
 <guides>
@@ -147,7 +149,7 @@
 			<resources/f21898a9-e919-4aea-8c4c-1a9ebe88c7ce>
 			<resources/9635af41-a224-4944-950b-c54b7bf94899> 
 	) ;
-	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. <span property="http://bakepedia.org/ontology#step" about="urn:uuid:a6fa0ed2-4d8f-4e71-9595-02446a38198b" typeof="http://bakepedia.org/ontology#Step"><span property="http://bakepedia.org/ontology#description">Transfer to a work surface. Knead until dough comes together, about 4 turns.</span></span> Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds. Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
+	schema:recipeInstructions """Preheat oven to 375°. Line a baking sheet with parchment paper. Pulse flour, oats, almonds, 1/3 cup sugar, baking powder, and salt in a food processor until finely ground. Add butter; pulse until only pea-size pieces remain. Add 1/2 cup cream and 1 tsp. vanilla; pulse until large moist clumps form. <span property="http://bakepedia.org/ontology#step" about="urn:uuid:a6fa0ed2-4d8f-4e71-9595-02446a38198b" typeof="http://bakepedia.org/ontology#Step"><span property="http://bakepedia.org/ontology#description">Transfer to a work surface. Knead until dough comes together, about 4 turns.</span></span> <span property="http://bakepedia.org/ontology#step" about="urn:uuid:9db5ed1f-5a64-4c25-8463-afaa569343a9" typeof="http://bakepedia.org/ontology#Step"><span property="http://bakepedia.org/ontology#description">Pat into a 4x6" rectangle. Halve lengthwise, then crosswise into thirds.</span></span> Arrange on prepared baking sheet. Brush with cream; sprinkle with 1/2 Tbsp. sugar.
 
 Bake, rotating sheet halfway through cooking, until golden brown around edges and a tester inserted into center comes out clean, about 20 minutes. Set biscuits on a wire rack; let cool. DO AHEAD: Biscuits can be made 8 hours ahead. Store cooled biscuits airtight at room temperature.
 
@@ -169,9 +171,9 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	schema:proteinContent "6" ;
 	schema:sodiumContent "360" .
 
-:a6fa0ed2-4d8f-4e71-9595-02446a38198b
-      a       bake:Step ;
-      bake:step "Transfer to a work surface."@en .
+:a6fa0ed2-4d8f-4e71-9595-02446a38198b a bake:Step .
+
+:9db5ed1f-5a64-4c25-8463-afaa569343a9 a bake:Step .
 
 <resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
 			a bake:Component ;
@@ -252,6 +254,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=86,90>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=39,52>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,260>,
+		<media/2597fb50-b851-43b8-ae81-eba3d92a72a9#t=260,320>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=39,55&xywh=70,40,20,40> .
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>
@@ -347,6 +350,15 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	knowl:start 237 ;
 	knowl:end 260 ;
 	schema:mentions :a6fa0ed2-4d8f-4e71-9595-02446a38198b .
+
+<media/2597fb50-b851-43b8-ae81-eba3d92a72a9#t=260,320>
+	a ma:MediaFragment ;
+	a knowl:TemporalFragment ;
+	ma:isFragmentOf <media/d1717f75-71b7-447d-8fe8-611d5161e98d#this>;
+	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=260,320> ;
+	knowl:start 260 ;
+	knowl:end 320 ;
+	schema:mentions :9db5ed1f-5a64-4c25-8463-afaa569343a9 .
 
 <recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries>
 	a foaf:Document ;
