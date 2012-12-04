@@ -44,9 +44,7 @@
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
-          (try
-            (iterator-seq (.listStatements (.execConstruct query-execution)))
-            (catch Exception e nil))))))
+          (iterator-seq (.listStatements (.execConstruct query-execution)))))))
   (knowledge.store/find-types-of [this resource]  (let [statements (knowledge.store/find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
                                     (map #(model/object %) statements)))
   (knowledge.store/find-matching
@@ -77,9 +75,7 @@
     ([this query-string] (knowledge.store/find-by-query this query-string nil))
     ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
-        (try
-          (iterator-seq (.listStatements (.execConstruct query-execution)))
-          (catch Exception e nil)))))
+        (iterator-seq (.listStatements (.execConstruct query-execution))))))
   (knowledge.store/find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
                                        statements (knowledge.store/find-matching this resource predicate)]
                                    (map #(model/object %) statements)))
