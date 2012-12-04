@@ -42,18 +42,16 @@
 :5ad0c010-303b-11e2-81c1-0800200c9a66
 	a void:Dataset ;
 	void:sparqlEndpoint <http://factforge.net/sparql> ;
-
-<recipes>
-	a foaf:Document ;
-	knowl:template </templates/recipes.html> ;
-	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+	void:uriSpace "http://rdf.freebase.com/ns/" .
 
 <ingredients>
 	a foaf:Document ;
-	knowl:template </templates/recipes.html> ;
+	knowl:template </templates/ingredients.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+	knowl:contains (
+		<ingredients/Slivered_Almonds#this>
+		<ingredients/Baking_Powder#this>
+	) .
 
 <guides>
 	a foaf:Document ;
@@ -65,7 +63,11 @@
 	a foaf:Document ;
 	knowl:template </templates/recipes.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
+	knowl:contains (
+		<recipes/almond-oat-strawberry-shortcakes#this> 
+		<recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries#this> 
+		<recipes/how-to-make-a-white-cake#this>
+	) .
 
 
 <guides/installing_the_multipurpose_blade_or_dough_blade>
@@ -126,6 +128,7 @@
 	schema:video <media/d1717f75-71b7-447d-8fe8-611d5161e98d#this> ;
 	schema:creator <people/Dede_Wilson#this> ;
 	schema:datePublished "2012-04-06T12:25:23+01:00"^^xsd:dateTime ;
+	foaf:primaryTopic <recipes/almond-oat-strawberry-shortcakes> ;
 	knowl:externalLink <http://www.bonappetit.com/recipes/quick-recipes/2012/04/almond-oat-strawberry-shortcakes> ;
 	schema:totalTime "PT1H"^^xsd:duration ;
 	schema:nutrition :654ed887-9199-4229-be0d-f0ed7b061400 ;
@@ -345,9 +348,156 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	knowl:end 260 ;
 	schema:mentions :a6fa0ed2-4d8f-4e71-9595-02446a38198b .
 
-<ingredients/All_Purouse_Flour#this> 
+<recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries>
+	a foaf:Document ;
+	knowl:template </templates/recipe.html> ;
+	rdfs:label "How to Assemble and Frost a White Cake with Raspberries"@en ;
+	knowl:contains <recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries#this> .
+
+<recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries#this>
+	a schema:Recipe ;
+	schema:name "How to Assemble and Frost a White Cake with Raspberries"@en ;
+	schema:description "Dede Wilson shows how to assemble and frost a white cake with raspberries. Using vanilla Italian meringue buttercream, white cake, seedless raspberry jam filling and raspberries on top."@en ;
+	schema:image <static/img/white-celebration-cake-with-raspberries.jpg> ;
+	schema:video <media/523e9576-a412-4f0f-a2d5-e65b926635e5#this> ;
+	schema:creator <people/Dede_Wilson#this> ;
+	schema:datePublished "2012-11-27T12:25:15+01:00"^^xsd:dateTime ;
+	foaf:primaryTopic <recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries> ;
+	knowl:externalLink <http://www.dedewilson.com/recipes/cakes/white-celebration-cake-with-raspberries> ;
+	schema:totalTime "PT2H"^^xsd:duration ;
+	schema:recipeYield "1 piece"@en ;
+	schema:nutrition :654ed887-9199-4229-be0d-f0ed7b061400 ;
+	bake:components (
+		<resources/2097aaa4-c4c1-4049-952c-64084ccc43cf>
+	) ;
+	schema:recipeInstructions """Level the cake layers if need be. Place one cake layer on an 8-inch cardboard round and place on turntable. Spread about 1/3 cup of jam on top of cake, going almost to the edges, but leave about 1/4-inch border of cake all around. Top with second cake layer. Place about 1 cup of the soft, spreadable buttercream on top of cake and spread in a thin, even crumb-coat all over the top and down onto sides, using more buttercream as needed. For this step you just want a sheer coat that seals in any crumbs and provides a smooth surface for the final coat. Refrigerate until firm, about 2 hours.
+
+Apply final coat of buttercream thickly, using icing spatula to create decorative but casual swirls. Cake may be refrigerated in an airtight container (such as a cake dome) overnight. Bring to room temperature before serving. Right before serving arrange berries on top of cake and sprinkle with confectioners’ sugar. """@en .	
+
+<media/523e9576-a412-4f0f-a2d5-e65b926635e5#this>
+	a ma:MediaResource ;
+	ma:locator <https://www.youtube.com/embed/6QPiYmrWLpI> .
+
+<resources/2097aaa4-c4c1-4049-952c-64084ccc43cf>
+	a bake:Component ;
+	bake:quantity "1/3 to 1/2 cup"@en ;
+	bake:ingredient <ingredients/Raspberry_Jam#this>  .
+
+
+<recipes/how-to-make-a-white-cake>
+	a foaf:Document ;
+	knowl:template </templates/recipe.html> ;
+	rdfs:label "How to Make a White Cake"@en ;
+	knowl:contains <recipes/how-to-make-a-white-cake#this> .
+
+<recipes/how-to-make-a-white-cake#this>
+	a schema:Recipe ;
+	schema:name "How to Make a White Cake"@en ;
+	schema:description "Dede Wilson shows how to make a versatile White Cake made with King Arthur Unbleached Cake Flour."@en ;
+	schema:image <static/img/white-celebration-cake-with-raspberries.jpg> ;
+	schema:video <media/105ee2dd-4ac2-4a84-beeb-59ddf86a7ef8#this> ;
+	schema:creator <people/Dede_Wilson#this> ;
+	schema:datePublished "2012-11-27T12:30:15+01:00"^^xsd:dateTime ;
+	foaf:primaryTopic <recipes/how-to-make-a-white-cake> ;
+	knowl:externalLink <http://www.dedewilson.com/recipes/basic-recipes/white-cake/> ;
+	schema:totalTime "PT2H"^^xsd:duration ;
+	schema:recipeYield "two 8 or 9-inch by 2-inch cake layers"@en ;
+	schema:nutrition :654ed887-9199-4229-be0d-f0ed7b061400 ;
+	bake:components (
+		<resources/76533daa-9cf3-49a0-8820-3ed1757f6b6b>
+		<resources/e7bb1d89-14c5-4d88-b112-d72c9b94999c>
+		<resources/1d8bb2b6-5fbe-418e-bb53-e23a39905dfc>
+		<resources/8b72b92c-f989-458f-9149-e6908119f03b>
+		<resources/6b17a814-95c9-44a3-a83d-486fab7530ab>
+		<resources/9a28c5ef-8e19-4eb2-bc3d-72a35116c41d>
+		<resources/990493c4-818d-4953-8dc2-300c578055c4>
+		<resources/f337b21d-a2c3-4e80-9fcb-3d2a9ed8bb60>
+	) ;
+	schema:recipeInstructions """1. Preheat oven to 350 degrees F. Coat the insides of two 8 or 9-inch by 2-inch round cake pans with nonstick spray, line bottoms with parchment rounds, then spray parchment.
+
+2. Whisk together flour, baking powder and salt in a medium bowl to combine and aerate; set aside. Whisk together the egg whites and milk in a small bowl; set aside.
+
+3. In a large bowl with an electric mixer on medium-high speed, beat butter until creamy, about 2 minutes. Add the sugar gradually and beat until very light and fluffy, about 3 minutes, scraping down the bowl once or twice. Beat in vanilla.
+
+4. Add the flour mixture in four additions, alternately with the egg white/milk mixture. Begin and end with the flour mixture and beat briefly until smooth. Divide batter evenly in pans and smooth tops with offset spatula.
+
+5. Bake for about 25 to 30 minutes or until a toothpick shows a few moist crumbs. The cake will be tinged with light golden brown around the edges and top and will have begun to come away from the sides of the pan. Cool pans on racks for 8 minutes. Unmold, peel off parchment, and place directly on racks to cool completely. Layers are ready to fill and frost. Alternatively, place on layers on cardboards and double wrap in plastic wrap; store at room temperature if assembling within 24 hours."""@en .	
+
+<media/105ee2dd-4ac2-4a84-beeb-59ddf86a7ef8#this>
+	a ma:MediaResource ;
+	ma:locator <https://www.youtube.com/embed/eYcKng09Kgw> .
+
+
+<resources/76533daa-9cf3-49a0-8820-3ed1757f6b6b>
+	a bake:Component ;
+	bake:quantity "3 1/2 cups"@en ;
+	bake:comment "sifted"@en ;
+	bake:ingredient <ingredients/Cake_Flour#this>  .
+
+<resources/e7bb1d89-14c5-4d88-b112-d72c9b94999c>
+	a bake:Component ;
+	bake:quantity "1 tablespoon plus 1 teaspoon"@en ;
+	bake:ingredient <ingredients/Baking_Powder#this>  .
+
+<resources/1d8bb2b6-5fbe-418e-bb53-e23a39905dfc>
+	a bake:Component ;
+	bake:quantity "1/2 teaspoon"@en ;
+	bake:ingredient <ingredients/Salt#this>  .
+
+<resources/8b72b92c-f989-458f-9149-e6908119f03b>
+	a bake:Component ;
+	bake:quantity "6"@en ;
+	bake:comment "large, at room temperature"@en ;
+	bake:ingredient <ingredients/egg-white#this>  .
+
+<resources/6b17a814-95c9-44a3-a83d-486fab7530ab>
+	a bake:Component ;
+	bake:quantity "1 1/2 cups"@en ;
+	bake:ingredient <ingredients/milk#this>  .
+
+<resources/9a28c5ef-8e19-4eb2-bc3d-72a35116c41d>
+	a bake:Component ;
+	bake:quantity "1 cup (2 sticks)"@en ;
+	bake:comment "unsalted, room temperature, cut into pieces"@en ;
+	bake:ingredient <ingredients/Butter#this>  .
+
+<resources/990493c4-818d-4953-8dc2-300c578055c4>
+	a bake:Component ;
+	bake:quantity "1 1/2 cups"@en ;
+	bake:ingredient <ingredients/Sugar#this>   .
+
+<resources/f337b21d-a2c3-4e80-9fcb-3d2a9ed8bb60>
+	a bake:Component ;
+	bake:quantity "2 teaspoons"@en ;
+	bake:ingredient <ingredients/Vanilla_Extract#this>  .
+
+
+
+<ingredients/Raspberry_Jam#this>
 	a bake:Ingredient ;
-	bake:name "All Purouse Flour"@en ;
+	bake:name "raspberry jam"@en ;
+	foaf:primaryTopic <http://www.wikihow.com/Make-Red-Raspberry-Jam> ;
+	rdfs:seeAlso dbp:Raspberry .
+
+<ingredients/milk#this>
+	a bake:Ingredient ;
+	bake:name "milk"@en ;
+	rdfs:seeAlso dbp:Milk .
+	
+<ingredients/egg-white#this>
+	a bake:Ingredient ;
+	bake:name "egg white"@en ;
+	rdfs:seeAlso dbp:Egg_white .
+	
+<ingredients/All_Purouse_Flour#this>
+	a bake:Ingredient ;
+	bake:name "all purouse flour"@en ;
+	foaf:primaryTopic <http://www.kingarthurflour.com/shop/items/king-arthur-unbleached-all-purpose-flour-> ;
+	rdfs:seeAlso dbp:Flour .
+
+<ingredients/Cake_Flour#this>
+	a bake:Ingredient ;
+	bake:name "cake flour"@en ;
 	rdfs:seeAlso dbp:Flour .
 
 <ingredients/Old_Fashioned_Oats#this> 
@@ -358,42 +508,47 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 <ingredients/Slivered_Almonds#this> 
 	a bake:Ingredient ;
 	bake:name "Slivered Almonds"@en ;
-	knowl:internalLink <ingredients/Almonds> ;
+	foaf:primaryTopic <ingredients/Almonds> ;
 	rdfs:seeAlso dbp:Almond .
 
 <ingredients/Almonds>
 	a foaf:Document ;
-	knowl:template </templates/ingredients.html> ;
+	knowl:template </templates/ingredient.html> ;
 	rdfs:label "Almonds"@en ;
 	knowl:contains <ingredients/Slivered_Almonds#this>  .
 
 <ingredients/Sugar#this> 
 	a bake:Ingredient ;
 	bake:name "Sugar"@en ;
-	knowl:internalLink <ingredients/Sugar> ;
+	foaf:primaryTopic <ingredients/Sugar> ;
 	rdfs:seeAlso dbp:Sugar .
 
 <ingredients/Sugar>
 	a foaf:Document ;
-	knowl:template </templates/ingredients.html> ;
+	knowl:template </templates/ingredient.html> ;
 	rdfs:label "Sugar"@en ;
 	knowl:contains <ingredients/Sugar#this>  .
 
 <ingredients/Baking_Powder#this> 
 	a bake:Ingredient ;
 	bake:name "Baking Powder"@en ;
-	knowl:internalLink <ingredients/Baking_Powder> ;
+	foaf:primaryTopic <ingredients/Baking_Powder> ;
 	rdfs:seeAlso dbp:Baking_powder  .
 
 <ingredients/Baking_Powder>
 	a foaf:Document ;
-	knowl:template </templates/ingredients.html> ;
+	knowl:template </templates/ingredient.html> ;
 	rdfs:label "Baking Powder"@en ;
 	knowl:contains <ingredients/Baking_Powder#this> .
 
 <ingredients/Kosher_Salt#this> 
 	a bake:Ingredient ;
 	bake:name "Kosher Salt"@en ;
+	rdfs:seeAlso dbp:Salt .
+
+<ingredients/Salt#this> 
+	a bake:Ingredient ;
+	bake:name "salt"@en ;
 	rdfs:seeAlso dbp:Salt .
 
 <ingredients/Butter#this>
@@ -414,12 +569,12 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 <ingredients/Strawberries#this>
 	a bake:Ingredient ;
 	bake:name "Strawberries"@en ;
-	knowl:internalLink <ingredients/Strawberries> ;
+	foaf:primaryTopic <ingredients/Strawberries> ;
 	rdfs:seeAlso dbp:Garden_strawberry .
 
 <ingredients/Strawberries>
 	a foaf:Document ;
-	knowl:template </templates/ingredients.html> ;
+	knowl:template </templates/ingredient.html> ;
 	rdfs:label "Strawberries"@en ;
 	knowl:contains <ingredients/Strawberries#this>  .
 
@@ -427,12 +582,12 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	a bake:Ingredient ;
 	bake:name "Grand Marnier"@en ;
 	foaf:depiction <http://upload.wikimedia.org/wikipedia/commons/0/03/Grand_Marnier_Bottle.jpg> ;
-	knowl:internalLink <ingredients/Grand_Marnier> ;
+	foaf:primaryTopic <ingredients/Grand_Marnier> ;
 	rdfs:seeAlso dbp:Grand_Marnier .
 
 <ingredients/Grand_Marnier>
 	a foaf:Document ;
-	knowl:template </templates/ingredients.html> ;
+	knowl:template </templates/ingredient.html> ;
 	rdfs:label "Grand Marinier"@en ;
 	knowl:contains <ingredients/Grand_Marnier#this> .
 

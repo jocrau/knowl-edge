@@ -21,34 +21,35 @@
 	
 </head>
 <body>
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="brand" href="#">Bakepedia</a>
-					<ul class="nav">
-						<li><a href="recipes">Recipes</a></li>
-						<li><a href="ingredients">Ingredients</a></li>
-						<li><a href="guides">How To</a></li>
-					</ul>
-				</div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">Bakepedia</a>
+				<ul class="nav">
+					<li><a href="recipes">Recipes</a></li>
+					<li><a href="ingredients">Ingredients</a></li>
+					<li><a href="guides">How To</a></li>
+				</ul>
 			</div>
 		</div>
-				
-		<div class="container">
-			<div class="row">
-				<div id="test-content">
-					<div class="span12">
-						<h2>Recipes</h2>
-															
-						<div class="media" rel="http://knowl-edge.org/ontology/core#contains">
-							<div about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
-								<a class="pull-left" href="#">
-									<img rel="http://schema.org/image" src="http://placehold.it/64x64" class="media-object img-polaroid" />
-								</a>
-								<div class="media-body">
-										
-									<h4 property="http://schema.org/name" class="media-heading">Mom's World Famous Banana Bread</h4>
-									<p>By <span rel="http://schema.org/creator">
+	</div>
+			
+	<div class="container">
+		<div class="row">
+			<div id="test-content">
+				<div class="span12">
+					<h2>Recipes</h2>
+														
+					<div class="media" rel="http://knowl-edge.org/ontology/core#contains" >
+						<div about="http://bakeopedia.org/recipe/moms-world-famous-banana-bread" typeof="http://schema.org/Recipe">
+							<a class="pull-left" rel="http://xmlns.com/foaf/0.1/primaryTopic" href="#">
+								<img rel="http://schema.org/image" src="http://placehold.it/64x64" class="media-object img-polaroid" />
+							</a>
+							<div class="media-body">
+									
+								<h4 property="http://schema.org/name" class="media-heading">Mom's World Famous Banana Bread</h4>
+								<p>By 
+									<span rel="http://schema.org/creator">
 										<span about="http://dbpedia.org/resource/Peter_Pan" typeof="http://xmlns.com/foaf/0.1/Person"><span property="http://xmlns.com/foaf/0.1/name http://www.w3.org/2000/01/rdf-schema#label">Peter Pan</span></span>
 									</span>, 
 									<span property="http://schema.org/datePublished" content="2009-05-08">May 8, 2009</span>
@@ -58,7 +59,7 @@
 										Yield: <span property="http://schema.org/recipeYield">1 loaf</span>)
 									</span>
 								</p>
-											
+										
 								<p>
 									<span property="http://schema.org/description">
 										This classic banana bread recipe comes
@@ -66,19 +67,25 @@
 										bread.
 									</span>
 								</p>
-							</div>									
-						</div>
+							
+								<p><a rel="http://xmlns.com/foaf/0.1/primaryTopic" href="#" class="btn btn-mini">Read more</a></p>
+							
+							</div>
+							
+                    							
+						</div>								
 					</div>
 				</div>
 			</div>
 		</div>
-				
-		<footer class="container footer">
-			<div class="row">
-				<div class="span12">&nbsp;</div>				
-			</div>
-		</footer>
 	</div>
+			
+	<footer class="container footer">
+		<div class="row">
+			<div class="span12">&nbsp;</div>				
+		</div>
+	</footer>
+	
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
