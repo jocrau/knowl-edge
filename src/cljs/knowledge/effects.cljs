@@ -29,7 +29,5 @@
 
 (defn add-overlay [parent-element link-iri top left width height]
   ;; TODO curate input
-  (let [overlay-element (gdom/htmlToDocumentFragment (str "<div class=\"overlay\" style=\"position: absolute; top: " top "%; left: " left "%; width: " width "%; height: " height "%; background-color: none;\">
-											<a href=\"" link-iri "\" style=\"width: 100%; height: 100%\" target=\"_blank\"><i style=\"position: absolute; top: 48%; left: 48%;\" class=\"icon-info-sign icon-white\"></i></a>
-										</div>"))]
+  (let [overlay-element (gdom/htmlToDocumentFragment (str "<a href=\"" link-iri "\" style=\"position: absolute; top: " top "%; left: " left "%; width: " width "%; height: " height "%;\" target=\"_blank\"><i style=\"position: absolute; top: 48%; left: 48%; background-color: white;\" class=\"icon-info-sign\"></i></a>"))]
     (gdom/appendChild parent-element overlay-element)))
