@@ -10,10 +10,11 @@
 
 (defn- attach-goto-handler []
   (api/find-by-query
-    "SELECT ?mentioned ?fragment ?start WHERE {
-?fragment a <http://knowl-edge.org/ontology/core#TemporalFragment> ;
-<http://schema.org/mentions> ?mentioned ;
-<http://knowl-edge.org/ontology/core#start> ?start .
+    "
+SELECT ?mentioned ?fragment ?start WHERE {
+	?fragment a <http://knowl-edge.org/ontology/core#TemporalFragment> ;
+		<http://schema.org/mentions> ?mentioned ;
+		<http://knowl-edge.org/ontology/core#start> ?start .
 }"
     (fn [results]
       (doseq [result results]
@@ -30,22 +31,23 @@
     (effects/remove-all-overlays)
     (effects/remove-all-highlights)
     (api/find-by-query
-     (str "PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+     (str "
+PREFIX ma: <http://www.w3.org/ns/ma-ont#>
 PREFIX schema: <http://schema.org/>
 PREFIX know: <http://knowl-edge.org/ontology/core#>
 SELECT ?video ?mentions ?top ?left ?width ?height WHERE {
-?video ma:hasFragment ?fragment .
-?fragment a ma:MediaFragment ;
-schema:mentions ?mentions ;
-know:start ?start ;
-know:end ?end .
-FILTER (?start < " position " && ?end > " position ")
-OPTIONAL { 
-?fragment know:top ?top ;
-know:left ?left ;
-know:width ?width ;
-know:height ?height .
-} 
+	?video ma:hasFragment ?fragment .
+	?fragment a ma:MediaFragment ;
+		schema:mentions ?mentions ;
+		know:start ?start ;
+		know:end ?end .
+	FILTER (?start < " position " && ?end > " position ")
+	OPTIONAL { 
+		?fragment know:top ?top ;
+			know:left ?left ;
+			know:width ?width ;
+			know:height ?height .
+	}
 }")
       (fn [results]
         (doseq [result results]
