@@ -37,17 +37,11 @@
 :58bb82d3-8f34-4c69-8c8d-872edeb6cc51
 	a void:Dataset ;
 	void:sparqlEndpoint <http://dbpedia.org/sparql> ;
-	void:uriSpace <http://dbpedia.org/resource/> .
+	void:uriSpace "http://dbpedia.org/resource/" .
 
 :5ad0c010-303b-11e2-81c1-0800200c9a66
 	a void:Dataset ;
 	void:sparqlEndpoint <http://factforge.net/sparql> ;
-	void:uriSpace <http://rdf.freebase.com/ns/> .
-
-:2757de08-c63a-4aa4-8d45-5d9271d00aab
-	a void:Dataset ;
-	void:sparqlEndpoint <bakepedia/query> ;
-	void:uriSpace <> .
 
 <recipes>
 	a foaf:Document ;
