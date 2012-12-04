@@ -53,28 +53,19 @@
 		<ingredients/Baking_Powder#this>
 		<ingredients/Strawberries#this>
 		<ingredients/Grand_Marnier#this>
+		<ingredients/Cake_Flour#this>
+		<ingredients/King_Arthur_All_Purpose_Flour#this>
 	) .
 
 <guides>
 	a foaf:Document ;
-	knowl:template </templates/recipes.html> ;
+	knowl:template </templates/guides.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <recipes/almond-oat-strawberry-shortcakes#this> .
-
-<recipes>
-	a foaf:Document ;
-	knowl:template </templates/recipes.html> ;
-	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains (
-		<recipes/almond-oat-strawberry-shortcakes#this> 
-		<recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries#this> 
-		<recipes/how-to-make-a-white-cake#this>
-	) .
-
+	knowl:contains <guides/installing_the_multipurpose_blade_or_dough_blade> .
 
 <guides/installing_the_multipurpose_blade_or_dough_blade>
 	a foaf:Document ;
-	knowl:template </templates/guides.html> ;
+	knowl:template </templates/guide.html> ;
 	rdfs:label "Guide"@en ;
 	knowl:contains <guides/installing_the_multipurpose_blade_or_dough_blade#this> .
 
@@ -87,7 +78,8 @@
 		<guides/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
 		<guides/5024ba46-c02e-42de-ba49-2864141bd250>
 		<guides/7781b72d-a9a7-4a1d-9aab-aac656e31d48>			
-	) .
+	) ;
+	knowl:related :e65e2399-a800-4cb8-bc1d-4f773703ab82 .
 
 <guides/a028177f-d015-4bb9-8b1d-bd8280de1294>
 	a bake:Step ;
@@ -106,6 +98,41 @@
 <guides/7781b72d-a9a7-4a1d-9aab-aac656e31d48>
 	a bake:Step ;
 	schema:text "Install the work bowl cover, being sure it locks into place."@en .
+
+:e65e2399-a800-4cb8-bc1d-4f773703ab82
+	a knowl:Menu ;
+	knowl:entries :016be833-3888-46cd-b375-ecaaae20f1dc .
+
+:016be833-3888-46cd-b375-ecaaae20f1dc
+    a sp:Construct ;
+	knowl:query """
+		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+		PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+		PREFIX knowl: <http://knowl-edge.org/ontology/core#>
+		PREFIX schema: <http://schema.org/>
+		CONSTRUCT {
+		  ?document a knowl:MenuEntry ;
+		  	knowl:title ?pageTitle .
+		}
+		WHERE {
+		  ?document a foaf:Document ;
+		  	rdfs:label ?pageTitle ;
+		  	knowl:contains ?recipe .
+		  ?recipe schema:video ?mediaResource .
+		  ?mediaResource ma:hasFragment ?fragment .
+		}
+	""" .
+
+<recipes>
+	a foaf:Document ;
+	knowl:template </templates/recipes.html> ;
+	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
+	knowl:contains (
+		<recipes/almond-oat-strawberry-shortcakes#this> 
+		<recipes/how-to-assemble-and-frost-a-white-cake-with-raspberries#this> 
+		<recipes/how-to-make-a-white-cake#this>
+	) .
 
 <recipes/almond-oat-strawberry-shortcakes>
 	a foaf:Document ;
@@ -178,7 +205,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 <resources/46a7c35f-cbf0-45c7-a487-1f59f2c26e4e>
 			a bake:Component ;
 			bake:quantity "1 cup"@en ;
-			bake:ingredient <ingredients/All_Purouse_Flour#this>  .
+			bake:ingredient <ingredients/King_Arthur_All_Purpose_Flour#this>  .
 
 <resources/cb3b8df6-e95d-495e-b36f-3ea3d25a7d83>
 			a bake:Component ;
@@ -244,8 +271,6 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	a ma:MediaResource ;
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI> ;
 	ma:hasFragment 
-		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=10,16>, 
-		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=53,58>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=59,62>,
 		<media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=62,62>,
@@ -264,7 +289,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	ma:locator <https://www.youtube.com/embed/m-u6XkNpSAI#t=10,16> ;
 	knowl:start 10 ;
 	knowl:end 16 ;
-	schema:mentions dbp:King_Arthur_Flour .
+	schema:mentions <ingredients/King_Arthur_All_Purpose_Flour> .
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=22,29>
 	a ma:MediaFragment ;
@@ -504,13 +529,33 @@ Apply final coat of buttercream thickly, using icing spatula to create decorativ
 <ingredients/All_Purouse_Flour#this>
 	a bake:Ingredient ;
 	bake:name "all purouse flour"@en ;
-	foaf:primaryTopic <http://www.kingarthurflour.com/shop/items/king-arthur-unbleached-all-purpose-flour-> ;
 	rdfs:seeAlso dbp:Flour .
+
+<ingredients/King_Arthur_All_Purpose_Flour#this>
+	a bake:Ingredient ;
+	bake:name "all purouse flour"@en ;
+	foaf:primaryTopic <http://www.kingarthurflour.com/shop/items/king-arthur-unbleached-all-purpose-flour-> ;
+	rdfs:seeAlso <resource/2b8c8822-8cee-45dc-b470-e862cac1763c> .
+
+<resource/2b8c8822-8cee-45dc-b470-e862cac1763c>
+	a owl:Thing ;
+	schema:image <http://www.kingarthurflour.com/item-img/3005_07_13_2012__15_07_56_700> ;
+	rdfs:comment """King Arthur unbleached, unbromated all-purpose flour (11.7% protein).
+
+Ideal for the full range of your baking repertoire, from muffins and cookies to whole-grain bread and pizza. Made from the best American wheat; milled to the strictest specifications in the industry.
+
+Store cool and dry for 1 year."""@en .
 
 <ingredients/Cake_Flour#this>
 	a bake:Ingredient ;
 	bake:name "cake flour"@en ;
-	rdfs:seeAlso dbp:Flour .
+	foaf:primaryTopic <http://www.kingarthurflour.com/shop/items/unbleached-cake-flour-blend> ;
+	rdfs:seeAlso <resource/974e1a13-6acb-48ab-92cf-ee8a07f7a288> .
+
+<resource/974e1a13-6acb-48ab-92cf-ee8a07f7a288>
+	a owl:Thing ;
+	schema:image <http://www.kingarthurflour.com/item-img/3502_10_03_2012__11_46_13_700> ;
+	rdfs:comment """King Arthur has combined the benefits of unbleached flour with the performance characteristics needed for high-quality cakes. A flour blend that produces a medium-fine texture cake, moist and flavorful, with absolutely no added chemicals. (9.4% protein)"""@en .
 
 <ingredients/Old_Fashioned_Oats#this> 
 	a bake:Ingredient ;
