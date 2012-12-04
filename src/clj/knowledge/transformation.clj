@@ -239,13 +239,15 @@
     (transform-statements statements snippet context)))
 
 (defn transform-query [query store context]
-  (when-let [grouped-statements (group-by #(subject %) (store/find-by-query store query))]
+  (when-let [statements (store/find-by-query store query)]
+    (do (println statements)
     (pmap-set
       (fn [[resource statements]]
         (transform-resource* resource statements context))
-      grouped-statements)))
+      (group-by #(subject %) statements)))))
 
 (declare transform-resource)
+
 (defn transform-list [statements nodes context]
   (let [first (extract-first statements)
         rest (extract-rest statements)
@@ -273,9 +275,10 @@
       (match statements
              [nil rdf:first nil] (transform-list statements [] context)
              [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
-                                             (when-let [service (extract-service-from statements)]
+                                             (if-let [service (extract-service-from statements)]
                                                (let [store (knowledge.store.Endpoint. service {})]
-                                                 (transform-query query store context))))
+                                                 (transform-query query store context))
+                                               (transform-query query base/default-store context)))
              (transform-resource* resource statements context)))))
 
 ;; Entry Point
