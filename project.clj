@@ -11,6 +11,7 @@
                  [re-rand "0.1.0"]
                  [clj-time "0.4.4"]
                  [joda-time "2.1"]
+                 [tnrglobal/bishop "1.2.0"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :plugins [[lein-cljsbuild "0.2.9"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}

@@ -36,7 +36,8 @@
     [knowledge.store :as store]
     [knowledge.implementation.store]
     [knowledge.transformation :as transform]
-    [knowledge.implementation.transformation]))
+    [knowledge.implementation.transformation]
+    [com.tnrglobal.bishop.core :as bishop]))
 
 (def page404 "<html><body><h1>Unknown Resource :-(</h1></body></html>")
 
@@ -51,6 +52,17 @@
                    (model/create-resource uri))
     (string? thing) (model/create-resource thing)))
 
+(def handler
+  (bishop/raw-handler
+    (bishop/resource {"text/html"
+                      (fn [request]
+                        (if-let [response (seq (transform/dereference (resource request)))]
+                          response
+                          (not-found page404)))
+                      "text/turtle"
+                      (fn [request]
+                        "foo")})))
+
 (defroutes route
   (files "/static/" {:root "resources/public/"})
   (files "/data/" {:root "resources/private/data/" :mime-types {"ttl" "text/turtle"}})
@@ -60,10 +72,7 @@
         {:status 200 :headers {}})
   (GET "/" {{iri "iri"} :params :as request}
        (transform/dereference (resource iri)))
-  (GET "*" [:as request]
-       (if-let [response (seq (transform/dereference (resource request)))]
-         response
-         (not-found page404)))
+  (GET "*" [:as request] handler)
   (not-found page404))
 
 (def app
