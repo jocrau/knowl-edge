@@ -65,7 +65,7 @@
 
 <manuals/installing_the_multipurpose_blade_or_dough_blade>
 	a foaf:Document ;
-	knowl:template </templates/guide.html> ;
+	knowl:template </templates/manual.html> ;
 	rdfs:label "Guide"@en ;
 	knowl:contains <manuals/installing_the_multipurpose_blade_or_dough_blade#this> .
 
@@ -73,6 +73,7 @@
 	a bake:Guide;
 	schema:name "Installing the Multipurpose Blade or Dough Blade"@en ;
 	bake:info "The multipurpose blade and dough blade can only be used with the work bowl." ;
+	foaf:primaryTopic <manuals/installing_the_multipurpose_blade_or_dough_blade> ;
 	bake:steps (
 		<manuals/a028177f-d015-4bb9-8b1d-bd8280de1294>
 		<manuals/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
