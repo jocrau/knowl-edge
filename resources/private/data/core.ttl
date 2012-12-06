@@ -57,45 +57,45 @@
 		<ingredients/King_Arthur_All_Purpose_Flour#this>
 	) .
 
-<guides>
+<manuals>
 	a foaf:Document ;
-	knowl:template </templates/guides.html> ;
+	knowl:template </templates/manuals.html> ;
 	rdfs:label "Bakepedia -- Worlds Famous Recipes"@en ;
-	knowl:contains <guides/installing_the_multipurpose_blade_or_dough_blade> .
+	knowl:contains <manuals/installing_the_multipurpose_blade_or_dough_blade#this> .
 
-<guides/installing_the_multipurpose_blade_or_dough_blade>
+<manuals/installing_the_multipurpose_blade_or_dough_blade>
 	a foaf:Document ;
 	knowl:template </templates/guide.html> ;
 	rdfs:label "Guide"@en ;
-	knowl:contains <guides/installing_the_multipurpose_blade_or_dough_blade#this> .
+	knowl:contains <manuals/installing_the_multipurpose_blade_or_dough_blade#this> .
 
-<guides/installing_the_multipurpose_blade_or_dough_blade#this>
+<manuals/installing_the_multipurpose_blade_or_dough_blade#this>
 	a bake:Guide;
 	schema:name "Installing the Multipurpose Blade or Dough Blade"@en ;
 	bake:info "The multipurpose blade and dough blade can only be used with the work bowl." ;
 	bake:steps (
-		<guides/a028177f-d015-4bb9-8b1d-bd8280de1294>
-		<guides/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
-		<guides/5024ba46-c02e-42de-ba49-2864141bd250>
-		<guides/7781b72d-a9a7-4a1d-9aab-aac656e31d48>			
+		<manuals/a028177f-d015-4bb9-8b1d-bd8280de1294>
+		<manuals/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
+		<manuals/5024ba46-c02e-42de-ba49-2864141bd250>
+		<manuals/7781b72d-a9a7-4a1d-9aab-aac656e31d48>			
 	) ;
 	knowl:related :e65e2399-a800-4cb8-bc1d-4f773703ab82 .
 
-<guides/a028177f-d015-4bb9-8b1d-bd8280de1294>
+<manuals/a028177f-d015-4bb9-8b1d-bd8280de1294>
 	a bake:Step ;
 	schema:text "Place the blade on the power shaft."@en .
 
-<guides/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
+<manuals/96c4d471-eb0d-48ef-888c-bf2f567d7af1>
 	a bake:Step ;
 	schema:image <static/img/28ba5548-bdcc-4855-84c3-caa250768398.png> ;
 	schema:text "Rotate the blade so it falls into place on the power shaft."@en  .
 
-<guides/5024ba46-c02e-42de-ba49-2864141bd250>
+<manuals/5024ba46-c02e-42de-ba49-2864141bd250>
 	a bake:Step ;
 	schema:image <static/img/2358649a-d90f-4a83-8104-6fd28f3ab269.png> ;
 	schema:text "Push to lock: Press down firmly on the multipurpose blade until it is down as far as it will go. The multipurpose blade features an internal seal that fits tightly over the center of the work bowl."@en  .
 
-<guides/7781b72d-a9a7-4a1d-9aab-aac656e31d48>
+<manuals/7781b72d-a9a7-4a1d-9aab-aac656e31d48>
 	a bake:Step ;
 	schema:text "Install the work bowl cover, being sure it locks into place."@en .
 
@@ -365,7 +365,7 @@ Cut warm or room-temperature biscuits in half; place bottom halves on plates. Di
 	knowl:left 65;
 	knowl:width 20;
 	knowl:height 40;
-	schema:mentions <guides/installing_the_multipurpose_blade_or_dough_blade#this> .
+	schema:mentions <manuals/installing_the_multipurpose_blade_or_dough_blade#this> .
 
 <media/d1717f75-71b7-447d-8fe8-611d5161e98d#t=237,260>
 	a ma:MediaFragment ;

@@ -20,7 +20,7 @@ SELECT ?mentioned ?fragment ?start WHERE {
       (doseq [result results]
         (let [elements (api/get-elements-by-subject (-> result :mentioned :value))]
           (do
-            (effects/highlight elements)
+            #_(effects/highlight elements)
             (doseq [element elements]
               (event/listen element "click" #(-> js/player
                                                (video/goto (-> result :start :value))
