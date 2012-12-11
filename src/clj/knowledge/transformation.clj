@@ -223,12 +223,14 @@
 (defn- fetch-template [iri]
   (set-base (enlive/html-resource (java.net.URL. iri))))
 
+(def fetch-template-memo (memoize fetch-template))
+
 (defn- transform-resource* [resource statements context]
   (let [context (if-let [template-iri (extract-template-iri-from statements)]
                    (assoc context :template (fetch-template template-iri))
                    (if (contains? context :template)
                      context
-                     (assoc context :template (fetch-template default-template-iri)))) ;; TODO memoize
+                     (assoc context :template (fetch-template-memo default-template-iri))))
         types (extract-types-from statements)
         context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
         snippet (enlive/transform (enlive/select (:template context) (:rootline context))
