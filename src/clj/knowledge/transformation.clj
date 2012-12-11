@@ -240,11 +240,10 @@
 
 (defn transform-query [query store context]
   (when-let [statements (store/find-by-query store query)]
-    (do (println statements)
     (pmap-set
       (fn [[resource statements]]
         (transform-resource* resource statements context))
-      (group-by #(subject %) statements)))))
+      (group-by #(subject %) statements))))
 
 (declare transform-resource)
 
