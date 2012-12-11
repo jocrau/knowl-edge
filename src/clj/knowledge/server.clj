@@ -24,11 +24,14 @@
   knowledge.server
   (:gen-class)
   (:use
-    compojure.core
-    compojure.route
     ring.adapter.jetty
 	  ring.middleware.stacktrace
-    ring.middleware.params)
+    ring.middleware.params
+    [ring.util.response :only (file-response resource-response status)]
+    [ring.util.codec :only (url-decode)]
+    ring.middleware.content-type
+    ring.middleware.file-info
+    ring.middleware.head)
   (:require
     [knowledge.base :as base]
     [knowledge.model :as model]
@@ -39,48 +42,45 @@
     [knowledge.implementation.transformation]
     [com.tnrglobal.bishop.core :as bishop]))
 
-(def page404 "<html><body><h1>Unknown Resource :-(</h1></body></html>")
+(defn- static-file-handler [root]
+  (bishop/resource {"*/*"
+                    (fn [request]
+                      (println request)
+                      (-> (file-response (-> request :path-info :path) {:root root})))}))
 
-(defn resource [thing]
-  (cond
-    (map? thing) (let [uri (str (name (:scheme thing))
-                                "://" (:server-name thing)
-                                (if-let [port (:server-port thing)] (str ":" port))
-                                (:uri thing)
-                                (if-let [query-string (:query-string thing)]
-                                  (str "?" query-string)))]
-                   (model/create-resource uri))
-    (string? thing) (model/create-resource thing)))
+(def resource-handler
+  (bishop/resource {"text/html"
+                    (fn [request] (transform/dereference (:resource request)))
+                    "text/turtle"
+                    (fn [request]
+                      "foo")}))
 
-(def handler
-  (bishop/raw-handler
-    (bishop/resource {"text/html"
-                      (fn [request]
-                        (if-let [response (seq (transform/dereference (resource request)))]
-                          response
-                          (not-found page404)))
-                      "text/turtle"
-                      (fn [request]
-                        "foo")})))
+(bishop/defroutes routes
+  ["static" "img" :path] (static-file-handler "resources/public/img/")
+  ["static" "img" "placeholder" :path] (static-file-handler "resources/public/img/placeholder/")
+  ["static" "css" :path] (static-file-handler "resources/public/css/")
+  ["static" "js" :path] (static-file-handler "resources/public/js/")
+  ["templates" :path] (static-file-handler "resources/private/templates/")
+  ["*"] resource-handler)
 
-(defroutes route
-  (files "/static/" {:root "resources/public/"})
-  (files "/data/" {:root "resources/private/data/" :mime-types {"ttl" "text/turtle"}})
-  (files "/templates/" {:root "resources/private/templates/"})
-  (POST "*" {body :body :as request}
-        (store/add-statements base/default-store body {})
-        {:status 200 :headers {}})
-  (GET "/" {{iri "iri"} :params :as request}
-       (transform/dereference (resource iri)))
-  (GET "*" [:as request] handler)
-  (not-found page404))
+(defn- wrap-resource [handler]
+  (fn [request]
+    (let [uri (str (name (:scheme request))
+                   "://" (:server-name request)
+                   (if-let [port (:server-port request)] (str ":" port))
+                   (:uri request)
+                   (if-let [query-string (:query-string request)]
+                     (str "?" query-string)))]
+      (handler (merge-with merge request {:resource (model/create-resource uri)})))))
 
 (def app
-  (-> route
+  (-> (bishop/handler #'routes)
+    (wrap-resource)
+    (wrap-file-info)
+    (wrap-head)
     (wrap-params)
     (wrap-stacktrace)))
 
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 8080))]
-    (base/import-core-data)
     (.start (run-jetty #'app {:port port :join? false}))))
