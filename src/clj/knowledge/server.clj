@@ -27,33 +27,29 @@
     ring.adapter.jetty
 	  ring.middleware.stacktrace
     ring.middleware.params
-    [ring.util.response :only (file-response resource-response status)]
+    [ring.util.response :only (file-response)]
     [ring.util.codec :only (url-decode)]
     ring.middleware.content-type
     ring.middleware.file-info
     ring.middleware.head)
   (:require
     [knowledge.base :as base]
+    [knowledge.transformation :as transform]
+    [knowledge.implementation.transformation]
     [knowledge.model :as model]
     [knowledge.implementation.model]
     [knowledge.store :as store]
     [knowledge.implementation.store]
-    [knowledge.transformation :as transform]
-    [knowledge.implementation.transformation]
     [com.tnrglobal.bishop.core :as bishop]))
 
 (defn- static-file-handler [root]
   (bishop/resource {"*/*"
                     (fn [request]
-                      (println request)
                       (-> (file-response (-> request :path-info :path) {:root root})))}))
 
 (def resource-handler
-  (bishop/resource {"text/html"
-                    (fn [request] (transform/dereference (:resource request)))
-                    "text/turtle"
-                    (fn [request]
-                      "foo")}))
+  (bishop/resource {"text/html" (fn [request] (transform/dereference (:resource request) :html))
+                    "text/turtle" (fn [request] (transform/dereference (:resource request) :turtle))}))
 
 (bishop/defroutes routes
   ["static" "img" :path] (static-file-handler "resources/public/img/")

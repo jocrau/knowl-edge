@@ -33,7 +33,8 @@
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [ring.util.codec :as codec]
-    [net.cgrand.enlive-html :as enlive])
+    [net.cgrand.enlive-html :as enlive]
+    [rdfa.parser :as parser])
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
 
 (def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
@@ -282,11 +283,31 @@
                                                (transform-query query base/default-store context)))
              (transform-resource* resource statements context)))))
 
+(defmulti serialize (fn [thing format] [(type thing) format]))
+
+(defn serialize-triples [triples format]
+  (let [subjects-triples (group-by #(first %) triples)]
+    (mapcat (fn [[subject triples]]
+              (concat (serialize subject format) "\n"
+                      (interpose " ;\n" (map (fn [[s p o]]
+                                               (str "\t" (serialize p format) " " (serialize o format)))
+                                             (into #{} triples)))
+                      " .\n\n"))
+            subjects-triples)))
+
 ;; Entry Point
 
-(defn dereference [resource]
-  (when-let [document (transform resource {:rootline []})]
-    (enlive/emit* document)))
+(defn dereference
+  ([resource] (dereference resource :html))
+  ([resource format]
+    (when-let [document (transform resource {:rootline []})]
+      (let [html (enlive/emit* document)]
+        (if (= format :html)
+          html
+          (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
+                result (rdfa.core/extract-rdfa :html root (:identifier resource))
+                triples (:triples result)]
+            (serialize-triples triples format)))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)

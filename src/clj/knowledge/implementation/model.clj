@@ -33,6 +33,45 @@
   knowledge.model/Resource
   (identifier [this] this))
 
+;; clj-rdfa Implementation
+
+(extend-type rdfa.core.IRI
+  knowledge.model/Value
+  (knowledge.model/value [this] (:id this))
+  knowledge.model/Resource
+  (knowledge.model/identifier [this] (:id this)))
+
+(extend-type rdfa.core.BNode
+  knowledge.model/Value
+  (knowledge.model/value [this] (:id this))
+  knowledge.model/Resource
+  (knowledge.model/identifier [this] (:id this)))
+
+(extend-type rdfa.core.Literal
+  knowledge.model/Value
+  (knowledge.model/value [this] (:value this))
+  knowledge.model/Literal
+  (knowledge.model/datatype [this] (let [tag (:tag this)]
+                                     (if (instance? rdfa.core.IRI tag) tag)))
+  (knowledge.model/language [this] (let [tag (:tag this)]
+                                     (if-not (instance? rdfa.core.IRI tag) tag))))
+
+;; TODO move this to a dedicated namespace
+(defn serialize-resource [resource]
+  (str "<" (knowledge.model/identifier resource) ">"))
+
+(defn serialize-literal [literal]
+  (let [value (str "\"" (knowledge.model/value literal) "\"")
+        tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.model/identifier (knowledge.model/datatype literal))))
+                (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
+    (str value tag)))
+
+(defmethod knowledge.transformation/serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
+(defmethod knowledge.transformation/serialize [rdfa.core.BNode :turtle] [thing _] (serialize-resource thing))
+(defmethod knowledge.transformation/serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
+  
+;; Apache Jena Implementation
+
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
   knowledge.model/Value
   (knowledge.model/value [this] (.getURI this))

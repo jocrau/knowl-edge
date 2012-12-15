@@ -6,12 +6,12 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [ring "1.1.5"]
-                 [compojure "1.1.3"]
                  [enlive "1.0.1"]
                  [re-rand "0.1.0"]
                  [clj-time "0.4.4"]
                  [joda-time "2.1"]
                  [tnrglobal/bishop "1.2.0"]
+                 [rdfa/rdfa "0.5.1-SNAPSHOT"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
   :plugins [[lein-cljsbuild "0.2.9"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
