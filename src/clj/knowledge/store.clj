@@ -31,7 +31,7 @@
   (get-base-iri [this])
   (clear-all [this])
   (add-statements [this statements] [this statements options])
-  (^:export find-by-query [this query-string] [this query-string callback])
+  (find-by-query [this query-string] [this query-string callback])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
 

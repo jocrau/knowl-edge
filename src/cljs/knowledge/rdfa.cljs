@@ -69,7 +69,7 @@
 (defn init []
   (do 
     (def base (.-origin (.-location js/document)))
-    (attach-handler "edit-btn" edit)
-    (attach-content-change-handler)))
+    #_(attach-handler "edit-btn" edit)
+    #_(attach-content-change-handler)))
 
 (.addEventListener js/document "DOMContentLoaded" init)

@@ -23,7 +23,8 @@
     :author "Jochen Rau"}
    knowledge.implementation.model
   (:refer-clojure :exclude [namespace])
-  (:require [clojure.contrib.str-utils2 :as string])
+  (:require [clojure.contrib.str-utils2 :as string]
+            [knowledge.transformation])
   (:import (com.hp.hpl.jena.rdf.model ModelFactory)
            (com.hp.hpl.jena.datatypes TypeMapper)))
 

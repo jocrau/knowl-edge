@@ -1,13 +1,13 @@
 (ns knowledge.rdfa.api
   (:require [cljs.core :as cljs]
             [knowledge.store :as store]
-            [knowledge.base :as base]))
+            [knowledge.implementation.store]))
 
 (declare RDFaDOM)
 
 ;; Data Access
 
-(defn find-by-query [query callback] (store/find-by-query base/default-store query callback))
+(defn find-by-query [store query callback] (store/find-by-query store query callback))
 
 ;; DocumentData (see http://www.w3.org/TR/rdfa-api/#document-data)
 

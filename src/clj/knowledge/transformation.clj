@@ -28,7 +28,6 @@
     knowledge.model)
   (:require
     [knowledge.store :as store]
-    [knowledge.base :as base]
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
@@ -214,7 +213,7 @@
   "This function takes a resource and fetches statements with the given resource 
    as subject in all stores."
   [resource context]
-  (let [stores (store/stores-for resource base/default-store)]
+  (let [stores (store/stores-for resource (:default-store context))]
     (pmap-set #(store/find-matching % resource) stores)))
 
 (defn set-base [template]
@@ -228,7 +227,7 @@
 
 (defn- transform-resource* [resource statements context]
   (let [context (if-let [template-iri (extract-template-iri-from statements)]
-                   (assoc context :template (fetch-template template-iri))
+                   (assoc context :template (fetch-template-memo template-iri))
                    (if (contains? context :template)
                      context
                      (assoc context :template (fetch-template-memo default-template-iri))))
@@ -280,7 +279,7 @@
                                              (if-let [service (extract-service-from statements)]
                                                (let [store (knowledge.store.Endpoint. service {})]
                                                  (transform-query query store context))
-                                               (transform-query query base/default-store context)))
+                                               (transform-query query (:default-store context) context)))
              (transform-resource* resource statements context)))))
 
 (defmulti serialize (fn [thing format] [(type thing) format]))
@@ -298,9 +297,9 @@
 ;; Entry Point
 
 (defn dereference
-  ([resource] (dereference resource :html))
-  ([resource format]
-    (when-let [document (transform resource {:rootline []})]
+  ([resource store] (dereference resource store :html))
+  ([resource store format]
+    (when-let [document (transform resource {:rootline [] :default-store store})]
       (let [html (enlive/emit* document)]
         (if (= format :html)
           html

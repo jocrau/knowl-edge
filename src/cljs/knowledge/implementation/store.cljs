@@ -1,7 +1,7 @@
 (ns knowledge.implementation.store
-  (:require [knowledge.store :as store]
-            [knowledge.rdfa :as rdfa]
-            [clojure.browser.dom :as dom]))
+  (:require [cljs.core :as cljs]
+            [knowledge.store :as store]
+            [knowledge.rdfa :as rdfa]))
 
 (extend-type store/MemoryStore
   store/Store
@@ -11,5 +11,11 @@
           (.execute impl query-string
             (fn [success results]
               (if success
-                (callback (js->clj results :keywordize-keys true))
-                (dom/log "No results."))))))))
+                (callback (cljs/js->clj results :keywordize-keys true)))))))))
+
+(defn create-default-store []
+  (store/MemoryStore.
+      (js/rdfstore.Store.
+        (cljs/js-obj :name "core" :overwrite true)
+        (fn [store] (.load store "text/turtle" (rdfa/serialize (rdfa/get-triples)) nil)))
+    {}))
