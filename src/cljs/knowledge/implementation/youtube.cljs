@@ -19,7 +19,7 @@
 (defn player-id [player] (.-id (.-a player)))
 
 (defn check-position [player]
-  #(if-not (= (current-state player) :unstarted)
+  (if-not (= (current-state player) :unstarted)
      (let [new-position (current-position player)]
        (if-not (= new-position position)
          (do
@@ -30,13 +30,13 @@
   (letfn [(on-ready [event]
                     (let [player (.-target event)]
                       (do 
-                        (js/setInterval (check-position player) 100)
+                        (js/setInterval #(check-position player) 100)
                         (states/send [(player-id player) :knowledge.video.player-ready] {:js-event event :player player}))))
           (on-state-changed [event]
                             (let [player (.-target event)]
                               (do
                                 (states/send [(player-id player) :knowledge.video.state-changed] {:js-event event :player player :state (current-state player)})
-                                ((check-position player)))))]
+                                (check-position player))))]
     (do 
       (let [tag (.createElement js/document "script")
             _ (set! (.-src tag) "https://www.youtube.com/iframe_api")
