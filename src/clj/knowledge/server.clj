@@ -34,4 +34,4 @@
                    (:uri request)
                    (if-let [query-string (:query-string request)]
                      (str "?" query-string)))]
-      (handler (merge-with merge request {:resource (model/create-resource uri)})))))
+      (handler (merge-with merge request {::resource (model/create-resource uri)})))))
