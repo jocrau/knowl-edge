@@ -297,16 +297,17 @@
 ;; Entry Point
 
 (defn dereference
-  ([resource store] (dereference resource store :html))
-  ([resource store format]
-    (when-let [document (transform resource {:rootline [] :default-store store})]
-      (let [html (enlive/emit* document)]
-        (if (= format :html)
-          html
-          (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
-                result (rdfa.core/extract-rdfa :html root (:identifier resource))
-                triples (:triples result)]
-            (serialize-triples triples format)))))))
+  ([context store] (dereference context store :html))
+  ([context store format]
+    (let [resource (-> context :request :knowledge.middleware.resource/resource)]
+      (when-let [document (transform resource (merge context {:rootline [] :default-store store}))]
+        (let [html (apply str (enlive/emit* document))]
+          (if (= format :html)
+            html
+            (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
+                  result (rdfa.core/extract-rdfa :html root (:identifier resource))
+                  triples (:triples result)]
+              (serialize-triples triples format))))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
