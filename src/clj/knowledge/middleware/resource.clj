@@ -19,9 +19,9 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace defines an entry point for the knowl:edge management system."
+  ^{:doc "This namespace defines a ring middleware to add a resource to the request."
     :author "Jochen Rau"}
-  knowledge.server
+  knowledge.middleware.resource
   (:require
     [knowledge.model :as model]
     [knowledge.implementation.model]))
