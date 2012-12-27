@@ -76,7 +76,7 @@
   (let [value (knowledge.model/value literal)
         quotes (if (contains-one-of? value ["\n" "\r" "\t"]) "\"\"\"" "\"")
         quoted-value (str quotes value quotes)
-        tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.model/identifier (knowledge.model/datatype literal))))
+        tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.transformation/serialize (knowledge.model/datatype literal) :turtle)))
                 (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
     (str quoted-value tag)))
 
