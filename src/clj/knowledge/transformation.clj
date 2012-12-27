@@ -285,29 +285,37 @@
 (defmulti serialize (fn [thing format] [(type thing) format]))
 
 (defn serialize-triples [triples format]
-  (let [subjects-triples (group-by #(first %) triples)]
-    (mapcat (fn [[subject triples]]
-              (concat (serialize subject format) "\n"
-                      (interpose " ;\n" (map (fn [[s p o]]
-                                               (str "\t" (serialize p format) " " (serialize o format)))
-                                             (into #{} triples)))
-                      " .\n\n"))
-            subjects-triples)))
+  (apply str
+         (mapcat (fn [[resource triples]]
+                   (concat 
+                     (serialize resource format)
+                     (if (> (count triples) 1) "\n" " ")
+                     (mapcat (fn [[resource triples]]
+                               (concat (serialize resource format)
+                                       (if (> (count triples) 1) "\n" " ")
+                                       (mapcat (fn [[resource triples]]
+                                                 (concat (serialize resource format)
+                                                         " ,\n"))
+                                               (group-by #(nth % 2) triples))
+                                       " ;\n"))
+                             (group-by #(nth % 1) triples))
+                     " .\n\n"))
+                 (group-by #(nth % 0) triples))))
 
 ;; Entry Point
 
 (defn dereference
-  ([context store] (dereference context store :html))
-  ([context store format]
-    (let [resource (-> context :request :knowledge.middleware.resource/resource)]
+  ([context store]
+    (let [resource (-> context :request :knowledge.middleware.resource/resource)
+          media-type (-> context :representation :media-type)]
       (when-let [document (transform resource (merge context {:rootline [] :default-store store}))]
-        (let [html (apply str (enlive/emit* document))]
-          (if (= format :html)
-            html
-            (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
-                  result (rdfa.core/extract-rdfa :html root (:identifier resource))
-                  triples (:triples result)]
-              (serialize-triples triples format))))))))
+        (when-let [html (seq (enlive/emit* document))]
+          (condp = media-type
+            "text/html" html
+            "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
+                                result (rdfa.core/extract-rdfa :html root (:identifier resource))
+                                triples (:triples result)]
+                            (serialize-triples triples :turtle))))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
