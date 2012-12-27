@@ -22,7 +22,8 @@
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
   knowledge.model
-  (:refer-clojure :exclude [namespace]))
+  (:refer-clojure :exclude [namespace])
+  (:require [clojure.contrib.str-utils2 :as string]))
 
 (def ontology-base-iri "http://knowl-edge.net/ontology/core#")
 
@@ -86,7 +87,8 @@
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 (def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
 
-(def curies {"xml" "http://www.w3.org/XML/1998/namespace"
+(def curies {"" "urn:uuid:"
+             "xml" "http://www.w3.org/XML/1998/namespace"
              "xmlns" "http://www.w3.org/2000/xmlns/"
              "xsd" "http://www.w3.org/2001/XMLSchema#"
              "xhv" "http://www.w3.org/1999/xhtml/vocab#"
@@ -104,6 +106,7 @@
              "sioc" "http://rdfs.org/sioc/ns#"
              "cc" "http://creativecommons.org/ns#"
              "vcard" "http://www.w3.org/2006/vcard/ns#"
+             "schema" "http://schema.org/"
              "void" "http://rdfs.org/ns/void#"
              "dc" "http://purl.org/dc/elements/1.1/"
              "dcterms" "http://purl.org/dc/terms/"
@@ -119,17 +122,24 @@
              "bibo" "http://purl.org/ontology/bibo/"
              "cnt" "http://www.w3.org/2011/content#"})
 
-
-(defn resolve-prefix [prefix]
-  (if-let [uri (get curies (name prefix))]
-    uri
-    prefix))
-
 ;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
 ;; Thanks to john Gruber who made this public domain.
 (def iri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
 
 (defn iri-string? [thing]
-  (if (and (string? thing) (re-find iri-regex (name thing)))
-    true
-    false))
+  (and (string? thing) (re-find iri-regex (name thing))))
+
+(defn resolve-prefix [prefix]
+  (if-let [iri (get curies (name prefix))]
+    iri
+    prefix))
+
+(defn resolve-iri [iri]
+  {:pre [(iri-string? iri)]}
+  (first (filter (fn [[prefix scope]] (.startsWith iri scope)) curies)))
+
+(defn iri->curie [iri]
+  {:pre [(iri-string? iri)]}
+  (if-let [[prefix scope] (resolve-iri iri)]
+    (string/replace-first iri (re-pattern scope) (str prefix ":"))
+    iri))

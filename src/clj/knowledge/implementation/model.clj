@@ -58,10 +58,18 @@
                                      (if-not (instance? rdfa.core.IRI tag) tag))))
 
 ;; TODO move this to a dedicated namespace
-(defn serialize-resource [resource]
-  (str "<" (knowledge.model/identifier resource) ">"))
 
-(defn- contains-one-of? [string substrings]
+(defn serialize-resource [resource]
+  (let [iri (knowledge.model/identifier resource)]
+    (println iri)
+    (if-let [[prefix scope] (knowledge.model/resolve-iri iri)]
+      (string/replace-first iri (re-pattern scope) (str prefix ":"))
+      (str "<" iri ">"))))
+
+(defn serialize-bnode [resource]
+  (knowledge.model/identifier resource))
+
+(defn- ^String contains-one-of? [^String string substrings]
   (some #(string/contains? string %) substrings))
 
 (defn serialize-literal [literal]
@@ -73,7 +81,7 @@
     (str quoted-value tag)))
 
 (defmethod knowledge.transformation/serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
-(defmethod knowledge.transformation/serialize [rdfa.core.BNode :turtle] [thing _] (serialize-resource thing))
+(defmethod knowledge.transformation/serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
 (defmethod knowledge.transformation/serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
   
 ;; Apache Jena Implementation
