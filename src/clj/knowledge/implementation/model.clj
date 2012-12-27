@@ -67,7 +67,7 @@
       (str "<" iri ">"))))
 
 (defn serialize-bnode [resource]
-  (knowledge.model/identifier resource))
+  (str "_:" (knowledge.model/identifier resource)))
 
 (defn- ^String contains-one-of? [^String string substrings]
   (some #(string/contains? string %) substrings))
