@@ -319,7 +319,7 @@
       (when-let [document (transform resource (merge context {:rootline [] :default-store store}))]
         (when-let [html (seq (enlive/emit* document))]
           (condp = media-type
-            "text/html" html
+            "text/html" (apply str html)
             "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
                                 result (rdfa.core/extract-rdfa :html root (:identifier resource))
                                 triples (:triples result)]
