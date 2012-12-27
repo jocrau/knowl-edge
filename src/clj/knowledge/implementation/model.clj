@@ -72,8 +72,17 @@
 (defn- ^String contains-one-of? [^String string substrings]
   (some #(string/contains? string %) substrings))
 
+(def turtle-escapes
+  {\u0009 "\\t"
+   \u000A "\\n"
+   \u000D "\\r"
+   \u0022 "\\\""
+   \u003E "\\>"
+   \u005c "\\\\"})
+
 (defn serialize-literal [literal]
-  (let [value (knowledge.model/value literal)
+  (let [value (clojure.string/escape (knowledge.model/value literal)
+                                     turtle-escapes)
         quotes (if (contains-one-of? value ["\n" "\r" "\t"]) "\"\"\"" "\"")
         quoted-value (str quotes value quotes)
         tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.transformation/serialize (knowledge.model/datatype literal) :turtle)))
