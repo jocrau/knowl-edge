@@ -307,8 +307,17 @@
                                     format))
               (if (seq grouped-triples-rest) suffix))))))))
 
+(defn prefix-definitions []
+  (concat (map (fn[[prefix scope]]
+                 (str "@prefix " prefix ": <" scope "> .\n"))
+               knowledge.model/curies)
+          "\n"))
+
 (defn serialize-triples [triples format]
-  (apply str (concat (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)) format) ".")))
+  (apply str (concat
+               (prefix-definitions)
+               (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)) format)
+               ".")))
 
 ;; Entry Point
 
