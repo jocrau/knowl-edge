@@ -61,7 +61,6 @@
 
 (defn serialize-resource [resource]
   (let [iri (knowledge.model/identifier resource)]
-    (println iri)
     (if-let [[prefix scope] (knowledge.model/resolve-iri iri)]
       (string/replace-first iri (re-pattern scope) (str prefix ":"))
       (str "<" iri ">"))))
