@@ -61,11 +61,16 @@
 (defn serialize-resource [resource]
   (str "<" (knowledge.model/identifier resource) ">"))
 
+(defn- contains-one-of? [string substrings]
+  (some #(string/contains? string %) substrings))
+
 (defn serialize-literal [literal]
-  (let [value (str "\"" (knowledge.model/value literal) "\"")
+  (let [value (knowledge.model/value literal)
+        quotes (if (contains-one-of? value ["\n" "\r" "\t"]) "\"\"\"" "\"")
+        quoted-value (str quotes value quotes)
         tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.model/identifier (knowledge.model/datatype literal))))
                 (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
-    (str value tag)))
+    (str quoted-value tag)))
 
 (defmethod knowledge.transformation/serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
 (defmethod knowledge.transformation/serialize [rdfa.core.BNode :turtle] [thing _] (serialize-resource thing))
