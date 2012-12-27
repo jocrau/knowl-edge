@@ -284,23 +284,31 @@
 
 (defmulti serialize (fn [thing format] [(type thing) format]))
 
+(def separators [["" ".\n\n"] ["\t" ";\n"] ["\t\t" ",\n"]])
+
+(defn- serialize-triples* [level grouped-triples format]
+  (loop [current-grouped-triples grouped-triples
+         accu []]
+    (if-not (seq current-grouped-triples)
+      accu
+      (let [grouped-triples-rest (rest current-grouped-triples)
+            [prefix suffix] (nth separators level)]
+        (recur
+          grouped-triples-rest
+          (let [[resource triples] (first current-grouped-triples)]
+            (concat
+              accu
+              (if (> (count grouped-triples) 1) prefix)
+              (serialize resource format)
+              (if (> (count triples) 1) "\n" " ")
+              (if (< level 2)
+                (serialize-triples* (+ level 1)
+                                    (group-by #(nth % (+ level 1)) (into #{} triples))
+                                    format))
+              (if (seq grouped-triples-rest) suffix))))))))
+
 (defn serialize-triples [triples format]
-  (apply str
-         (mapcat (fn [[resource triples]]
-                   (concat 
-                     (serialize resource format)
-                     (if (> (count triples) 1) "\n" " ")
-                     (mapcat (fn [[resource triples]]
-                               (concat (serialize resource format)
-                                       (if (> (count triples) 1) "\n" " ")
-                                       (mapcat (fn [[resource triples]]
-                                                 (concat (serialize resource format)
-                                                         " ,\n"))
-                                               (group-by #(nth % 2) triples))
-                                       " ;\n"))
-                             (group-by #(nth % 1) triples))
-                     " .\n\n"))
-                 (group-by #(nth % 0) triples))))
+  (apply str (concat (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)) format) ".")))
 
 ;; Entry Point
 
