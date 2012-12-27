@@ -24,7 +24,9 @@
    knowledge.implementation.model
   (:refer-clojure :exclude [namespace])
   (:require [clojure.contrib.str-utils2 :as string]
-            [knowledge.transformation])
+            [knowledge.transformation]
+            [knowledge.syntax.curie :as curie]
+            [knowledge.syntax.iri :as iri])
   (:import (com.hp.hpl.jena.rdf.model ModelFactory)
            (com.hp.hpl.jena.datatypes TypeMapper)))
 
@@ -57,41 +59,6 @@
   (knowledge.model/language [this] (let [tag (:tag this)]
                                      (if-not (instance? rdfa.core.IRI tag) tag))))
 
-;; TODO move this to a dedicated namespace
-
-(defn serialize-resource [resource]
-  (let [iri (knowledge.model/identifier resource)]
-    (if-let [[prefix scope] (knowledge.model/resolve-iri iri)]
-      (string/replace-first iri (re-pattern scope) (str prefix ":"))
-      (str "<" iri ">"))))
-
-(defn serialize-bnode [resource]
-  (str "_:" (knowledge.model/identifier resource)))
-
-(defn- ^String contains-one-of? [^String string substrings]
-  (some #(string/contains? string %) substrings))
-
-(def turtle-escapes
-  {\u0009 "\\t"
-   \u000A "\\n"
-   \u000D "\\r"
-   \u0022 "\\\""
-   \u003E "\\>"
-   \u005c "\\\\"})
-
-(defn serialize-literal [literal]
-  (let [value (clojure.string/escape (knowledge.model/value literal)
-                                     turtle-escapes)
-        quotes (if (contains-one-of? value ["\n" "\r" "\t"]) "\"\"\"" "\"")
-        quoted-value (str quotes value quotes)
-        tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (knowledge.transformation/serialize (knowledge.model/datatype literal) :turtle)))
-                (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
-    (str quoted-value tag)))
-
-(defmethod knowledge.transformation/serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
-(defmethod knowledge.transformation/serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
-(defmethod knowledge.transformation/serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
-  
 ;; Apache Jena Implementation
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
@@ -154,14 +121,14 @@
               (.createLiteral model this)))
     ([this language-or-datatype]
       (with-open [model (ModelFactory/createDefaultModel)]
-        (if (knowledge.model/iri-string? (name language-or-datatype))
+        (if (iri/iri-string? (name language-or-datatype))
           (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
           (.createLiteral model this (name language-or-datatype))))))
   clojure.lang.IPersistentVector
   (knowledge.model/create-resource
     [this]
     (let [[prefix local-name] this
-          prefix (or (knowledge.model/resolve-prefix prefix) prefix)
+          prefix (or (curie/resolve-prefix prefix) prefix)
           local-name (name local-name)]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createProperty model prefix local-name))))

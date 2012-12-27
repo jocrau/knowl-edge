@@ -33,7 +33,8 @@
     [clj-time.format :as time]
     [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]
-    [rdfa.parser :as parser])
+    [rdfa.parser :as parser]
+    [knowledge.syntax.turtle.serialize :as turtle])
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
 
 (def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
@@ -282,43 +283,6 @@
                                                (transform-query query (:default-store context) context)))
              (transform-resource* resource statements context)))))
 
-(defmulti serialize (fn [thing format] [(type thing) format]))
-
-(def separators [["" ".\n\n"] ["\t" ";\n"] ["\t\t" ",\n"]])
-
-(defn- serialize-triples* [level grouped-triples format]
-  (loop [current-grouped-triples grouped-triples
-         accu []]
-    (if-not (seq current-grouped-triples)
-      accu
-      (let [grouped-triples-rest (rest current-grouped-triples)
-            [prefix suffix] (nth separators level)]
-        (recur
-          grouped-triples-rest
-          (let [[resource triples] (first current-grouped-triples)]
-            (concat
-              accu
-              (if (> (count grouped-triples) 1) prefix)
-              (serialize resource format)
-              (if (> (count triples) 1) "\n" " ")
-              (if (< level 2)
-                (serialize-triples* (+ level 1)
-                                    (group-by #(nth % (+ level 1)) (into #{} triples))
-                                    format))
-              (if (seq grouped-triples-rest) suffix))))))))
-
-(defn prefix-definitions []
-  (concat (map (fn[[prefix scope]]
-                 (str "@prefix " prefix ": <" scope "> .\n"))
-               knowledge.model/curies)
-          "\n"))
-
-(defn serialize-triples [triples format]
-  (apply str (concat
-               (prefix-definitions)
-               (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)) format)
-               ".")))
-
 ;; Entry Point
 
 (defn dereference
@@ -332,7 +296,7 @@
             "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
                                 result (rdfa.core/extract-rdfa :html root (:identifier resource))
                                 triples (:triples result)]
-                            (serialize-triples triples :turtle))))))))
+                            (turtle/serialize-triples triples :turtle))))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
