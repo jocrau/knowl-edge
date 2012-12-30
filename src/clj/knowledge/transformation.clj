@@ -295,8 +295,8 @@
             "text/html" (apply str html)
             "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
                                 result (rdfa.core/extract-rdfa :html root (:identifier resource))
-                                triples (:triples result)]
-                            (turtle/serialize-triples triples :turtle))))))))
+                                triples (with-meta (:triples result) {:type knowledge.model.Graph})]
+                            (turtle/serialize triples :turtle))))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)

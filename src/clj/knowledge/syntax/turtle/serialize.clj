@@ -43,11 +43,7 @@
                 (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
     (str quoted-value tag)))
 
-(defmethod serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
-(defmethod serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
-(defmethod serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
-
-(defn- serialize-triples* [level grouped-triples format]
+(defn- serialize-triples* [level grouped-triples]
   (loop [current-grouped-triples grouped-triples
          accu []]
     (if-not (seq current-grouped-triples)
@@ -60,12 +56,11 @@
             (concat
               accu
               (if (> (count grouped-triples) 1) prefix)
-              (serialize resource format)
+              (serialize resource :turtle)
               (if (> (count triples) 1) "\n" " ")
               (if (< level 2)
                 (serialize-triples* (+ level 1)
-                                    (group-by #(nth % (+ level 1)) (into #{} triples))
-                                    format))
+                                    (group-by #(nth % (+ level 1)) (into #{} triples))))
               (if (seq grouped-triples-rest) suffix))))))))
 
 (defn prefix-definitions []
@@ -74,8 +69,13 @@
                curie/prefix-namespace-map)
           "\n"))
 
-(defn serialize-triples [triples format]
+(defn serialize-triples [triples]
   (apply str (concat
                (prefix-definitions)
-               (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)) format)
+               (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)))
                ".")))
+
+(defmethod serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
+(defmethod serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
+(defmethod serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
+(defmethod serialize [knowledge.model.Graph :turtle] [thing _] (serialize-triples thing))
