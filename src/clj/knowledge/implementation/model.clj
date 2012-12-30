@@ -132,12 +132,6 @@
           local-name (name local-name)]
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createProperty model prefix local-name))))
-  clojure.lang.Keyword
-  (knowledge.model/create-resource
-    [this]
-    (let [iri (str knowledge.model/ontology-base-iri (name this))]
-      (with-open [model (ModelFactory/createDefaultModel)]
-        (.createResource model iri))))
   nil
   (knowledge.model/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (.createResource model))))

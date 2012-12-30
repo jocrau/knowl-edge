@@ -24,8 +24,6 @@
   knowledge.model
   (:refer-clojure :exclude [namespace]))
 
-(def ontology-base-iri "http://knowl-edge.net/ontology/core#")
-
 (defprotocol RDFFactory
   (create-resource [value])
   (create-literal [value] [value language-or-datatype]))
