@@ -21,76 +21,45 @@
 (ns
   ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-   knowledge.implementation.model
-  (:refer-clojure :exclude [namespace])
+   knowledge.syntax.rdf.jena
   (:require [clojure.contrib.str-utils2 :as string]
+            [knowledge.syntax.rdf :as rdf]
             [knowledge.transformation]
             [knowledge.syntax.curie :as curie]
             [knowledge.syntax.iri :as iri])
   (:import (com.hp.hpl.jena.rdf.model ModelFactory)
            (com.hp.hpl.jena.datatypes TypeMapper)))
 
-(extend-type String
-  knowledge.model/Value
-  (value [this] this)
-  knowledge.model/Resource
-  (identifier [this] this))
-
-;; clj-rdfa Implementation
-
-(extend-type rdfa.core.IRI
-  knowledge.model/Value
-  (knowledge.model/value [this] (:id this))
-  knowledge.model/Resource
-  (knowledge.model/identifier [this] (:id this)))
-
-(extend-type rdfa.core.BNode
-  knowledge.model/Value
-  (knowledge.model/value [this] (:id this))
-  knowledge.model/Resource
-  (knowledge.model/identifier [this] (:id this)))
-
-(extend-type rdfa.core.Literal
-  knowledge.model/Value
-  (knowledge.model/value [this] (:value this))
-  knowledge.model/Literal
-  (knowledge.model/datatype [this] (let [tag (:tag this)]
-                                     (if (instance? rdfa.core.IRI tag) tag)))
-  (knowledge.model/language [this] (let [tag (:tag this)]
-                                     (if-not (instance? rdfa.core.IRI tag) tag))))
-
-;; Apache Jena Implementation
-
 (extend-type com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this))
-  knowledge.model/Resource
-  (knowledge.model/identifier [this] (.getURI this))
-  (knowledge.model/namespace [this] (.getNamespace this))
-  (knowledge.model/local-name [this] (.getLocalName this)))
+  rdf/Value
+  (rdf/value [this] (.getURI this))
+  rdf/Resource
+  (rdf/identifier [this] (.getURI this))
+  (rdf/namespace [this] (.getNamespace this))
+  (rdf/local-name [this] (.getLocalName this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDBaseNumericType
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this)))
+  rdf/Value
+  (rdf/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDDateTimeType
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this)))
+  rdf/Value
+  (rdf/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XSDFloat
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this)))
+  rdf/Value
+  (rdf/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.datatypes.BaseDatatype
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this)))
+  rdf/Value
+  (rdf/value [this] (.getURI this)))
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getLexicalForm this))
-  knowledge.model/Literal
-  (knowledge.model/datatype [this] (.getDatatype this))
-  (knowledge.model/language
+  rdf/Value
+  (rdf/value [this] (.getLexicalForm this))
+  rdf/Literal
+  (rdf/datatype [this] (.getDatatype this))
+  (rdf/language
     [this]
     (let [language (.getLanguage this)]
       (if (string/blank? language)
@@ -98,25 +67,25 @@
         language))))
 
 (extend-type com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType
-  knowledge.model/Value
-  (knowledge.model/value [this] (.getURI this))
-  knowledge.model/Literal
-  (knowledge.model/datatype [this] (.getDatatype this))
-  (knowledge.model/language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
+  rdf/Value
+  (rdf/value [this] (.getURI this))
+  rdf/Literal
+  (rdf/datatype [this] (.getDatatype this))
+  (rdf/language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
-  knowledge.model/Statement
-  (knowledge.model/subject [statement] (.getSubject statement))
-  (knowledge.model/predicate [statement] (.getPredicate statement))
-  (knowledge.model/object [statement] (.getObject statement)))
+  rdf/Statement
+  (rdf/subject [statement] (.getSubject statement))
+  (rdf/predicate [statement] (.getPredicate statement))
+  (rdf/object [statement] (.getObject statement)))
 
-(extend-protocol knowledge.model/RDFFactory
+(extend-protocol rdf/RDFFactory
   String
-  (knowledge.model/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+  (rdf/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (if (string/blank? this)
                               (.createResource model)
                               (.createResource model this))))
-  (knowledge.model/create-literal
+  (rdf/create-literal
     ([this] (with-open [model (ModelFactory/createDefaultModel)]
               (.createLiteral model this)))
     ([this language-or-datatype]
@@ -125,7 +94,7 @@
           (.createTypedLiteral model this (.getTypeByName (TypeMapper/getInstance) language-or-datatype))
           (.createLiteral model this (name language-or-datatype))))))
   clojure.lang.IPersistentVector
-  (knowledge.model/create-resource
+  (rdf/create-resource
     [this]
     (let [[prefix local-name] this
           prefix (or (curie/resolve-prefix prefix) prefix)
@@ -133,5 +102,5 @@
       (with-open [model (ModelFactory/createDefaultModel)]
         (.createProperty model prefix local-name))))
   nil
-  (knowledge.model/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
+  (rdf/create-resource [this] (with-open [model (ModelFactory/createDefaultModel)]
                             (.createResource model))))

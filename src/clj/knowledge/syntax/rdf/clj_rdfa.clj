@@ -18,20 +18,28 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns
-  ^{:doc "This namespace defines a ring middleware to add a resource to the request."
-    :author "Jochen Rau"}
-  knowledge.middleware.resource
-  (:require
-    [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.rdf.jena]))
+(ns knowledge.syntax.rdf.clj-rdfa
+  (:require [clojure.contrib.str-utils2 :as string]
+            [knowledge.syntax.rdf :as rdf]))
 
-(defn wrap-resource [handler]
-  (fn [request]
-    (let [uri (str (name (:scheme request))
-                   "://" (:server-name request)
-                   (if-let [port (:server-port request)] (str ":" port))
-                   (:uri request)
-                   (if-let [query-string (:query-string request)]
-                     (str "?" query-string)))]
-      (handler (merge-with merge request {::resource (rdf/create-resource uri)})))))
+(extend-type rdfa.core.IRI
+  rdf/Value
+  (rdf/value [this] (:id this))
+  rdf/Resource
+  (rdf/identifier [this] (:id this)))
+
+(extend-type rdfa.core.BNode
+  rdf/Value
+  (rdf/value [this] (:id this))
+  rdf/Resource
+  (rdf/identifier [this] (:id this)))
+
+(extend-type rdfa.core.Literal
+  rdf/Value
+  (rdf/value [this] (:value this))
+  rdf/Literal
+  (rdf/datatype [this] (let [tag (:tag this)]
+                         (if (instance? rdfa.core.IRI tag) tag)))
+  (rdf/language [this] (let [tag (:tag this)]
+                         (if-not (instance? rdfa.core.IRI tag) tag))))
+

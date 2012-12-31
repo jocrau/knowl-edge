@@ -18,7 +18,7 @@
                  "cljs-checkouts/clojurescript/src/clj"
                  "cljs-checkouts/clojurescript/src/cljs"]
   :resource-paths ["resources"]
-  :cljsbuild {:crossovers [knowledge.store knowledge.model]
+  :cljsbuild {:crossovers [knowledge.store knowledge.syntax.rdf knowledge.syntax.rdf.clj-rdfa]
               :crossover-jar true
               :crossover-path "src/crossover"
               :builds [{:source-path "src/cljs"

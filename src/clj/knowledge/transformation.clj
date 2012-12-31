@@ -22,43 +22,70 @@
   ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the knowl:edge management system."
     :author "Jochen Rau"}  
   knowledge.transformation
-  (:refer-clojure :exclude [namespace])
-  (:use 
-    [clojure.contrib.core :only (-?>)]
-    knowledge.model)
   (:require
-    [knowledge.store :as store]
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
     [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]
     [rdfa.parser :as parser]
+    [knowledge.store :as store]
+    [knowledge.syntax.rdf :as rdf]
     [knowledge.syntax.turtle.serialize :as turtle])
-  (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)))
+  (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)
+           (java.io StringReader)
+           (knowledge.store Endpoint)
+           (knowledge.syntax.rdf Graph)))
 
 (def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
 (def default-template-iri (str base-iri "templates/recipes.html"))
 
+(def know "http://knowl-edge.org/ontology/core#")
+(def foaf "http://xmlns.com/foaf/0.1/")
+(def foaf:depiction (str foaf "depiction"))
+(def foaf:primaryTopic (str foaf "primaryTopic"))
+(def rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+(def rdf:type (str rdf "type"))
+(def rdf:List (str rdf "List"))
+(def rdf:first (str rdf "first"))
+(def rdf:rest (str rdf "rest"))
+(def rdf:nil (str rdf "nil"))
+(def rdf:XMLLiteral (str rdf "XMLLiteral"))
+(def rdfs "http://www.w3.org/2000/01/rdf-schema#")
+(def rdfs:Resource (str rdfs "Resource"))
+(def owl "http://www.w3.org/2002/07/owl#")
+(def owl:Thing (str owl "Thing"))
+(def know:query (str know "query"))
+(def know:sparqlEndpoint (str know "sparqlEndpoint"))
+(def know:internalLink (str know "internalLink"))
+(def know:externalLink (str know "externalLink"))
+(def know:template (str know "template"))
+(def schema "http://schema.org/")
+(def schema:image (str schema "image"))
+(def schema:encoding (str schema "encoding"))
+(def spin:Construct "http://spinrdf.org/sp#Construct")
+(def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
+(def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
+
 ;; Predicates
 
 (defn- type= [resource]
-  #{(enlive/attr-has :typeof (identifier resource))
-    (enlive/attr-has :about (identifier resource))})
+  #{(enlive/attr-has :typeof (rdf/identifier resource))
+    (enlive/attr-has :about (rdf/identifier resource))})
 
 (defn- predicate= [resource]
-  #{(enlive/attr-has :property (identifier resource))
-    (enlive/attr-has :rel (identifier resource))})
+  #{(enlive/attr-has :property (rdf/identifier resource))
+    (enlive/attr-has :rel (rdf/identifier resource))})
 
 (defn- predicate? []
   #{(enlive/attr? :property)
     (enlive/attr? :rel)})
 
 (defn- set-datatype [datatype]
-  (enlive/set-attr :datatype (value datatype)))
+  (enlive/set-attr :datatype (rdf/value datatype)))
 
 (defn- set-language [language]
-  (comp (enlive/set-attr :lang (value language)) (enlive/set-attr :xml:lang (value language))))
+  (comp (enlive/set-attr :lang (rdf/value language)) (enlive/set-attr :xml:lang (rdf/value language))))
 
 (defn- set-content-attr [content]
   (enlive/set-attr :content content))
@@ -73,7 +100,7 @@
           node)))))
 
 (defn- set-resource [resource]
-  (if-let [iri (identifier resource)]
+  (if-let [iri (rdf/identifier resource)]
     (enlive/set-attr :about iri)
     (enlive/remove-attr :about)))
 
@@ -85,14 +112,14 @@
 (defn- set-predicate [resource]
   #(let [current-attrs (:attrs % {})
          current-attr-names (-> current-attrs keys set)
-         iri (identifier resource)]
+         iri (rdf/identifier resource)]
      (if-let [attr-name (first (set/intersection current-attr-names #{:rel :property}))]
        (assoc % :attrs (assoc current-attrs attr-name iri)))))
 
 (defn- set-reference [resource]
   #(let [current-attrs (:attrs % {})
          current-attr-names (-> current-attrs keys set)
-         iri (identifier resource)]
+         iri (rdf/identifier resource)]
      (if-let [attr-name (first (set/intersection current-attr-names #{:href :src}))]
        (assoc % :attrs (assoc current-attrs attr-name iri)))))
 
@@ -119,35 +146,35 @@
   nil
   (transform [this context] nil))
 
-(defmulti transform-literal (fn [literal context] (-> literal datatype value)))
-(defmethod transform-literal :default [literal context] (value literal))
+(defmulti transform-literal (fn [literal context] (-> literal rdf/datatype rdf/value)))
+(defmethod transform-literal :default [literal context] (rdf/value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
-  (time/unparse (time/formatter "MMMM d, yyyy") (time/parse (time/formatters :date-time-no-ms) (value literal))))
+  (time/unparse (time/formatter "MMMM d, yyyy") (time/parse (time/formatters :date-time-no-ms) (rdf/value literal))))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#duration" [literal context]
   (let [parser (ISOPeriodFormat/standard)
         unparser (PeriodFormat/getDefault)
-        duration (.parsePeriod parser (value literal))]
+        duration (.parsePeriod parser (rdf/value literal))]
     (.print unparser (.normalizedStandard duration))))
 
 (defn literal? [object]
-  (satisfies? knowledge.model/Literal object))
+  (satisfies? rdf/Literal object))
 
 (defn transform-statement [statement context]
-  (let [predicate (predicate statement)
-        object (object statement)]
-    (condp = (identifier predicate)
+  (let [predicate (rdf/predicate statement)
+        object (rdf/object statement)]
+    (condp = (rdf/identifier predicate)
       "http://dbpedia.org/property/homepage"
       (enlive/do->
         (set-reference object)
-        (set-content (value object)))      
+        (set-content (rdf/value object)))      
       know:externalLink
       (enlive/do->
         (set-reference object)
-        (set-content (value object)))
+        (set-content (rdf/value object)))
       dbo:wikiPageExternalLink
       (enlive/do->
         (set-reference object)
-        (set-content (value object)))
+        (set-content (rdf/value object)))
       know:internalLink
       (set-reference object)
       foaf:primaryTopic
@@ -162,18 +189,18 @@
         (set-content (transform object context))
         (if (literal? object)
           (enlive/do->
-            (if-let [datatype (datatype object)]
+            (if-let [datatype (rdf/datatype object)]
               (enlive/do->
                 (set-datatype datatype)
-                (if-not (= (value datatype) rdf:XMLLiteral)
-                  (set-content-attr (value object))
+                (if-not (= (rdf/value datatype) rdf:XMLLiteral)
+                  (set-content-attr (rdf/value object))
                   identity))
               identity)
-            (set-language (language object)))
+            (set-language (rdf/language object)))
           identity)))))
 
 (defn transform-statements [statements snippet context]
-  (let [grouped-statements (group-by #(predicate %) statements)]
+  (let [grouped-statements (group-by #(rdf/predicate %) statements)]
     (reduce
       (fn [snippet [predicate statements]]
         (enlive/at snippet [(predicate= predicate)] (enlive/do->
@@ -184,25 +211,25 @@
       snippet grouped-statements)))
 
 (defn- extract-types-from [statements]
-  (when-let [type-statements (-> (filter #(= (-> % predicate identifier) rdf:type) statements))]
-    (into #{} (map #(-> % object value) type-statements))))
+  (when-let [type-statements (-> (filter #(= (-> % rdf/predicate rdf/identifier) rdf:type) statements))]
+    (into #{} (map #(-> % rdf/object rdf/value) type-statements))))
 
 (defn- extract-template-iri-from [statements]
-  (when-let [statement (seq (filter #(= (-> % predicate identifier) know:template) statements))]
-    (-> statement first object value)))
+  (when-let [statement (seq (filter #(= (-> % rdf/predicate rdf/identifier) know:template) statements))]
+    (-> statement first rdf/object rdf/value)))
 
 (defn- extract-query-from [statements]
-  (-> (filter #(= (-> % predicate identifier) know:query) statements) first object value))
+  (-> (filter #(= (-> % rdf/predicate rdf/identifier) know:query) statements) first rdf/object rdf/value))
 
 (defn- extract-service-from [statements]
-  (when-let [service-statements (seq (filter #(= (-> % predicate identifier) know:sparqlEndpoint) statements))]
-    (-> service-statements first object value)))
+  (when-let [service-statements (seq (filter #(= (-> % rdf/predicate rdf/identifier) know:sparqlEndpoint) statements))]
+    (-> service-statements first rdf/object rdf/value)))
 
 (defn- extract-first [statements]
-  (-> (filter #(= (-> % predicate identifier) rdf:first) statements) first object))
+  (-> (filter #(= (-> % rdf/predicate rdf/identifier) rdf:first) statements) first rdf/object))
 
 (defn- extract-rest [statements]
-  (-> (filter #(= (-> % predicate identifier) rdf:rest) statements) first object))
+  (-> (filter #(= (-> % rdf/predicate rdf/identifier) rdf:rest) statements) first rdf/object))
 
 (defn- pmap-set
   "This function takes the same arguments as clojures (p)map and flattens the first level 
@@ -246,7 +273,7 @@
     (pmap-set
       (fn [[resource statements]]
         (transform-resource* resource statements context))
-      (group-by #(subject %) statements))))
+      (group-by #(rdf/subject %) statements))))
 
 (declare transform-resource)
 
@@ -254,7 +281,7 @@
   (let [first (extract-first statements)
         rest (extract-rest statements)
         nodes (conj nodes (transform-resource first context))]
-    (if (= (identifier rest) rdf:nil)
+    (if (= (rdf/identifier rest) rdf:nil)
       nodes
       (transform-list (fetch-statements rest context) nodes context))))
 
@@ -264,9 +291,9 @@
      (fn [pattern# statements#]
        (some (fn [statement#]
                (and
-                 (or (= (nth pattern# 0) nil) (= (-> statement# subject identifier) (nth pattern# 0)))
-                 (or (= (nth pattern# 1) nil) (= (-> statement# predicate identifier) (nth pattern# 1)))
-                 (or (= (nth pattern# 2) nil) (= (-> statement# object identifier) (nth pattern# 2)))))
+                 (or (= (nth pattern# 0) nil) (= (-> statement# rdf/subject rdf/identifier) (nth pattern# 0)))
+                 (or (= (nth pattern# 1) nil) (= (-> statement# rdf/predicate rdf/identifier) (nth pattern# 1)))
+                 (or (= (nth pattern# 2) nil) (= (-> statement# rdf/object rdf/identifier) (nth pattern# 2)))))
              statements#))
      ~statements
      ~@clauses))
@@ -278,7 +305,7 @@
              [nil rdf:first nil] (transform-list statements [] context)
              [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
                                              (if-let [service (extract-service-from statements)]
-                                               (let [store (knowledge.store.Endpoint. service {})]
+                                               (let [store (Endpoint. service {})]
                                                  (transform-query query store context))
                                                (transform-query query (:default-store context) context)))
              (transform-resource* resource statements context)))))
@@ -293,9 +320,9 @@
         (when-let [html (seq (enlive/emit* document))]
           (condp = media-type
             "text/html" (apply str html)
-            "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (java.io.StringReader. (apply str html))))
+            "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (StringReader. (apply str html))))
                                 result (rdfa.core/extract-rdfa :html root (:identifier resource))
-                                triples (with-meta (:triples result) {:type knowledge.model.Graph})]
+                                triples (with-meta (:triples result) {:type Graph})]
                             (turtle/serialize triples :turtle))))))))
 
 ;; Fixes a problem with elive escaping strings

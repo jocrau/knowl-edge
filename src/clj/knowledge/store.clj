@@ -22,7 +22,7 @@
   ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
   knowledge.store
-  (:require [knowledge.model :as model]))
+  (:require [knowledge.syntax.rdf :as rdf]))
 
 (defn serialization-format [options]
   (name (or (:format options) "TTL")))
@@ -52,9 +52,9 @@
 														?s a void:Dataset .
 														?s void:sparqlEndpoint ?endpoint .
 														?s void:uriSpace ?uriSpace .
-														FILTER strStarts(\"" (model/identifier resource) "\", ?uriSpace)
+														FILTER strStarts(\"" (rdf/identifier resource) "\", ?uriSpace)
 														}")
           stores (find-by-query default-store query-string)]
-      (conj (map #(Endpoint. (-> % model/object model/value) {})
+      (conj (map #(Endpoint. (-> % rdf/object rdf/value) {})
                  stores)
             default-store))))

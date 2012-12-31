@@ -26,21 +26,21 @@
 (defmulti serialize (fn [thing format] [(type thing) format]))
 
 (defn serialize-resource [resource]
-  (let [iri (knowledge.model/identifier resource)]
+  (let [iri (knowledge.syntax.rdf/identifier resource)]
     (if-let [[prefix scope] (curie/resolve-iri iri)]
       (string/replace-first iri (re-pattern scope) (str prefix ":"))
       (str "<" iri ">"))))
 
 (defn serialize-bnode [resource]
-  (str "_:" (knowledge.model/identifier resource)))
+  (str "_:" (knowledge.syntax.rdf/identifier resource)))
 
 (defn serialize-literal [literal]
-  (let [value (clojure.string/escape (knowledge.model/value literal)
+  (let [value (clojure.string/escape (knowledge.syntax.rdf/value literal)
                                      escape-characters)
         quotes (if (some #(string/contains? value %) long-string-characters) "\"\"\"" "\"")
         quoted-value (str quotes value quotes)
-        tag (or (if (seq (knowledge.model/datatype literal)) (str "^^" (serialize (knowledge.model/datatype literal) :turtle)))
-                (if (seq (knowledge.model/language literal)) (str "@" (knowledge.model/language literal))))]
+        tag (or (if (seq (knowledge.syntax.rdf/datatype literal)) (str "^^" (serialize (knowledge.syntax.rdf/datatype literal) :turtle)))
+                (if (seq (knowledge.syntax.rdf/language literal)) (str "@" (knowledge.syntax.rdf/language literal))))]
     (str quoted-value tag)))
 
 (defn- serialize-triples* [level grouped-triples]
@@ -78,4 +78,4 @@
 (defmethod serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
 (defmethod serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
 (defmethod serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
-(defmethod serialize [knowledge.model.Graph :turtle] [thing _] (serialize-triples thing))
+(defmethod serialize [knowledge.syntax.rdf.Graph :turtle] [thing _] (serialize-triples thing))

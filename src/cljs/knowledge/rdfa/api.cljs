@@ -1,7 +1,7 @@
 (ns knowledge.rdfa.api
   (:require [cljs.core :as cljs]
             [knowledge.store :as store]
-            [knowledge.implementation.store]))
+            knowledge.store.rdf-store))
 
 (declare RDFaDOM)
 

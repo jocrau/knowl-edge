@@ -21,7 +21,7 @@
 (ns
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
-  knowledge.model
+  knowledge.syntax.rdf
   (:refer-clojure :exclude [namespace]))
 
 (defprotocol RDFFactory
@@ -60,31 +60,3 @@
   (language [this] nil)
   Graph
   (statements [this] nil))
-  
-
-(def know "http://knowl-edge.org/ontology/core#")
-(def foaf "http://xmlns.com/foaf/0.1/")
-(def foaf:depiction (str foaf "depiction"))
-(def foaf:primaryTopic (str foaf "primaryTopic"))
-(def rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-(def rdf:type (str rdf "type"))
-(def rdf:List (str rdf "List"))
-(def rdf:first (str rdf "first"))
-(def rdf:rest (str rdf "rest"))
-(def rdf:nil (str rdf "nil"))
-(def rdf:XMLLiteral (str rdf "XMLLiteral"))
-(def rdfs "http://www.w3.org/2000/01/rdf-schema#")
-(def rdfs:Resource (str rdfs "Resource"))
-(def owl "http://www.w3.org/2002/07/owl#")
-(def owl:Thing (str owl "Thing"))
-(def know:query (str know "query"))
-(def know:sparqlEndpoint (str know "sparqlEndpoint"))
-(def know:internalLink (str know "internalLink"))
-(def know:externalLink (str know "externalLink"))
-(def know:template (str know "template"))
-(def schema "http://schema.org/")
-(def schema:image (str schema "image"))
-(def schema:encoding (str schema "encoding"))
-(def spin:Construct "http://spinrdf.org/sp#Construct")
-(def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
-(def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")

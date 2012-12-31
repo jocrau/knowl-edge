@@ -1,4 +1,4 @@
-(ns knowledge.implementation.store
+(ns knowledge.store.rdf-store
   (:require [cljs.core :as cljs]
             [knowledge.store :as store]
             [knowledge.rdfa :as rdfa]))
