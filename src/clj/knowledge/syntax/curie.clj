@@ -19,8 +19,7 @@
 ; THE SOFTWARE.
 
 (ns knowledge.syntax.curie
-  (:require [clojure.contrib.str-utils2 :as string]
-            [knowledge.syntax.iri :as iri]))
+  (:require [knowledge.syntax.iri :as iri]))
 
 (def prefix-namespace-map {"" "urn:uuid:"
              "xml" "http://www.w3.org/XML/1998/namespace"
@@ -64,10 +63,10 @@
 
 (defn resolve-iri [iri]
   {:pre [(iri/iri-string? iri)]}
-  (first (filter (fn [[prefix namespace]] (.startsWith iri namespace)) prefix-namespace-map)))
+  (first (filter (fn [[prefix namespace]] (= namespace (subs iri (count namespace)))) prefix-namespace-map)))
 
 (defn iri->curie [iri]
   {:pre [(iri/iri-string? iri)]}
   (if-let [[prefix namespace] (resolve-iri iri)]
-    (string/replace-first iri (re-pattern namespace) (str prefix ":"))
+    (str prefix ":" (subs iri (count namespace)))
     iri))

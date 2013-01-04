@@ -18,5 +18,11 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns knowledge.syntax.rdf.clj-rdfa
-  (:require [knowledge.syntax.rdf :as rdf]))
+(ns
+  knowledge.transformation.jena)
+
+(extend-protocol knowledge.transformation/Transformer
+  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-literal this context))
+  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-resource this context)))

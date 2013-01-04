@@ -19,28 +19,29 @@
 ; THE SOFTWARE.
 
 (ns knowledge.syntax.turtle.serialize
-  (:use knowledge.syntax.turtle)
-  (:require [clojure.contrib.str-utils2 :as string]
+  (:require [knowledge.syntax.rdf :as rdf]
+            [knowledge.syntax.turtle :as turtle]
+            [clojure.string :as string]
             [knowledge.syntax.curie :as curie]))
 
-(defmulti serialize (fn [thing format] [(type thing) format]))
+(defmulti serialize (fn [thing format] [(or (get (meta thing) :type) (type thing)) format])) ;; TODO Issue in core.cljs.type: added (get (meta x) :type)
 
 (defn serialize-resource [resource]
-  (let [iri (knowledge.syntax.rdf/identifier resource)]
-    (if-let [[prefix scope] (curie/resolve-iri iri)]
-      (string/replace-first iri (re-pattern scope) (str prefix ":"))
+  (let [iri (rdf/identifier resource)]
+    (if-let [[prefix namespace] (curie/resolve-iri iri)]
+      (str prefix ":" (subs iri (count namespace)))
       (str "<" iri ">"))))
 
 (defn serialize-bnode [resource]
-  (str "_:" (knowledge.syntax.rdf/identifier resource)))
+  (str "_:" (rdf/identifier resource)))
 
 (defn serialize-literal [literal]
-  (let [value (clojure.string/escape (knowledge.syntax.rdf/value literal)
-                                     escape-characters)
-        quotes (if (some #(string/contains? value %) long-string-characters) "\"\"\"" "\"")
+  (let [value (string/escape (rdf/value literal)
+                             turtle/escape-characters)
+        quotes (if (some #(seq (re-find (re-pattern %) value)) turtle/long-string-characters) "\"\"\"" "\"")
         quoted-value (str quotes value quotes)
-        tag (or (if (seq (knowledge.syntax.rdf/datatype literal)) (str "^^" (serialize (knowledge.syntax.rdf/datatype literal) :turtle)))
-                (if (seq (knowledge.syntax.rdf/language literal)) (str "@" (knowledge.syntax.rdf/language literal))))]
+        tag (or (if (seq (rdf/datatype literal)) (str "^^" (serialize (rdf/datatype literal) :turtle)))
+                (if (seq (rdf/language literal)) (str "@" (rdf/language literal))))]
     (str quoted-value tag)))
 
 (defn- serialize-triples* [level grouped-triples]
@@ -49,7 +50,7 @@
     (if-not (seq current-grouped-triples)
       accu
       (let [grouped-triples-rest (rest current-grouped-triples)
-            [prefix suffix] (nth separators level)]
+            [prefix suffix] (get turtle/separators level)]
         (recur
           grouped-triples-rest
           (let [[resource triples] (first current-grouped-triples)]
@@ -60,7 +61,7 @@
               (if (> (count triples) 1) "\n" " ")
               (if (< level 2)
                 (serialize-triples* (+ level 1)
-                                    (group-by #(nth % (+ level 1)) (into #{} triples))))
+                                    (group-by #(get % (+ level 1)) (into #{} triples))))
               (if (seq grouped-triples-rest) suffix))))))))
 
 (defn prefix-definitions []
@@ -72,7 +73,7 @@
 (defn serialize-triples [triples]
   (apply str (concat
                (prefix-definitions)
-               (serialize-triples* 0 (group-by #(nth % 0) (into #{} triples)))
+               (serialize-triples* 0 (group-by #(get % 0) (into #{} triples)))
                ".")))
 
 (defmethod serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))

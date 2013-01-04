@@ -22,7 +22,8 @@
   ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the knowl:edge Management System."
     :author "Jochen Rau"}
   knowledge.syntax.rdf
-  (:refer-clojure :exclude [namespace]))
+  (:refer-clojure :exclude [namespace])
+  (:require [rdfa.core :as rdfa]))
 
 (defprotocol RDFFactory
   (create-resource [value])
@@ -60,3 +61,27 @@
   (language [this] nil)
   Graph
   (statements [this] nil))
+
+
+;; TODO move this to knowledge.syntax.rdf.clj-rdfa
+
+(extend-type rdfa.core.IRI
+  Value
+  (value [this] (:id this))
+  Resource
+  (identifier [this] (:id this)))
+
+(extend-type rdfa.core.BNode
+  Value
+  (value [this] (:id this))
+  Resource
+  (identifier [this] (:id this)))
+
+(extend-type rdfa.core.Literal
+  Value
+  (value [this] (:value this))
+  Literal
+  (datatype [this] (let [tag (:tag this)]
+                         (if (instance? rdfa.core.IRI tag) tag)))
+  (language [this] (let [tag (:tag this)]
+                         (if-not (instance? rdfa.core.IRI tag) tag))))

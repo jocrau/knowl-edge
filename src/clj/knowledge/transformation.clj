@@ -26,7 +26,6 @@
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
     [clj-time.format :as time]
-    [ring.util.codec :as codec]
     [net.cgrand.enlive-html :as enlive]
     [rdfa.parser :as parser]
     [knowledge.store :as store]
@@ -141,8 +140,6 @@
   (transform [this context] "Transforms the subject."))
 
 (extend-protocol Transformer
-  java.lang.String
-  (transform [this context] this)
   nil
   (transform [this context] nil))
 
