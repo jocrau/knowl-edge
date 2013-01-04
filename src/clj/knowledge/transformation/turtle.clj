@@ -18,13 +18,13 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns knowledge.syntax.turtle.serialize
+(ns knowledge.transformation.turtle
   (:require [knowledge.syntax.rdf :as rdf]
             [knowledge.syntax.turtle :as turtle]
             [clojure.string :as string]
             [knowledge.syntax.curie :as curie]))
 
-(defmulti serialize (fn [thing format] [(or (get (meta thing) :type) (type thing)) format])) ;; TODO Issue in core.cljs.type: added (get (meta x) :type)
+(defmulti transform (fn [thing format] [(or (get (meta thing) :type) (type thing)) format])) ;; TODO Issue in core.cljs.type: added (get (meta x) :type)
 
 (defn serialize-resource [resource]
   (let [iri (rdf/identifier resource)]
@@ -40,7 +40,7 @@
                              turtle/escape-characters)
         quotes (if (some #(seq (re-find (re-pattern %) value)) turtle/long-string-characters) "\"\"\"" "\"")
         quoted-value (str quotes value quotes)
-        tag (or (if (seq (rdf/datatype literal)) (str "^^" (serialize (rdf/datatype literal) :turtle)))
+        tag (or (if (seq (rdf/datatype literal)) (str "^^" (transform (rdf/datatype literal) :turtle)))
                 (if (seq (rdf/language literal)) (str "@" (rdf/language literal))))]
     (str quoted-value tag)))
 
@@ -48,35 +48,33 @@
   (loop [current-grouped-triples grouped-triples
          accu []]
     (if-not (seq current-grouped-triples)
-      accu
+      (apply str accu)
       (let [grouped-triples-rest (rest current-grouped-triples)
             [prefix suffix] (get turtle/separators level)]
         (recur
           grouped-triples-rest
           (let [[resource triples] (first current-grouped-triples)]
-            (concat
-              accu
-              (if (> (count grouped-triples) 1) prefix)
-              (serialize resource :turtle)
-              (if (> (count triples) 1) "\n" " ")
-              (if (< level 2)
-                (serialize-triples* (+ level 1)
-                                    (group-by #(get % (+ level 1)) (into #{} triples))))
-              (if (seq grouped-triples-rest) suffix))))))))
+            (into accu
+                  [(if (> (count grouped-triples) 1) prefix)
+                   (transform resource :turtle)
+                   (if (> (count triples) 1) "\n" " ")
+                   (if (< level 2)
+                     (serialize-triples* (+ level 1)
+                                         (group-by #(get % (+ level 1)) (into #{} triples))))
+                   (if (seq grouped-triples-rest) suffix)])))))))
 
 (defn prefix-definitions []
-  (concat (map (fn[[prefix scope]]
-                 (str "@prefix " prefix ": <" scope "> .\n"))
-               curie/prefix-namespace-map)
-          "\n"))
+  (str (apply str (map (fn[[prefix scope]]
+                         (str "@prefix " prefix ": <" scope "> .\n"))
+                       curie/prefix-namespace-map))
+       "\n"))
 
 (defn serialize-triples [triples]
-  (apply str (concat
-               (prefix-definitions)
-               (serialize-triples* 0 (group-by #(get % 0) (into #{} triples)))
-               ".")))
+  (apply str [(prefix-definitions)
+              (serialize-triples* 0 (group-by #(get % 0) (into #{} triples)))
+              "."]))
 
-(defmethod serialize [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
-(defmethod serialize [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
-(defmethod serialize [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
-(defmethod serialize [knowledge.syntax.rdf.Graph :turtle] [thing _] (serialize-triples thing))
+(defmethod transform [rdfa.core.IRI :turtle] [thing _] (serialize-resource thing))
+(defmethod transform [rdfa.core.BNode :turtle] [thing _] (serialize-bnode thing))
+(defmethod transform [rdfa.core.Literal :turtle] [thing _] (serialize-literal thing))
+(defmethod transform [knowledge.syntax.rdf.Graph :turtle] [thing _] (serialize-triples thing))

@@ -30,7 +30,7 @@
     [rdfa.parser :as parser]
     [knowledge.store :as store]
     [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.turtle.serialize :as turtle])
+    [knowledge.transformation.turtle :as turtle])
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)
            (java.io StringReader)
            (knowledge.store Endpoint)
@@ -320,7 +320,7 @@
             "text/turtle" (let [root (.getDocumentElement (parser/html-dom-parse (StringReader. (apply str html))))
                                 result (rdfa.core/extract-rdfa :html root (:identifier resource))
                                 triples (with-meta (:triples result) {:type Graph})]
-                            (turtle/serialize triples :turtle))))))))
+                            (turtle/transform triples :turtle))))))))
 
 ;; Fixes a problem with elive escaping strings
 (in-ns 'net.cgrand.enlive-html)
