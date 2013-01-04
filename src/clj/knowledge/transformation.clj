@@ -37,7 +37,7 @@
            (knowledge.syntax.rdf Graph)))
 
 (def base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
-(def default-template-iri (str base-iri "templates/recipes.html"))
+(def default-template-iri (str base-iri "templates/recipe.html"))
 
 (def know "http://knowl-edge.org/ontology/core#")
 (def foaf "http://xmlns.com/foaf/0.1/")
