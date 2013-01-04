@@ -63,7 +63,10 @@
 
 (defn resolve-iri [iri]
   {:pre [(iri/iri-string? iri)]}
-  (first (filter (fn [[prefix namespace]] (= namespace (subs iri (count namespace)))) prefix-namespace-map)))
+  (first (filter (fn [[prefix namespace]] (let [namespace-length (count namespace)]
+                                            (and (>= (count iri) namespace-length)
+                                                 (= (subs iri 0 namespace-length) namespace))))
+                 prefix-namespace-map)))
 
 (defn iri->curie [iri]
   {:pre [(iri/iri-string? iri)]}
