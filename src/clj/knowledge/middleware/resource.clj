@@ -28,10 +28,12 @@
 
 (defn wrap-resource [handler]
   (fn [request]
-    (let [uri (str (name (:scheme request))
-                   "://" (:server-name request)
-                   (if-let [port (:server-port request)] (str ":" port))
-                   (:uri request)
-                   (if-let [query-string (:query-string request)]
-                     (str "?" query-string)))]
-      (handler (merge-with merge request {::resource (rdf/create-resource uri)})))))
+    (let [iri (if-let [iri-from-param (-> request :query-params (get "iri"))]
+                iri-from-param
+                (str (name (:scheme request))
+                     "://" (:server-name request)
+                     (if-let [port (:server-port request)] (str ":" port))
+                     (:uri request)
+                     (if-let [query-string (:query-string request)]
+                       (str "?" query-string))))]
+      (handler (merge-with merge request {::resource (rdf/create-resource iri)})))))
