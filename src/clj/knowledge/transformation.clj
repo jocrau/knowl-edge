@@ -174,7 +174,7 @@
         (set-content (rdf/value object)))
       know:internalLink
       (set-reference object)
-      foaf:primaryTopic
+      "http://xmlns.com/foaf/0.1/isPrimaryTopicOf"
       (set-reference object)
       foaf:depiction
       (set-reference object)
