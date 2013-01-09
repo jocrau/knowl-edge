@@ -43,21 +43,25 @@
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
-          (iterator-seq (.listStatements (.execConstruct query-execution)))))))
-  (find-types-of [this resource]  (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
-                                    (map #(rdf/object %) statements)))
+          (try
+            (iterator-seq (.listStatements (.execConstruct query-execution)))
+            (catch Exception e))))))
+  (find-types-of [this resource]
+    (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
+      (map #(rdf/object %) statements)))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this subject predicate object] (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
-                                           predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
-                                           language-filter (if (nil? object)
-                                                             " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
-                                           object (or (-?> object (string/join ["<" ">"])) "?o")
-                                           pattern (string/join " " [subject predicate object])
-                                           statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
-                                       (find-by-query this statement)))))
+    ([this subject predicate object]
+      (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
+            predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+            language-filter (if (nil? object)
+                              " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
+            object (or (-?> object (string/join ["<" ">"])) "?o")
+            pattern (string/join " " [subject predicate object])
+            statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
+        (find-by-query this statement)))))
 
 ;; MemoryStore Implementation
 
