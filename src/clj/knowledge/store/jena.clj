@@ -79,6 +79,11 @@
     ([this query-string _]
       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
         (iterator-seq (.listStatements (.execConstruct query-execution))))))
+  (matches?
+    ([this query-string] (matches? this query-string nil))
+    ([this query-string _]
+       (with-open [query-execution (QueryExecutionFactory/create query-string this)]
+         (.execAsk query-execution))))
   (find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
                                        statements (find-matching this resource predicate)]
                                    (map #(rdf/object %) statements)))

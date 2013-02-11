@@ -32,6 +32,7 @@
   (clear-all [this])
   (add-statements [this statements] [this statements options])
   (find-by-query [this query-string] [this query-string callback])
+  (matches? [this query-string] [this query-string callback])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
 
