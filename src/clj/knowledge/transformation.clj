@@ -54,7 +54,6 @@
 (def rdfs:Resource (str rdfs "Resource"))
 (def owl "http://www.w3.org/2002/07/owl#")
 (def owl:Thing (str owl "Thing"))
-(def know:query (str know "query"))
 (def know:sparqlEndpoint (str know "sparqlEndpoint"))
 (def know:internalLink (str know "internalLink"))
 (def know:externalLink (str know "externalLink"))
@@ -63,6 +62,7 @@
 (def schema:image (str schema "image"))
 (def schema:encoding (str schema "encoding"))
 (def spin:Construct "http://spinrdf.org/sp#Construct")
+(def spin:text "http://spinrdf.org/sp#text")
 (def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
 (def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
 
@@ -216,7 +216,7 @@
     (-> statement first rdf/object rdf/value)))
 
 (defn- extract-query-from [statements]
-  (-> (filter #(= (-> % rdf/predicate rdf/identifier) know:query) statements) first rdf/object rdf/value))
+  (-> (filter #(= (-> % rdf/predicate rdf/identifier) spin:text) statements) first rdf/object rdf/value))
 
 (defn- extract-service-from [statements]
   (when-let [service-statements (seq (filter #(= (-> % rdf/predicate rdf/identifier) know:sparqlEndpoint) statements))]
