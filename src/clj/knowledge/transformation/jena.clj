@@ -19,21 +19,10 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace defines a ring middleware to add a resource to the request."
-    :author "Jochen Rau"}
-  knowledge.middleware.resource
-  (:require
-    [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.rdf.jena]))
+  knowledge.transformation.jena)
 
-(defn wrap-resource [handler]
-  (fn [request]
-    (let [iri (if-let [iri-from-param (-> request :query-params (get "iri"))]
-                iri-from-param
-                (str (name (:scheme request))
-                     "://" (:server-name request)
-                     (if-let [port (:server-port request)] (str ":" port))
-                     (:uri request)
-                     (if-let [query-string (:query-string request)]
-                       (str "?" query-string))))]
-      (handler (merge-with merge request {::resource (rdf/create-resource iri)})))))
+(extend-protocol knowledge.transformation/Transformer
+  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-literal this context))
+  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
+  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-resource this context)))

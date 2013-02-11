@@ -1,4 +1,4 @@
-(ns knowledge.implementation.store
+(ns knowledge.store.rdf-store
   (:require [cljs.core :as cljs]
             [knowledge.store :as store]
             [knowledge.rdfa :as rdfa]))
@@ -17,5 +17,5 @@
   (store/MemoryStore.
       (js/rdfstore.Store.
         (cljs/js-obj :name "core" :overwrite true)
-        (fn [store] (.load store "text/turtle" (rdfa/serialize (rdfa/get-triples)) nil)))
+        (fn [store] (.load store "text/turtle" (rdfa/serialize-statements (rdfa/extract-statements)) nil)))
     {}))

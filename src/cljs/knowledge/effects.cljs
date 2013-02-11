@@ -1,6 +1,5 @@
 (ns knowledge.effects
-   (:require [clojure.browser.dom :as dom]
-             [goog.dom :as gdom]
+   (:require [goog.dom :as gdom]
              [cljs.core :as cljs]))
 
 (def jquery (js* "$"))

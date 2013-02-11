@@ -19,13 +19,11 @@
 ; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
-    :author "Jochen Rau"}
-   knowledge.implementation.store
+   knowledge.store.jena
   (:use [clojure.contrib.core :only (-?>)]
         knowledge.store)
   (:require [clojure.contrib.str-utils2 :as string]
-            [knowledge.model :as model])
+            [knowledge.syntax.rdf :as rdf])
   (:import (com.hp.hpl.jena.query QueryExecutionFactory)
            (com.hp.hpl.jena.rdf.model ModelFactory Resource Property RDFNode)
            (knowledge.store Endpoint MemoryStore)))
@@ -45,21 +43,25 @@
         (let [options (.options this)]
           (if (and (:username options) (:password options))
             (.setBasicAuthentication query-execution (:username options) (.toCharArray (:password options))))
-          (iterator-seq (.listStatements (.execConstruct query-execution)))))))
-  (find-types-of [this resource]  (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
-                                    (map #(model/object %) statements)))
+          (try
+            (iterator-seq (.listStatements (.execConstruct query-execution)))
+            (catch Exception e))))))
+  (find-types-of [this resource]
+    (let [statements (find-by-query this (str "CONSTRUCT { <" resource "> a ?type . } WHERE { <" resource "> a ?type . }"))]
+      (map #(rdf/object %) statements)))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))
     ([this subject predicate] (find-matching this subject predicate nil))
-    ([this subject predicate object] (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
-                                           predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
-                                           language-filter (if (nil? object)
-                                                             " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
-                                           object (or (-?> object (string/join ["<" ">"])) "?o")
-                                           pattern (string/join " " [subject predicate object])
-                                           statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
-                                       (find-by-query this statement)))))
+    ([this subject predicate object]
+      (let [subject (or (-?> subject (string/join ["<" ">"])) "?s")
+            predicate (or (-?> predicate (string/join ["<" ">"])) predicate "?p")
+            language-filter (if (nil? object)
+                              " FILTER (!isLiteral(?o) || langMatches(lang(?o), \"en\") || langMatches(lang(?o), \"\"))")
+            object (or (-?> object (string/join ["<" ">"])) "?o")
+            pattern (string/join " " [subject predicate object])
+            statement (str "CONSTRUCT { " pattern " . } WHERE { " pattern " . " language-filter " }")]
+        (find-by-query this statement)))))
 
 ;; MemoryStore Implementation
 
@@ -79,7 +81,7 @@
         (iterator-seq (.listStatements (.execConstruct query-execution))))))
   (find-types-of [this resource] (let [predicate (.createProperty this "http://www.w3.org/1999/02/22-rdf-syntax-ns#" "type")
                                        statements (find-matching this resource predicate)]
-                                   (map #(model/object %) statements)))
+                                   (map #(rdf/object %) statements)))
   (find-matching
     ([this] (find-matching this nil nil nil))
     ([this subject] (find-matching this subject nil nil))

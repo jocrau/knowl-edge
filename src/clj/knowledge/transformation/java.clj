@@ -1,4 +1,4 @@
-; Copyright (c) 2012 Jochen Rau
+; Copyright (c) 2013 Jochen Rau
 ; 
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -18,13 +18,9 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns
-  ^{:doc "This namespace provides the jena wrapper to manipulate RDF. It is part of the knowl:edge Management System."
-    :author "Jochen Rau"}
-   knowledge.implementation.transformation)
+(ns knowledge.transformation.java
+  (:require [knowledge.transformation :as transform]))
 
-(extend-protocol knowledge.transformation/Transformer
-  com.hp.hpl.jena.rdf.model.impl.LiteralImpl
-  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-literal this context))
-  com.hp.hpl.jena.rdf.model.impl.ResourceImpl
-  (knowledge.transformation/transform [this context] (knowledge.transformation/transform-resource this context)))
+(extend-protocol transform/Transformer
+  java.lang.String
+  (transform/transform [this context] this))

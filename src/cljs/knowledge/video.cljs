@@ -1,6 +1,5 @@
 (ns knowledge.video)
 
-
 (defprotocol PlayerInfo
   (current-position [player])
   (current-state [player]))

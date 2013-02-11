@@ -18,22 +18,5 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns
-  ^{:doc "This namespace defines a ring middleware to add a resource to the request."
-    :author "Jochen Rau"}
-  knowledge.middleware.resource
-  (:require
-    [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.rdf.jena]))
-
-(defn wrap-resource [handler]
-  (fn [request]
-    (let [iri (if-let [iri-from-param (-> request :query-params (get "iri"))]
-                iri-from-param
-                (str (name (:scheme request))
-                     "://" (:server-name request)
-                     (if-let [port (:server-port request)] (str ":" port))
-                     (:uri request)
-                     (if-let [query-string (:query-string request)]
-                       (str "?" query-string))))]
-      (handler (merge-with merge request {::resource (rdf/create-resource iri)})))))
+(ns knowledge.syntax.rdf.clj-rdfa
+  (:require [knowledge.syntax.rdf :as rdf]))

@@ -18,22 +18,11 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns
-  ^{:doc "This namespace defines a ring middleware to add a resource to the request."
-    :author "Jochen Rau"}
-  knowledge.middleware.resource
-  (:require
-    [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.rdf.jena]))
+(ns knowledge.syntax.iri)
 
-(defn wrap-resource [handler]
-  (fn [request]
-    (let [iri (if-let [iri-from-param (-> request :query-params (get "iri"))]
-                iri-from-param
-                (str (name (:scheme request))
-                     "://" (:server-name request)
-                     (if-let [port (:server-port request)] (str ":" port))
-                     (:uri request)
-                     (if-let [query-string (:query-string request)]
-                       (str "?" query-string))))]
-      (handler (merge-with merge request {::resource (rdf/create-resource iri)})))))
+;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
+;; Thanks to John Gruber who made this public domain.
+(def iri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
+
+(defn iri-string? [thing]
+  (and (string? thing) (re-find iri-regex (name thing))))

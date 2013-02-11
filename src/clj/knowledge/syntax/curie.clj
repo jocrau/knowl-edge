@@ -18,75 +18,11 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns
-  ^{:doc "This namespace provides the basic functions to manipulate RDF. It is part of the knowl:edge Management System."
-    :author "Jochen Rau"}
-  knowledge.model
-  (:refer-clojure :exclude [namespace]))
+(ns knowledge.syntax.curie
+  (:require [knowledge.syntax.iri :as iri]))
 
-(def ontology-base-iri "http://knowl-edge.net/ontology/core#")
-
-(defprotocol RDFFactory
-  (create-resource [value])
-  (create-literal [value] [value language-or-datatype]))
-
-(defprotocol Value
-  (value [this]))
-
-(defprotocol Literal
-  (datatype [this])
-  (language [this]))
-
-(defprotocol Resource
-  (identifier [this])
-  (namespace [this])
-  (local-name [this]))
-
-(defprotocol Statement
-  (subject [statement])
-  (predicate [statement])
-  (object [statement]))
-
-(extend-type nil
-  Value
-  (value [this] nil)
-  Resource
-  (identifier [this] nil)
-  (namespace [this] nil)
-  (local-name [this] nil)
-  Literal
-  (datatype [this] nil)
-  (language [this] nil))
-  
-
-(def know "http://knowl-edge.org/ontology/core#")
-(def foaf "http://xmlns.com/foaf/0.1/")
-(def foaf:depiction (str foaf "depiction"))
-(def foaf:primaryTopic (str foaf "primaryTopic"))
-(def rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-(def rdf:type (str rdf "type"))
-(def rdf:List (str rdf "List"))
-(def rdf:first (str rdf "first"))
-(def rdf:rest (str rdf "rest"))
-(def rdf:nil (str rdf "nil"))
-(def rdf:XMLLiteral (str rdf "XMLLiteral"))
-(def rdfs "http://www.w3.org/2000/01/rdf-schema#")
-(def rdfs:Resource (str rdfs "Resource"))
-(def owl "http://www.w3.org/2002/07/owl#")
-(def owl:Thing (str owl "Thing"))
-(def know:query (str know "query"))
-(def know:sparqlEndpoint (str know "sparqlEndpoint"))
-(def know:internalLink (str know "internalLink"))
-(def know:externalLink (str know "externalLink"))
-(def know:template (str know "template"))
-(def schema "http://schema.org/")
-(def schema:image (str schema "image"))
-(def schema:encoding (str schema "encoding"))
-(def spin:Construct "http://spinrdf.org/sp#Construct")
-(def dbo:wikiPageExternalLink "http://dbpedia.org/ontology/wikiPageExternalLink")
-(def bibo:Webpage "http://purl.org/ontology/bibo/Webpage")
-
-(def curies {"xml" "http://www.w3.org/XML/1998/namespace"
+(def prefix-namespace-map {"" "urn:uuid:"
+             "xml" "http://www.w3.org/XML/1998/namespace"
              "xmlns" "http://www.w3.org/2000/xmlns/"
              "xsd" "http://www.w3.org/2001/XMLSchema#"
              "xhv" "http://www.w3.org/1999/xhtml/vocab#"
@@ -104,6 +40,7 @@
              "sioc" "http://rdfs.org/sioc/ns#"
              "cc" "http://creativecommons.org/ns#"
              "vcard" "http://www.w3.org/2006/vcard/ns#"
+             "schema" "http://schema.org/"
              "void" "http://rdfs.org/ns/void#"
              "dc" "http://purl.org/dc/elements/1.1/"
              "dcterms" "http://purl.org/dc/terms/"
@@ -119,17 +56,20 @@
              "bibo" "http://purl.org/ontology/bibo/"
              "cnt" "http://www.w3.org/2011/content#"})
 
-
 (defn resolve-prefix [prefix]
-  (if-let [uri (get curies (name prefix))]
-    uri
+  (if-let [iri (get prefix-namespace-map (name prefix))]
+    iri
     prefix))
 
-;; This (scary) regular expression matches arbritrary URLs and URIs). It was taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.
-;; Thanks to john Gruber who made this public domain.
-(def iri-regex #"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
+(defn resolve-iri [iri]
+  {:pre [(iri/iri-string? iri)]}
+  (first (filter (fn [[prefix namespace]] (let [namespace-length (count namespace)]
+                                            (and (>= (count iri) namespace-length)
+                                                 (= (subs iri 0 namespace-length) namespace))))
+                 prefix-namespace-map)))
 
-(defn iri-string? [thing]
-  (if (and (string? thing) (re-find iri-regex (name thing)))
-    true
-    false))
+(defn iri->curie [iri]
+  {:pre [(iri/iri-string? iri)]}
+  (if-let [[prefix namespace] (resolve-iri iri)]
+    (str prefix ":" (subs iri (count namespace)))
+    iri))

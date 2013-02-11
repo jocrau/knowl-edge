@@ -1,6 +1,18 @@
-(ns knowledge.implementation.youtube
+(ns knowledge.video.youtube
   (:require [knowledge.video :as video]
             [knowledge.states :as states]))
+
+;; TODO move this to a dedicated namespace
+(extend-type js/NodeList
+  ISeqable
+  (-seq [array] (array-seq array 0)))
+(extend-type js/HTMLCollection
+  ISeqable
+  (-seq [array] (array-seq array 0)))
+(extend-type js/Node
+  IHash
+  (-hash [x] x))
+
 
 (def position)
 
