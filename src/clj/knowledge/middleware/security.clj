@@ -1,3 +1,4 @@
+;; Copyright (c) 2012 Jochen Rau
 ;; 
 ;; Permission is hereby granted, free of charge, to any person obtaining a copy
 ;; of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +21,30 @@
 (ns
   ^{:doc "This namespace defines ring middleware functions."
     :author "Jochen Rau"}
-  knowledge.middleware.resource
+  knowledge.middleware.security
   (:require
-    [knowledge.syntax.rdf :as rdf]
-    [knowledge.syntax.rdf.jena]))
+    [knowledge.store :as store]
+    [cemerick.friend :as friend]
+    (cemerick.friend [workflows :as workflows]
+                     [credentials :as creds])))
 
-(defn wrap-resource [handler]
-  (fn [request]
-    (let [iri (if-let [iri-from-param (-> request :query-params (get "iri"))]
-                iri-from-param
-                (str (name (:scheme request))
-                     "://" (:server-name request)
-                     (if-let [port (:server-port request)] (str ":" port))
-                     (:uri request)
-                     (if-let [query-string (:query-string request)]
-                       (str "?" query-string))))]
-      (handler (merge-with merge request {::resource (rdf/create-resource iri)})))))
+(defn- credential-fn
+  [load-credentials-fn {:keys [username password]}]
+  (when-let [credentials (load-credentials-fn username)]
+    (when (creds/bcrypt-verify password (:password credentials))
+      (dissoc credentials password))))
+
+(def users
+  {"admin" {:username "admin"
+            :password (creds/hash-bcrypt "password")}
+   "jocrau" {:username "jocrau"
+             :password (creds/hash-bcrypt "password")}})
+
+(defn- find-users [default-store] users)
+
+(defn wrap-authentication
+  ([handler default-store]
+    (friend/authenticate
+      handler
+      {:credential-fn (partial credential-fn (find-users default-store))
+       :workflows [(workflows/interactive-form)]})))

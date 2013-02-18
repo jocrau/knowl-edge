@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [enlive "1.0.1"]
+                 [com.cemerick/friend "0.1.3"]
                  [re-rand "0.1.0"]
                  [clj-time "0.4.4"]
                  [joda-time "2.1"]

@@ -29,6 +29,8 @@
     [net.cgrand.enlive-html :as enlive]
     [rdfa.parser :as parser]
     [knowledge.store :as store]
+    [knowledge.utilities :as util]
+    [knowledge.security :as security]
     [knowledge.syntax.rdf :as rdf]
     [knowledge.transformation.turtle :as turtle])
   (:import (org.joda.time.format PeriodFormat ISOPeriodFormat)
@@ -228,19 +230,6 @@
 (defn- extract-rest [statements]
   (-> (filter #(= (-> % rdf/predicate rdf/identifier) rdf:rest) statements) first rdf/object))
 
-(defn- pmap-set
-  "This function takes the same arguments as clojures (p)map and flattens the first level 
-   of the resulting lists of lists into a set."
-  [f & colls]
-  (into #{} (apply concat (apply pmap f colls))))
-
-(defn fetch-statements
-  "This function takes a resource and fetches statements with the given resource 
-   as subject in all stores."
-  [resource context]
-  (let [stores (store/stores-for resource (:default-store context))]
-    (pmap-set #(store/find-matching % resource) stores)))
-
 (defn set-base [template]
   (enlive/at template
     [:base] (enlive/substitute {:tag :base :attrs {:href base-iri}})))
@@ -251,23 +240,26 @@
 (def fetch-template-memo (memoize fetch-template))
 
 (defn- transform-resource* [resource statements context]
-  (let [context (if-let [template-iri (extract-template-iri-from statements)]
-                   (assoc context :template (fetch-template-memo template-iri))
-                   (if (contains? context :template)
-                     context
-                     (assoc context :template (fetch-template-memo default-template-iri))))
-        types (extract-types-from statements)
-        context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
-        snippet (enlive/transform (enlive/select (:template context) (:rootline context))
-                                  [enlive/root]
-                                  (enlive/do->
-                                    (set-types types)
-                                    (set-resource resource)))]
-    (transform-statements statements snippet context)))
+  (security/authorize
+    resource
+    context
+    (let [context (if-let [template-iri (extract-template-iri-from statements)]
+                    (assoc context :template (fetch-template-memo template-iri))
+                    (if (contains? context :template)
+                      context
+                      (assoc context :template (fetch-template-memo default-template-iri))))
+          types (extract-types-from statements)
+          context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
+          snippet (enlive/transform (enlive/select (:template context) (:rootline context))
+                                    [enlive/root]
+                                    (enlive/do->
+                                      (set-types types)
+                                      (set-resource resource)))]
+      (transform-statements statements snippet context))))
 
 (defn transform-query [query store context]
   (when-let [statements (store/find-by-query store query)]
-    (pmap-set
+    (util/pmap-set
       (fn [[resource statements]]
         (transform-resource* resource statements context))
       (group-by #(rdf/subject %) statements))))
@@ -280,7 +272,7 @@
         nodes (conj nodes (transform-resource first context))]
     (if (= (rdf/identifier rest) rdf:nil)
       nodes
-      (transform-list (fetch-statements rest context) nodes context))))
+      (transform-list (store/fetch-statements rest context) nodes context))))
 
 (defmacro match
   [statements & clauses]
@@ -297,7 +289,7 @@
 
 (defn transform-resource [resource context]
   (if (< (count (:rootline context)) 6)
-    (when-let [statements (fetch-statements resource context)]
+    (when-let [statements (store/fetch-statements resource context)]
       (match statements
              [nil rdf:first nil] (transform-list statements [] context)
              [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
