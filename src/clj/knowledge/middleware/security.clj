@@ -24,27 +24,35 @@
   knowledge.middleware.security
   (:require
     [knowledge.store :as store]
+    [knowledge.syntax.rdf :as rdf]
     [cemerick.friend :as friend]
     (cemerick.friend [workflows :as workflows]
                      [credentials :as creds])))
 
+(defn- find-password [store username]
+  (when-let [statements (store/find-by-query store (str "
+												    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+														PREFIX know: <http://knowl-edge.org/ontology/core#>
+														CONSTRUCT WHERE {
+														  ?account a foaf:OnlineAccount ;
+												               know:username \"" username "\" ;
+												               know:password ?password .
+														}"))]
+    (let [password (some #(when (= (-> % rdf/predicate rdf/identifier)
+                                   "http://knowl-edge.org/ontology/core#password")
+                            (-> % rdf/object rdf/value))
+                         statements)]
+      password)))
+
 (defn- credential-fn
-  [load-credentials-fn {:keys [username password]}]
-  (when-let [credentials (load-credentials-fn username)]
-    (when (creds/bcrypt-verify password (:password credentials))
-      (dissoc credentials password))))
-
-(def users
-  {"admin" {:username "admin"
-            :password (creds/hash-bcrypt "password")}
-   "jocrau" {:username "jocrau"
-             :password (creds/hash-bcrypt "password")}})
-
-(defn- find-users [default-store] users)
+  [store {:keys [username password]}]
+  (when-let [encypted-password (find-password store username)]
+    (when (creds/bcrypt-verify password encypted-password)
+      {:username username})))
 
 (defn wrap-authentication
-  ([handler default-store]
+  ([handler store]
     (friend/authenticate
       handler
-      {:credential-fn (partial credential-fn (find-users default-store))
+      {:credential-fn (partial credential-fn store)
        :workflows [(workflows/interactive-form)]})))
