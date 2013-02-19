@@ -22,6 +22,7 @@
   ^{:doc "This namespace provides functionailty to transform a given resource recursively into a representation. It is part of the knowl:edge management system."
     :author "Jochen Rau"}  
   knowledge.transformation
+  (:use [clojure.contrib.core :only (-?>)])
   (:require
     [clojure.set :as set]
     [clojure.contrib.str-utils2 :as string]
@@ -198,8 +199,19 @@
             (set-language (rdf/language object)))
           identity)))))
 
+(defn- identity-statements [context]
+  (when-let [current-identity (-?> context :request :session :cemerick.friend/identity :current)]
+    (let [bnode (rdf/create-resource nil)]
+      [(rdf/create-statement bnode
+                             (rdf/create-resource "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+                             (rdf/create-resource "http://xmlns.com/foaf/0.1/OnlineAccount"))
+       (rdf/create-statement bnode
+                             (rdf/create-resource "http://knowl-edge.org/ontology/core#username")
+                             (rdf/create-literal current-identity))])))
+
 (defn transform-statements [statements snippet context]
-  (let [grouped-statements (group-by #(rdf/predicate %) statements)]
+  (let [statements (into statements (identity-statements context))
+        grouped-statements (group-by #(rdf/predicate %) statements)]
     (reduce
       (fn [snippet [predicate statements]]
         (enlive/at snippet [(predicate= predicate)] (enlive/do->
@@ -243,25 +255,21 @@
   (security/authorize
     resource
     context
-    (let [context (if-let [template-iri (extract-template-iri-from statements)]
-                    (assoc context :template (fetch-template-memo template-iri))
-                    (if (contains? context :template)
-                      context
-                      (assoc context :template (fetch-template-memo default-template-iri))))
-          types (extract-types-from statements)
-          context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
-          snippet (enlive/transform (enlive/select (:template context) (:rootline context))
-                                    [enlive/root]
-                                    (enlive/do->
-                                      (set-types types)
-                                      (set-resource resource)))]
-      (transform-statements statements snippet context))))
-
-(defn transform-query [query store context]
-  (when-let [statements (store/find-by-query store query)]
     (util/pmap-set
       (fn [[resource statements]]
-        (transform-resource* resource statements context))
+        (let [context (if-let [template-iri (extract-template-iri-from statements)]
+                        (assoc context :template (fetch-template-memo template-iri))
+                        (if (contains? context :template)
+                          context
+                          (assoc context :template (fetch-template-memo default-template-iri))))
+              types (extract-types-from statements)
+              context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
+              snippet (enlive/transform (enlive/select (:template context) (:rootline context))
+                                        [enlive/root]
+                                        (enlive/do->
+                                          (set-types types)
+                                          (set-resource resource)))]
+          (transform-statements statements snippet context)))
       (group-by #(rdf/subject %) statements))))
 
 (declare transform-resource)
@@ -295,16 +303,18 @@
              [nil rdf:type spin:Construct] (when-let [query (extract-query-from statements)]
                                              (if-let [service (extract-service-from statements)]
                                                (let [store (Endpoint. service {})]
-                                                 (transform-query query store context))
-                                               (transform-query query (:default-store context) context)))
+                                                 (when-let [statements (store/find-by-query store query)]
+                                                   (transform-resource* resource statements context)))
+                                               (when-let [statements (store/find-by-query (:default-store context) query)]
+                                                   (transform-resource* resource statements context))))
              (transform-resource* resource statements context)))))
 
 ;; Entry Point
 
 (defn dereference
   ([context store]
-    (let [resource (-> context :request :knowledge.middleware.resource/resource)
-          media-type (-> context :representation :media-type)]
+    (let [resource (-?> context :request :knowledge.middleware.resource/resource)
+          media-type (-?> context :representation :media-type)]
       (when-let [document (transform resource (merge context {:rootline [] :default-store store}))]
         (when-let [html (seq (enlive/emit* document))]
           (condp = media-type
