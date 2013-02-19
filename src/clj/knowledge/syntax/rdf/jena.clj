@@ -74,7 +74,7 @@
   (rdf/language [this] nil)) ;; TODO Check spec again (see http://jena.apache.org/documentation/notes/typed-literals.html)
 
 (extend-type com.hp.hpl.jena.rdf.model.impl.StatementImpl
-  rdf/Statement
+  rdf/StatementProtocol
   (rdf/subject [statement] (.getSubject statement))
   (rdf/predicate [statement] (.getPredicate statement))
   (rdf/object [statement] (.getObject statement)))

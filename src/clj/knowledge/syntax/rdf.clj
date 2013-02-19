@@ -41,7 +41,7 @@
   (namespace [this])
   (local-name [this]))
 
-(defprotocol Statement
+(defprotocol StatementProtocol
   (subject [statement])
   (predicate [statement])
   (object [statement]))
@@ -61,6 +61,18 @@
   (language [this] nil)
   Graph
   (statements [this] nil))
+
+(deftype Statement [subject predicate object])
+
+(extend-type Statement
+  StatementProtocol
+  (subject [statement] (.subject statement))
+  (predicate [statement] (.predicate statement))
+  (object [statement] (.object statement)))
+
+(defn create-statement
+  [subject predicate object]
+  (Statement. subject predicate object))
 
 
 ;; TODO move this to knowledge.syntax.rdf.clj-rdfa
