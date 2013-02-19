@@ -52,7 +52,8 @@
 
 (defn wrap-authentication
   ([handler store]
-    (friend/authenticate
-      handler
-      {:credential-fn (partial credential-fn store)
-       :workflows [(workflows/interactive-form)]})))
+    (-> handler
+      #_(friend/requires-scheme :https {:https 8080})
+      (friend/authenticate
+        {:credential-fn (partial credential-fn store)
+         :workflows [(workflows/interactive-form)]}))))
