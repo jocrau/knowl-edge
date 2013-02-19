@@ -51,8 +51,9 @@
       {:username username})))
 
 (defn wrap-authentication
-  ([handler store config]
-    (let [config (merge {:credential-fn  (partial credential-fn store)
+  ([handler] (wrap-authentication handler {}))
+  ([handler config]
+    (let [config (merge {:credential-fn  (partial credential-fn (:credentials-store config))
                          :workflows [(workflows/interactive-form)]}
                         config)]
       (-> handler
