@@ -150,6 +150,8 @@
 (defmethod transform-literal :default [literal context] (rdf/value literal))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#dateTime" [literal context]
   (time/unparse (time/formatter "MMMM d, yyyy") (time/parse (time/formatters :date-time-no-ms) (rdf/value literal))))
+(defmethod transform-literal "http://www.w3.org/2001/XMLSchema#date" [literal context]
+  (time/unparse (time/formatter "MMMM d, yyyy") (time/parse (time/formatters :date) (rdf/value literal))))
 (defmethod transform-literal "http://www.w3.org/2001/XMLSchema#duration" [literal context]
   (let [parser (ISOPeriodFormat/standard)
         unparser (PeriodFormat/getDefault)
