@@ -1,4 +1,4 @@
-(defproject com.neomantics/knowledge "0.0.1-SNAPSHOT"
+(defproject com.neomantics/knowledge "0.0.2-SNAPSHOT"
   :description "This is a knowl:edge Management System"
   :license {:name "MIT License"
             :url "http://www.opensource.org/licenses/mit-license.php"
