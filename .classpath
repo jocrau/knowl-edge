@@ -2,11 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src/clj"/>
-	<classpathentry kind="src" path="checkouts/clj-rdfa/src/clj"/>
-	<classpathentry kind="src" path="checkouts/clj-rdfa/src/cljs"/>
+	<classpathentry kind="src" path="checkouts"/>
+	<classpathentry kind="src" path="cljs-checkouts"/>
 	<classpathentry kind="src" path="src/cljs"/>
-	<classpathentry kind="src" path="cljs-checkouts/clojurescript/src/clj"/>
-	<classpathentry kind="src" path="cljs-checkouts/clojurescript/src/cljs"/>
 	<classpathentry kind="src" path="resources">
 		<attributes>
 			<attribute name="optional" value="true"/>
