@@ -1,39 +1,39 @@
-; Copyright (c) 2012 Jochen Rau
-; 
-; Permission is hereby granted, free of charge, to any person obtaining a copy
-; of this software and associated documentation files (the "Software"), to deal
-; in the Software without restriction, including without limitation the rights
-; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-; copies of the Software, and to permit persons to whom the Software is
-; furnished to do so, subject to the following conditions:
-; 
-; The above copyright notice and this permission notice shall be included in
-; all copies or substantial portions of the Software.
-; 
-; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-; THE SOFTWARE.
+;; Copyright (c) 2012 Jochen Rau
+;; 
+;; Permission is hereby granted, free of charge, to any person obtaining a copy
+;; of this software and associated documentation files (the "Software"), to deal
+;; in the Software without restriction, including without limitation the rights
+;; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+;; copies of the Software, and to permit persons to whom the Software is
+;; furnished to do so, subject to the following conditions:
+;; 
+;; The above copyright notice and this permission notice shall be included in
+;; all copies or substantial portions of the Software.
+;; 
+;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+;; THE SOFTWARE.
 
 (ns
-  ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
-    :author "Jochen Rau"}
+    ^{:doc "This namespace provides functions to query a SPARQL endpoint. It is part of the knowl:edge Management System."
+      :author "Jochen Rau"}
   knowledge.store
-  (:use [clojure.contrib.core :only (-?>)])
-  (:require
-    [knowledge.model :as model]))
+  (:require [knowledge.syntax.rdf :as rdf]
+            [knowledge.utilities :as util]))
 
-(def ^:dynamic base-iri (or (System/getenv "BASE_IRI") "http://localhost:8080/"))
-
-(defn- serialization-format [options]
+(defn serialization-format [options]
   (name (or (:format options) "TTL")))
 
 (defprotocol Store
+  (get-base-iri [this])
+  (clear-all [this])
   (add-statements [this statements] [this statements options])
-  (find-by-query [this query-string] [this query-string service])
+  (find-by-query [this query-string] [this query-string callback])
+  (matches? [this query-string] [this query-string callback])
   (find-types-of [this resource])
   (find-matching [this] [this subject] [this subject predicate] [this subject predicate object]))
 
@@ -44,23 +44,28 @@
 (deftype Endpoint [service options])
 (deftype MemoryStore [model options])
 
-(declare default-store)
+(defn stores-for
+  ([resource default-store]
+     (let [query-string (str "
+PREFIX void: <http://rdfs.org/ns/void#>
+CONSTRUCT {
+  ?s void:sparqlEndpoint ?endpoint .
+}
+WHERE {
+  ?s a void:Dataset .
+  ?s void:sparqlEndpoint ?endpoint .
+  ?s void:uriSpace ?uriSpace .
+  FILTER strStarts(\"" (rdf/identifier resource) "\", ?uriSpace)
+}")
+           stores (find-by-query default-store query-string)]
+       (conj (map #(Endpoint. (-> % rdf/object rdf/value) {})
+                  stores)
+             default-store))))
 
-(defn stores-for-memo [resource]
-    (let [stores (find-by-query default-store (str "
-					PREFIX void: <http://rdfs.org/ns/void#>
-					CONSTRUCT {
-					?s void:sparqlEndpoint ?endpoint .
-					}
-					WHERE {
-					?s a void:Dataset .
-					?s void:sparqlEndpoint ?endpoint .
-					?s void:uriSpace ?uriSpace .
-					FILTER strStarts(\"" (model/identifier resource) "\", ?uriSpace)
-					}"))]
-    (conj (map
-            #(Endpoint. (-> % knowledge.model/object knowledge.model/value) {})
-            stores)
-          default-store)))
+(defn fetch-statements
+  "This function takes a resource and fetches statements with the given resource 
+   as subject in all stores."
+  [resource context]
+  (let [stores (stores-for resource (:default-store context))]
+    (util/pmap-set #(find-matching % resource) stores)))
 
-(defn stores-for [resource] (stores-for-memo resource))

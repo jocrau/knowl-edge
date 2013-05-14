@@ -2,8 +2,18 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src/clj"/>
-	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="checkouts"/>
+	<classpathentry kind="src" path="cljs-checkouts"/>
 	<classpathentry kind="src" path="src/cljs"/>
-	<classpathentry kind="con" path="ccw.LEININGEN_CONTAINER"/>
+	<classpathentry kind="src" path="resources">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="ccw.LEININGEN_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="knowledge/target/native/macosx/x86_64"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
