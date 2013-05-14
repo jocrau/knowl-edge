@@ -254,22 +254,22 @@
 (def fetch-template-memo (memoize fetch-template))
 
 (defn- transform-resource* [resource statements context]
-    (util/pmap-set
-      (fn [[resource statements]]
-        (let [context (if-let [template-iri (extract-template-iri-from statements)]
-                        (assoc context :template (fetch-template-memo template-iri))
-                        (if (contains? context :template)
-                          context
-                          (assoc context :template (fetch-template-memo default-template-iri))))
-              types (extract-types-from statements)
-              context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
-              snippet (enlive/transform (enlive/select (:template context) (:rootline context))
-                                        [enlive/root]
-                                        (enlive/do->
-                                          (set-types types)
-                                          (set-resource resource)))]
-          (transform-statements statements snippet context)))
-      (group-by #(rdf/subject %) statements)))
+  (util/pmap-set
+    (fn [[resource statements]]
+      (let [context (if-let [template-iri (extract-template-iri-from statements)]
+                      (assoc context :template (fetch-template-memo template-iri))
+                      (if (contains? context :template)
+                        context
+                        (assoc context :template (fetch-template-memo default-template-iri))))
+            types (extract-types-from statements)
+            context (assoc context :rootline (conj (:rootline context) (reduce #(conj %1 (type= %2)) #{} types)))
+            snippet (enlive/transform (enlive/select (:template context) (:rootline context))
+                                      [enlive/root]
+                                      (enlive/do->
+                                        (set-types types)
+                                        (set-resource resource)))]
+        (transform-statements statements snippet context)))
+    (group-by #(rdf/subject %) statements)))
 
 (declare transform-resource)
 

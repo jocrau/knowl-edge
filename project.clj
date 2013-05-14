@@ -5,10 +5,10 @@
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
-                 [enlive "1.0.1"]
+                 [enlive "1.1.1"]
                  [com.cemerick/friend "0.1.3"]
                  [re-rand "0.1.0"]
-                 [clj-time "0.4.4"]
+                 [clj-time "0.5.0"]
                  [joda-time "2.1"]
                  [rdfa/rdfa "0.5.1-SNAPSHOT"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
