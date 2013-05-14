@@ -12,7 +12,6 @@
                  [joda-time "2.1"]
                  [rdfa/rdfa "0.5.1-SNAPSHOT"]
                  [org.apache.jena/jena-arq "2.9.0-incubating"]]
-  :plugins [[lein-cljsbuild "0.2.9"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :source-paths ["src/clj"
                  "src/cljs"
