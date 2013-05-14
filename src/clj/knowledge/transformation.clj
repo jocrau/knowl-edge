@@ -254,9 +254,6 @@
 (def fetch-template-memo (memoize fetch-template))
 
 (defn- transform-resource* [resource statements context]
-  (security/authorize
-    resource
-    context
     (util/pmap-set
       (fn [[resource statements]]
         (let [context (if-let [template-iri (extract-template-iri-from statements)]
@@ -272,7 +269,7 @@
                                           (set-types types)
                                           (set-resource resource)))]
           (transform-statements statements snippet context)))
-      (group-by #(rdf/subject %) statements))))
+      (group-by #(rdf/subject %) statements)))
 
 (declare transform-resource)
 
