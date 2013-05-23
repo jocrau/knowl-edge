@@ -1,0 +1,14 @@
+/pom.xml
+*jar
+/lib
+/classes
+/native
+/checkouts
+/cljs-checkouts
+/.lein*
+target/*
+bin/*
+ccw.repl.cmdhistory.prefs
+.repl/*
+out/*
+*/crossover
